@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nanum Gothic', sans-serif;
+
+}
+.wrap{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(93, 86, 78);
+}
+.res_edit h3 {
+    padding: 20px;
+}
+
+form{
+    padding: 0 30px;
+    padding-top: 30px;
+}
+
+.res_edit{
+    margin-top: 80px;
+    margin-bottom: 150px;
+    padding-bottom: 50px;
+    width: 35%;
+    height: auto;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.SelectTable {
+    display: inline-block;
+    float: left;
+    margin: 20px 50px;
+}
+
+.SelectMenu{
+    display: inline-block;
+    margin: 20px 50px;
+}
+
+button {
+    float: right;
+    width: 50px;
+    height: 30px;
+    border: 0;
+    outline: none;
+    border-radius: 40px;
+    background: #6a6666;
+    color: white;
+}
