@@ -51,15 +51,15 @@
         </div>
         <div>
             <label for="pwd">비밀번호</label>
-            <input type="password" id="pwd" th:field="*{pwd}" class="form-control"
+            <input type="password" id="pwd" th:field="*{password}" class="form-control"
                    th:errorclass="field-error">
-            <div class="field-error" th:errors="*{pwd}" />
+            <div class="field-error" th:errors="*{password}" />
         </div>
 
         <div>
             <label for="pwd_check">비밀번호 확인</label>
-            <input id="pwd_check" th:field="*{pwdCheck}" class="form-control" type="password"/>
-            <div class="field-error" th:errors="*{pwdCheck}" />
+            <input id="pwd_check" th:field="*{passwordCheck}" class="form-control" type="password"/>
+            <div class="field-error" th:errors="*{passwordCheck}" />
         </div>
 
         <div>

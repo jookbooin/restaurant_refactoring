@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="layout (title, content)" th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+
+  <title th:replace="${title}">레이아웃 타이틀</title>
+<!--   공통-->
+    <link rel="stylesheet" href="/css/common/sideBar.css">
+<!--  추가-->
+<!--  <th:block th:replace="${links}" />-->
+</head>
+<style>
+    #main-div {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+    }
+    #left-nav,#right-nav{
+        background-color: goldenrod;
+        width: 200px;
+    }
+    #real-section {
+        background-color: green;
+        width: 70%;
+        height:800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 30px;
+        background-color: red;
+    }
+    header, footer, nav {
+        /* 		border: 1px solid #999; */
+        margin: 5px;
+        padding: 10px;
+    }
+
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+    }
+    footer {
+        height: 110px;
+        background-color: blue;
+        /* 		position: relative; */
+        clear: both;
+    }
+</style>
+<body>
+<!--<h2>adminLayout</h2>-->
+<div class="container-fluid">
+<!--상단바-->
+    <!--상단바-->
+    <header class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+
+        <a class="navbar-brand ps-3" th:href="@{/}">SWEB ADMIN</a>
+
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 nav-end">
+            <li><a>안녕하세요! 관리자님 &emsp; </a></li>
+            <li><a th:href="@{/members/logout}">LOG-OUT</a></li>
+        </ul>
+    </header>
+<!--사이드 바-->
+
+<aside class="side-bar">
+    <section class="side-bar__icon-box">
+        <section class="side-bar__icon-1">
+            <div></div>
+            <div></div>
+            <div></div>
+        </section>
+    </section>
+    <ul>
+        <li>
+            <a href="#"><i class="fa-solid fa-cat"></i> menu1</a>
+            <ul>
+                <li><a href="#">text1</a></li>
+                <li><a href="#">text2</a></li>
+                <li><a href="#">text3</a></li>
+                <li><a href="#">text4</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">menu2</a>
+            <ul>
+                <li><a href="#">text1</a></li>
+                <li><a href="#">text2</a></li>
+                <li><a href="#">text3</a></li>
+                <li><a href="#">text4</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">menu3</a>
+            <ul>
+                <li><a href="#">text1</a></li>
+                <li><a href="#">text2</a></li>
+                <li><a href="#">text3</a></li>
+                <li><a href="#">text4</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">menu4</a>
+            <ul>
+                <li><a href="#">text1</a></li>
+                <li><a href="#">text2</a></li>
+                <li><a href="#">text3</a></li>
+                <li><a href="#">text4</a></li>
+            </ul>
+        </li>
+    </ul>
+</aside>
+<!-- content-->
+    <div id = "main-div">
+        <nav id ="left-nav">
+            왼쪽
+        </nav>
+        <!-- content-->
+        <div id ="real-section">
+            <section th:replace="${content}">
+                레이아웃 컨텐츠 section 영역
+            </section>
+        </div>
+
+        <nav id ="right-nav">
+            오른쪽
+        </nav>
+
+    </div>
+    <footer>
+        footer
+    </footer>
+</div>
+
+</body>
+
+</html>

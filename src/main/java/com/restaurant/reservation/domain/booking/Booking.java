@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @Table(name = "booking")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "dtype")
-public class Booking {
+public abstract class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,7 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +22,12 @@ public class Reservation extends Booking {
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
     private List<OrderMemu> orderItems = new ArrayList<>();
+
+    public Reservation(LocalTime time) {
+        this.time = time;
+    }
+
+    public Reservation() {
+
+    }
 }

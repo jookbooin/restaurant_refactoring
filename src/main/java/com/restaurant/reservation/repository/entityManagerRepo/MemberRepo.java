@@ -1,4 +1,4 @@
-package com.restaurant.reservation.Repository.entityManagerRepo;
+package com.restaurant.reservation.repository.entityManagerRepo;
 
 import com.restaurant.reservation.domain.members.Member;
 import lombok.RequiredArgsConstructor;

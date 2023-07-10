@@ -19,11 +19,12 @@
         <li><a href="#main_Menu">Menu</a></li>
         <li><a href="#main_Reservation">Reservation</a></li>
         <li><a href="#main_Location">Location</a></li>
-        <li onclick="javascript:btn()"><a th:href="@{login/login}">MyPage</a></li>
+        <li onclick="javascript:btn()"><a th:href="@{/members/info}">MyPage</a></li>
         <!-- <li><a th:href="@{login/login}">MyPage</a></li> -->
       </ul>
+
       <ul class="navbar_member">
-        <li><a th:href="@{members/login}">LOG-IN</a></li>
+        <li><a th:href="@{/members/login}">LOG-IN</a></li>
         <li><a th:href="@{/members/register}">SIGN-UP</a></li>
       </ul>
     </div>
@@ -127,7 +128,7 @@
         <div id="reservation_content">
           <div>
             <button type="button" onclick="javascript:btn()">
-              <a class="" th:href="@{login/login}">사전 예약</a>
+              <a class="" th:href="@{basic/members/login}">사전 예약</a>
             </button>
             <p style="padding-top: 50px;">SWEB만의 사전 예약 서비스를 통해 웨이팅 없이 레스토랑을 즐겨보세요!</p>
           </div>
