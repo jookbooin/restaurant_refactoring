@@ -22,5 +22,17 @@ public class Tables {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private TableStatus tableStatus;
+    public Tables(){
 
+    }
+    public Tables (int number, int seats, TableType tableType) {
+        this.number = number;
+        this.seats = seats;
+        this.tableType = tableType;
+        this.tableStatus =TableStatus.EMPTY;
+    }
+
+    public static Tables createTables(int number, int seats, TableType tableType){
+        return new Tables(number,seats,tableType);
+    }
 }

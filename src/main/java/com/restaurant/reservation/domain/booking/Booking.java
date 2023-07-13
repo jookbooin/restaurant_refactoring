@@ -1,33 +1,35 @@
 package com.restaurant.reservation.domain.booking;
 
 import com.restaurant.reservation.domain.Tables;
-import com.restaurant.reservation.domain.enumType.ReservationStatus;
-import com.restaurant.reservation.domain.members.Member;
+import com.restaurant.reservation.domain.enumType.BookingStatus;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
+@Setter
 @Entity
-@Table(name = "booking")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-public abstract class Booking {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Booking {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booking_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tables_id")
-    private Tables tables;          // 나중에 뺄지 결정
-    private LocalDate date; // 사전 예약 날짜
-    private int number; // 예약 인원
-    @Column(name = "status")
-    private ReservationStatus reservationStatus; // 예약완료 , pre , 노쇼
+    @JoinColumn(name = "table_id")
+    private Tables tables;
+    private LocalDate date;
+
+    private int number;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+
+
+
+
+
+
 }

@@ -6,11 +6,12 @@ import lombok.Setter;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-@Entity
-@Getter
 @Setter
+@Getter
+@Entity
 @DiscriminatorValue("waiting")
 public class Waiting extends Booking{
+
 
 
 }

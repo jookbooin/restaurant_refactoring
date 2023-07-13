@@ -7,6 +7,7 @@ import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.LoginForm;
+import com.restaurant.reservation.web.form.MemberUpdateForm;
 import com.restaurant.reservation.web.form.RegisterMemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class MemberController {
         return "basic/registerMemberForm";
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public String save(@Validated @ModelAttribute("member") RegisterMemberForm registerMemberForm, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -52,7 +53,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("login")
+    @GetMapping("/login")
     public String loginForm(@ModelAttribute("form") LoginForm form){
     return "basic/loginForm";
     }
@@ -107,8 +108,28 @@ public class MemberController {
         SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
         log.info("session : {}",session);
 
-
         return "basic/members/myPage";
+    }
+
+    @GetMapping("/update")
+    public String updateForm(Model model , HttpSession request){
+        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
+        MemberDto memberDto = memberService.findOneById(session.getId());
+        MemberUpdateForm form = MemberUpdateForm.makeForm(memberDto);
+        model.addAttribute("form",form);
+        return "basic/members/memberUpdateProfile";
+    }
+    @PostMapping("/update")
+    public String updateMember(MemberUpdateForm updateForm){
+
+        MemberDto updateDto = MemberDto.builder()
+                        .id(updateForm.getId())
+                .email(updateForm.getEmail())
+                .password(updateForm.getPassword())
+                .build();
+        
+        memberService.updateMember(updateDto);
+        return "redirect:/members/info";
     }
 
 

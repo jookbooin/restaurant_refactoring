@@ -1,5 +1,5 @@
 package com.restaurant.reservation.domain.enumType;
 
-public enum ReservationStatus {
+public enum BookingStatus {
     PRE,COMPLETE,NOSHOW
 }

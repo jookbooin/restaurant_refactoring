@@ -41,6 +41,7 @@ class MemberRepoTest {
         Member insertMember2 = memberRepository.save(member2);
         Assertions.assertEquals(insertMember2.getId(),2);
 
+
         Member findMember = memberRepository.findById(member1.getId()).get();
 
     }

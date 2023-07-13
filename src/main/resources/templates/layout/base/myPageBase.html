@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" th:fragment="layout (title, content)" th="http://www.thymeleaf.org">
-<head th:fragment="common_header(title,links)">
-
+<head>
   <title th:replace="${title}">레이아웃 타이틀</title>
   <!--   공통-->
   <link rel="stylesheet" href="/css/common/sideBar.css">
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
-  <link href="/bootstrap/styles.css" rel="stylesheet"/>
+<!--  <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">-->
   <!--  추가-->
-  <!--  <th:block th:replace="${links}" />-->
+<!--    <th:block th:replace="${links}" />-->
 </head>
 <style>
   #main-div {
@@ -52,11 +50,13 @@
   }
 </style>
 <body>
-<div class="wrapper">
+<!--<h2>adminLayout</h2>-->
+<div class="container-fluid">
+  <!--상단바-->
   <!--상단바-->
   <header class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
-    <a class="navbar-brand ps-3" th:href="@{/}">SWEB ADMIN</a>
+    <a class="navbar-brand ps-3" th:href="@{/}">SWEB</a>
 
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4 nav-end">
       <li><a>안녕하세요! ???님 &emsp; </a></li>
@@ -75,32 +75,42 @@
     </section>
     <ul>
       <li>
-        <a href="#"><i class="fa-solid fa-cat"></i>내정보</a>
+        <a href="#"><i class="fa-solid fa-cat"></i> 내정보</a>
         <ul>
-          <li><a href="#">회원 정보</a></li>
-          <li><a href="#">프로필 수정</a></li>
+          <li><a href="#">회원정보</a></li>
+          <li><a th:href="@{/members/update}">프로필 수정</a></li>
         </ul>
       </li>
       <li>
-        <a href="#">예약정보</a>
+        <a href="#">menu2</a>
         <ul>
-          <li><a href="#">사전 예약</a></li>
-          <li><a href="#">현장 예약</a></li>
-          <li><a href="#">배달/포장</a></li>
-          <!--          <li><a href="#">text4</a></li>-->
+          <li><a href="#">text1</a></li>
+          <li><a href="#">text2</a></li>
+          <li><a href="#">text3</a></li>
+          <li><a href="#">text4</a></li>
         </ul>
       </li>
       <li>
-        <a href="#">더보기</a>
+        <a href="#">menu3</a>
         <ul>
-          <li><a href="#">공지사항</a></li>
-          <li><a href="#">설정</a></li>
-          <li><a href="#">고객센터</a></li>
-          <li><a href="#">약관 및 정책</a></li>
+          <li><a href="#">text1</a></li>
+          <li><a href="#">text2</a></li>
+          <li><a href="#">text3</a></li>
+          <li><a href="#">text4</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">menu4</a>
+        <ul>
+          <li><a href="#">text1</a></li>
+          <li><a href="#">text2</a></li>
+          <li><a href="#">text3</a></li>
+          <li><a href="#">text4</a></li>
         </ul>
       </li>
     </ul>
   </aside>
+  <!-- content-->
   <div id = "main-div">
     <nav id ="left-nav">
       왼쪽

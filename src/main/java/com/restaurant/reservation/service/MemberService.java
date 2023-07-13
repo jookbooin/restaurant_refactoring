@@ -31,8 +31,26 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member findOneById(Long id){
-        return memberRepository.findById(id).orElseThrow(() -> new RuntimeException("can't find Member"));
+    public MemberDto findOneById(Long id){
+        Member findMember = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("can't find Member"));
+        MemberDto memberDto = MemberDto.builder()
+                .id(findMember.getId())
+                .email(findMember.getEmail())
+                .name(findMember.getMemberInfo().getName())
+                .phoneNumber(findMember.getMemberInfo().getPhoneNumber())
+                .password(findMember.getPassword())
+                .build();
+        return memberDto;
+    }
+    @Transactional
+    public void updateMember(MemberDto memberDto){
+
+        Member findMember = memberRepository.findById(memberDto.getId())
+                .orElseThrow(() -> new RuntimeException("can't find Member"));
+        log.info("find!");
+
+        findMember.update(memberDto.getEmail(), memberDto.getPassword());
+        log.info("update!");
     }
 
     public Member login(String email , String password){

@@ -4,9 +4,13 @@ import com.restaurant.reservation.domain.Dto.MemberDto;
 import com.restaurant.reservation.domain.TimeEntity;
 import com.restaurant.reservation.domain.enumType.MemberType;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
+@ToString
+@Setter
 @Getter
 @Entity
 @Table(name = "members")
@@ -45,6 +49,13 @@ public class Member extends TimeEntity {
         MemberInfo info = new MemberInfo(memberDto.getName(), memberDto.getPhoneNumber());
         return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberType.ADMIN);
     }
+
+    public void update(String email,String password){
+        this.email=email;
+        this.password=password;
+    }
+
+
 
 
 }
