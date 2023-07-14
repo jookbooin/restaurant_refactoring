@@ -1,10 +1,12 @@
 package com.restaurant.reservation.domain;
 
-import com.restaurant.reservation.domain.Dto.MenuDto;
+import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.enumType.MenuType;
+import lombok.Getter;
 
 import javax.persistence.*;
 
+@Getter
 @Entity
 public class Menu {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,6 @@
 package com.restaurant.reservation;
 
-import com.restaurant.reservation.domain.Dto.SessionDto;
+import com.restaurant.reservation.domain.dto.SessionDto;
 import com.restaurant.reservation.domain.enumType.MemberType;
 import com.restaurant.reservation.web.SessionID;
 import lombok.extern.slf4j.Slf4j;

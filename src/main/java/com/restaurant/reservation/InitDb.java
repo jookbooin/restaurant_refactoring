@@ -1,7 +1,7 @@
 package com.restaurant.reservation;
 
-import com.restaurant.reservation.domain.Dto.MemberDto;
-import com.restaurant.reservation.domain.Dto.MenuDto;
+import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.enumType.MenuType;

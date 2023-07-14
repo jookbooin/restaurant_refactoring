@@ -1,8 +1,8 @@
 package com.restaurant.reservation.controller;
 
 
-import com.restaurant.reservation.domain.Dto.MemberDto;
-import com.restaurant.reservation.domain.Dto.SessionDto;
+import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.domain.dto.SessionDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;

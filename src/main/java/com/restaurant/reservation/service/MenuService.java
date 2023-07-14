@@ -1,6 +1,6 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.domain.Dto.MenuDto;
+import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;

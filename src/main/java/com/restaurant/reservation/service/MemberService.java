@@ -2,7 +2,7 @@ package com.restaurant.reservation.service;
 
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.domain.members.Member;
-import com.restaurant.reservation.domain.Dto.MemberDto;
+import com.restaurant.reservation.domain.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

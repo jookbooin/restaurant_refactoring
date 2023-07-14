@@ -1,6 +1,6 @@
 package com.restaurant.reservation.domain.members;
 
-import com.restaurant.reservation.domain.Dto.MemberDto;
+import com.restaurant.reservation.domain.dto.MemberDto;
 import com.restaurant.reservation.domain.TimeEntity;
 import com.restaurant.reservation.domain.enumType.MemberType;
 import lombok.Getter;

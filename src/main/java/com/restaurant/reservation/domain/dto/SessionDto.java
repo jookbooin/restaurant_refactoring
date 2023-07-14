@@ -1,4 +1,4 @@
-package com.restaurant.reservation.domain.Dto;
+package com.restaurant.reservation.domain.dto;
 
 import com.restaurant.reservation.domain.enumType.MemberType;
 import lombok.Builder;

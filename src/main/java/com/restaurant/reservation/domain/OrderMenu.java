@@ -21,4 +21,27 @@ public class OrderMenu {
     private Reservation reservation;
     private int orderPrice;
     private int count;
+
+    public OrderMenu(Menu menu, int orderPrice, int count) {
+        this.menu = menu;
+        this.orderPrice = orderPrice;
+        this.count = count;
+    }
+
+    public OrderMenu() {
+    }
+
+    // OrderMenu 생성 
+    public static OrderMenu createOrderMenu(Menu menu, int count) {
+        return new OrderMenu(menu, menu.getPrice()*count,count );
+    }
+    
+    // OrderMenu 가격 총합 계산용
+    public int getTotalPrice() {
+        return getOrderPrice() * getCount();
+    }
+
+    public void addReservation(Reservation reservation){
+        this.reservation = reservation;
+    }
 }
