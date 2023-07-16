@@ -3,9 +3,10 @@ package com.restaurant.reservation.domain;
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
-
+@ToString
 @Getter
 @Entity
 public class Menu {

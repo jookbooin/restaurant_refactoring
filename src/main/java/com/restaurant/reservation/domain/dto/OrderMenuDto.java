@@ -3,7 +3,9 @@ package com.restaurant.reservation.domain.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Setter
 @Builder
@@ -13,4 +15,11 @@ public class OrderMenuDto {
     private Long menuId;
     private int count;
 
+    public OrderMenuDto(){
+
+    }
+    public OrderMenuDto(Long menuId, int count) {
+        this.menuId = menuId;
+        this.count = count;
+    }
 }

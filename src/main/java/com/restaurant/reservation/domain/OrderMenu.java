@@ -3,9 +3,11 @@ package com.restaurant.reservation.domain;
 import com.restaurant.reservation.domain.booking.Reservation;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
+@ToString
 @Getter
 @Setter
 @Entity
@@ -34,6 +36,9 @@ public class OrderMenu {
     // OrderMenu 생성 
     public static OrderMenu createOrderMenu(Menu menu, int count) {
         return new OrderMenu(menu, menu.getPrice()*count,count );
+    }
+    public void changeCount(int count){
+        this.count=count;
     }
     
     // OrderMenu 가격 총합 계산용
