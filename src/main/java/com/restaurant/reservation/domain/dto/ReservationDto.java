@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +15,8 @@ public class ReservationDto {
     private LocalDate date;
     private LocalTime time;
 
-    private List<OrderMenuDto> orderMenuDtoList;
+
+
+//    private List<OrderMenuDto> modifyMenuDtoList;
 
 }

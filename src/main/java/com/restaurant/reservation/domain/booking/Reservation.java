@@ -47,10 +47,10 @@ public class Reservation extends Booking {
         this.member = member;
     }
 
-    public static Reservation createReservation(Member member, LocalDate date, int number, LocalTime time, List<OrderMenu> orderMenuList){
-        Reservation reservation = new Reservation(member,time);
-        reservation.setDate(date);
-        reservation.setNumber(number);
+    public static Reservation createReservation(Member member, ReservationDto reservationDto, List<OrderMenu> orderMenuList){
+        Reservation reservation = new Reservation(member,reservationDto.getTime());
+        reservation.setDate(reservationDto.getDate());
+        reservation.setNumber(reservationDto.getNumber());
         for (OrderMenu orderMenu : orderMenuList) {
             reservation.addOrderMenu(orderMenu);
         }

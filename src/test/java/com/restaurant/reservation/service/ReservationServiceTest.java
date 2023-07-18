@@ -4,6 +4,7 @@ import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.OrderMenu;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.dto.OrderMenuDto;
+import com.restaurant.reservation.domain.dto.ReservationDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.MenuRepository;
@@ -41,7 +42,7 @@ class ReservationServiceTest {
     @Test
     @Rollback(false)
 //    @Transactional
-    public void Add_RemoveTest() throws Exception{
+    public void 등록_삭제Test() throws Exception{
 
         // given
         Member findmember = memberRepository.findByEmail("3670lsh@naver.com").get();
@@ -60,9 +61,12 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto2);
         orderMenuDtoList.add(orderMenuDto3);
 
-        Reservation reservation1 = reservationService.addReservation(1L, todayDate, 4, todayTime, orderMenuDtoList);
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto2 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
         Assertions.assertEquals(reservation1.getId(),1L);
-        Reservation reservation2 = reservationService.addReservation(2L, todayDate, 4, todayTime, orderMenuDtoList);
+        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2, orderMenuDtoList);
         Assertions.assertEquals(reservation2.getId(),2L);
 
         /***/
@@ -94,9 +98,12 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto2);
         orderMenuDtoList.add(orderMenuDto3);
 
-        Reservation reservation1 = reservationService.addReservation(1L, todayDate, 4, todayTime, orderMenuDtoList);
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto2 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
         Assertions.assertEquals(reservation1.getId(),1L);
-        Reservation reservation2 = reservationService.addReservation(2L, todayDate, 4, todayTime, orderMenuDtoList);
+        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2, orderMenuDtoList);
         Assertions.assertEquals(reservation2.getId(),2L);
 
         Reservation findReservation = reservationRepository.findById(1L).get();
@@ -125,8 +132,11 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto1);
         orderMenuDtoList.add(orderMenuDto2);
 //        orderMenuDtoList.add(orderMenuDto3);
+
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
 //
-        Reservation reservation1 = reservationService.addReservation(1L, todayDate, 4, todayTime, orderMenuDtoList);
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
         Assertions.assertEquals(reservation1.getId(),1L);
 //        Reservation reservation2 = reservationService.addReservation(2L, todayDate, 4, todayTime, orderMenuDtoList);
 //        Assertions.assertEquals(reservation2.getId(),2L);
@@ -264,5 +274,216 @@ class ReservationServiceTest {
 
 
 //        Assertions.assertEquals(reservation1.getNumber(),8);
+    }
+
+
+    @Test
+    @Rollback(false)
+    public void 전체삭제후_전체새로등록Test() throws Exception{
+        Member findmember = memberRepository.findByEmail("3670lsh@naver.com").get();
+        LocalDate todayDate = LocalDate.of(2023, 7, 12);
+        LocalTime todayTime = LocalTime.of(23, 30, 0);
+
+        Menu menu1 = menuRepository.findById(1L).get(); // 1
+        Menu menu2 = menuRepository.findById(2L).get(); // 2
+
+        List<OrderMenuDto> orderMenuDtoList = new ArrayList<>();
+        OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(1L).count(3).build();
+        OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(2L).count(4).build();
+
+        orderMenuDtoList.add(orderMenuDto1);
+        orderMenuDtoList.add(orderMenuDto2);
+
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Assertions.assertEquals(reservation1.getId(),1L);
+
+
+        /** 시작 */
+        Menu menu3 = menuRepository.findById(3L).get(); // 1
+        Menu menu4 = menuRepository.findById(4L).get(); // 2
+
+        /** 리스트 생성 */
+        List<OrderMenu> modifyList = new ArrayList<>();
+        OrderMenu addMenu1 = OrderMenu.createOrderMenu(menu3, 3);
+        OrderMenu addMenu2 = OrderMenu.createOrderMenu(menu4, 3);
+        modifyList.add(addMenu1);
+        modifyList.add(addMenu2);
+
+        System.out.println("==처음실행==");
+        for (OrderMenu orderMenu : reservation1.getOrderMenus()) {
+            System.out.println("orderMenu = " + orderMenu);
+        }
+
+        reservation1.getOrderMenus().clear();
+
+
+        for (OrderMenu orderMenu : modifyList) {
+            reservation1.addOrderMenu(orderMenu);
+        }
+
+        System.out.println("==1회 실행==");
+        for (OrderMenu orderMenu : reservation1.getOrderMenus()) {
+            System.out.println("orderMenu = " + orderMenu);
+        }
+
+
+        /** 1. 전체 수정 */
+//        reservation1.getOrderMenus().clear();
+//
+//        for (OrderMenu orderMenu : modifyList) {
+//            reservation1.addOrderMenu(orderMenu);
+//        }
+
+    }
+    @Test
+    @Rollback(false)
+    public void 전체삭제후_새로등록_ServiceTest() throws Exception{
+        Member findmember = memberRepository.findByEmail("3670lsh@naver.com").get();
+        LocalDate todayDate = LocalDate.of(2023, 7, 12);
+        LocalTime todayTime = LocalTime.of(23, 30, 0);
+
+        Menu menu1 = menuRepository.findById(1L).get(); // 1
+        Menu menu2 = menuRepository.findById(2L).get(); // 2
+
+        List<OrderMenuDto> orderMenuDtoList = new ArrayList<>();
+        OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(1L).count(3).build();
+        OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(2L).count(4).build();
+
+        orderMenuDtoList.add(orderMenuDto1);
+        orderMenuDtoList.add(orderMenuDto2);
+
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
+
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Assertions.assertEquals(reservation1.getId(),1L);
+
+        em.flush();
+        em.clear();
+
+
+        /** 변경사항 : 인원수 , 날짜 , 시간 */
+
+        LocalDate modifyDate = LocalDate.of(2023, 8, 6);
+        LocalTime modifyTime = LocalTime.of(14, 0, 0);
+
+        ReservationDto reservationDto = ReservationDto.builder()
+                .number(8)
+                .date(modifyDate)
+                .time(modifyTime)
+                .build();
+
+        /** 수정할 주문리스트 목록  1,2 -> 3,4*/
+        List<OrderMenuDto> modifyDtoList = new ArrayList<>();
+        OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(3L).count(1).build();
+        OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(4L).count(1).build();
+        modifyDtoList.add(orderMenuDto3);
+        modifyDtoList.add(orderMenuDto4);
+
+        /** Service Test */
+        System.out.println("======================");
+        reservationService.updateReservation_allList(1L,reservationDto,modifyDtoList);
+
+        Reservation assertReservation = reservationRepository.findById(1L).get();
+        Assertions.assertEquals(assertReservation.getNumber(),8);
+        Assertions.assertEquals(assertReservation.getDate(),modifyDate);
+        Assertions.assertEquals(assertReservation.getOrderMenus().get(0).getMenu().getId(),3L);
+        Assertions.assertEquals(assertReservation.getOrderMenus().get(1).getMenu().getId(),4L);
+
+        /** collectRemoveList메서드 Test  */
+    }
+
+    @Test
+    @Rollback(false)
+    public void collectRemoveList메서드Test() throws Exception{
+        Member findmember = memberRepository.findByEmail("3670lsh@naver.com").get();
+        LocalDate todayDate = LocalDate.of(2023, 7, 12);
+        LocalTime todayTime = LocalTime.of(23, 30, 0);
+
+        Menu menu1 = menuRepository.findById(1L).get(); // 1
+        Menu menu2 = menuRepository.findById(2L).get(); // 2
+
+        List<OrderMenuDto> orderMenuDtoList = new ArrayList<>();
+        OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(1L).count(3).build();
+        OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(2L).count(4).build();
+
+        orderMenuDtoList.add(orderMenuDto1);
+        orderMenuDtoList.add(orderMenuDto2);
+        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Assertions.assertEquals(reservation1.getId(),1L);
+
+        em.flush();
+        em.clear();
+
+        /** 변경사항 : 인원수 , 날짜 , 시간 */
+
+        LocalDate modifyDate = LocalDate.of(2023, 8, 6);
+        LocalTime modifyTime = LocalTime.of(14, 0, 0);
+
+        ReservationDto reservationDto = ReservationDto.builder()
+                .number(8)
+                .date(modifyDate)
+                .time(modifyTime)
+                .build();
+
+        /** 수정할 주문리스트 목록  1,2 -> 3,4*/
+        List<OrderMenuDto> modifyDtoList = new ArrayList<>();
+        OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(1L).count(1).build();
+        OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(4L).count(3).build();
+        OrderMenuDto orderMenuDto5 = OrderMenuDto.builder().menuId(3L).count(3).build();
+        modifyDtoList.add(orderMenuDto3);
+        modifyDtoList.add(orderMenuDto4);
+        modifyDtoList.add(orderMenuDto5);
+
+        /** update 메서드 */
+        reservationService.updateReservation(1L,reservationDto,modifyDtoList);
+
+        Reservation reservation2 = reservationRepository.findById(1L).get();
+        Assertions.assertEquals(reservation2.getOrderMenus().size(),3);
+
+        /** public일때 collectRemoveList 테스트*/
+//        List<OrderMenu> removeList = reservationService.collectRemoveFromReservation(reservation1, modifyDtoList);
+//        Assertions.assertEquals(removeList.size(),1);
+//
+//        System.out.println();
+//        System.out.println("==removeList==");
+//        if(!removeList.isEmpty())
+//            removeList.forEach(System.out::println);
+//
+//        System.out.println();
+//        System.out.println("==남아있어야 하는 요소==");
+//
+//        reservationService.deleteRemoveList(reservation1,removeList);
+//        Assertions.assertEquals(reservation1.getOrderMenus().size(),1);
+//        reservation1.getOrderMenus().forEach(System.out::println);
+//
+//        System.out.println();
+//        System.out.println("==기존 id 변경감지==");
+//        List<OrderMenuDto> insertList = reservationService.collectInsertFromModify(reservation1, modifyDtoList);
+//        reservation1.getOrderMenus().forEach(System.out::println);
+//
+//        System.out.println();
+//        System.out.println("==insertList==");
+//        if(!insertList.isEmpty())
+//            insertList.forEach(System.out::println);
+//
+//        System.out.println();
+//        System.out.println("== orderMenu 추가 ==");
+//        reservationService.insertOrderMenu(reservation1,insertList);
+//        reservation1.getOrderMenus().forEach(System.out::println);
+    }
+
+    @Test
+    public void updateReservation_메서드_Test() throws Exception{
+
+        // given
+
+        // when
+
+        // then
     }
 }
