@@ -18,6 +18,4 @@ public class MemberInfo {
     public MemberInfo() {
 
     }
-    //    @Column(name = "enroll_date")
-//    private String date;
 }

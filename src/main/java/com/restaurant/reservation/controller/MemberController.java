@@ -2,6 +2,7 @@ package com.restaurant.reservation.controller;
 
 
 import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.domain.enumType.MemberType;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
@@ -78,16 +79,7 @@ public class MemberController {
             return "basic/loginForm";
         }
 
-
-
-        // session에 전달할떄 최대한 fit하게 넣어야 하나?
-//        SessionDto sessionDto = SessionDto.builder()
-//                .id(loginMember.getId())
-//                .name(loginMember.getMemberInfo().getName())
-//                .memberType(loginMember.getMemberType()).build();
-//
         HttpSession session = request.getSession();
-//        session.setAttribute(SessionID.LOGIN_MEMBER, sessionDto);
         session.setAttribute(SessionID.LOGIN_MEMBER, loginMember.getId());
 
         log.info("redirect :{} 로 이동",redirectURL);
@@ -108,15 +100,20 @@ public class MemberController {
     public String memberInfo(Model model,HttpSession request) {
 //        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
         Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
+        MemberDto findMember = memberService.findOneById(sessionId);
         log.info("session : {}",sessionId);
+
+        model.addAttribute("member",findMember);
+        if(findMember.getMemberType().equals(MemberType.ADMIN))
+            return "basic/admin/adminHome";
+
 
         return "basic/members/myPage";
     }
 
     @GetMapping("/update")
     public String updateForm(Model model , HttpSession request){
-//        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
-//        MemberDto memberDto = memberService.findOneById(session.getId());
+
         Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
         MemberDto memberDto = memberService.findOneById(sessionId);
         MemberUpdateForm form = MemberUpdateForm.makeForm(memberDto);
