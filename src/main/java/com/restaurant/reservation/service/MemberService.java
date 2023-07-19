@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,15 +33,25 @@ public class MemberService {
     }
 
     public MemberDto findOneById(Long id){
-        Member findMember = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("can't find Member"));
-        MemberDto memberDto = MemberDto.builder()
-                .id(findMember.getId())
-                .email(findMember.getEmail())
-                .name(findMember.getMemberInfo().getName())
-                .phoneNumber(findMember.getMemberInfo().getPhoneNumber())
-                .password(findMember.getPassword())
-                .build();
-        return memberDto;
+//        Member findMember = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("can't find Member"));
+
+        if (id != null) {
+            Optional<Member> memberOps = memberRepository.findById(id);
+            if(memberOps.isPresent()) {
+                Member findMember = memberOps.get();
+                MemberDto memberDto = MemberDto.builder()
+                        .id(findMember.getId())
+                        .email(findMember.getEmail())
+                        .name(findMember.getMemberInfo().getName())
+                        .phoneNumber(findMember.getMemberInfo().getPhoneNumber())
+                        .password(findMember.getPassword())
+                        .memberType(findMember.getMemberType())
+                        .build();
+                return memberDto;
+            }
+        }
+
+        return null;
     }
     @Transactional
     public void updateMember(MemberDto memberDto){

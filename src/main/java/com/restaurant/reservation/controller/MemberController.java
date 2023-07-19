@@ -2,7 +2,6 @@ package com.restaurant.reservation.controller;
 
 
 import com.restaurant.reservation.domain.dto.MemberDto;
-import com.restaurant.reservation.domain.dto.SessionDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
@@ -80,14 +79,16 @@ public class MemberController {
         }
 
 
-        // session에 전달할떄 최대한 fit하게 넣어야 하나?
-        SessionDto sessionDto = SessionDto.builder()
-                .id(loginMember.getId())
-                .name(loginMember.getMemberInfo().getName())
-                .memberType(loginMember.getMemberType()).build();
 
+        // session에 전달할떄 최대한 fit하게 넣어야 하나?
+//        SessionDto sessionDto = SessionDto.builder()
+//                .id(loginMember.getId())
+//                .name(loginMember.getMemberInfo().getName())
+//                .memberType(loginMember.getMemberType()).build();
+//
         HttpSession session = request.getSession();
-        session.setAttribute(SessionID.LOGIN_MEMBER, sessionDto);
+//        session.setAttribute(SessionID.LOGIN_MEMBER, sessionDto);
+        session.setAttribute(SessionID.LOGIN_MEMBER, loginMember.getId());
 
         log.info("redirect :{} 로 이동",redirectURL);
         return "redirect:"+redirectURL;
@@ -105,16 +106,19 @@ public class MemberController {
 
     @GetMapping("/info")
     public String memberInfo(Model model,HttpSession request) {
-        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
-        log.info("session : {}",session);
+//        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
+        Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
+        log.info("session : {}",sessionId);
 
         return "basic/members/myPage";
     }
 
     @GetMapping("/update")
     public String updateForm(Model model , HttpSession request){
-        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
-        MemberDto memberDto = memberService.findOneById(session.getId());
+//        SessionDto session = (SessionDto) request.getAttribute(SessionID.LOGIN_MEMBER);
+//        MemberDto memberDto = memberService.findOneById(session.getId());
+        Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
+        MemberDto memberDto = memberService.findOneById(sessionId);
         MemberUpdateForm form = MemberUpdateForm.makeForm(memberDto);
         model.addAttribute("form",form);
         return "basic/members/memberUpdateProfile";
