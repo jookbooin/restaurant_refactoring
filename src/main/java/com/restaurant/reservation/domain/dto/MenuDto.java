@@ -3,7 +3,9 @@ package com.restaurant.reservation.domain.dto;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Setter
 @Getter
 public class MenuDto {

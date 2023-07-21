@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<!--xmlns:th="http://www.w3.org/1999/html"-->
+<head>
+    <meta charset="UTF-8">
+    <title>ReservationForm</title>
+</head>
+<style>
+    .wrap {
+        display: flex;
+        flex-direction: column;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+
+    .reservation {
+        margin: 20px 0;
+    }
+    .menu_box {
+        display: flex;
+        flex-direction: row;
+        margin: 20px;
+    }
+    .menu_info{
+        flex-grow: 3;
+        width: 100px;
+    }
+    .menu_count {
+        flex-grow: 1;
+        width: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+    .ordermenu_count {
+        width: 50px;
+    }
+    .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{
+        margin: 20px;
+    }
+</style>
+<body>
+
+<div class="wrap">
+    <div class="reservation">
+        <h3>1. 사전 예약 페이지</h3>
+
+        <form method="post" role="form" th:action="@{/reservation/advance/add}" th:object="${form}">
+
+            <div class="reservation_number">
+                <label>인원수</label>
+                <input class="" placeholder="인원수을 입력하세요"
+                       th:field="*{number}"
+                       type="number">
+            </div>
+
+            <div class="reservation_date">
+                <label>날짜</label>
+                <input class="" id="Date" placeholder="날짜를 입력하세요"
+                       th:field="*{date}" type="date">
+            </div>
+
+            <div class="reservation_time">
+                <label>시간</label>
+                <select th:field="*{time}">
+                    <option value="">예약시간</option>
+                    <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.ReservationTime).values()}"
+                            th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
+                </select>
+            </div>
+
+            <div th:each="menu : ${menuList}" class="reservation_menu_list">
+
+                <div th:id="'menu'+${menu.id}" class="menu_box">
+                    <!-- id 전달 -->
+                    <input name ="" type="hidden" class="ordermenu_id" th:value="${menu.id}" >
+                    <div class="menu_info">
+                        <div class="menu_name_price">
+                            <span th:text="|${menu.name} ${menu.price}원|">이름 가격</span>
+                        </div >
+                        <span th:text="${menu.intro}">intro</span>
+                    </div>
+                    <div class="menu_count">
+                        <input name=""  type="number" class="ordermenu_count" min="0" max="8" value="0" ><!--count 전달 -->
+                    </div>
+                </div>
+            </div>
+
+
+                <button class="reservation_submit" type="submit">확인</button>
+        </form>
+    </div>
+</div>
+
+</body>
+
+<script>
+    var now_utc = Date.now() // 지금 날짜를 밀리초로
+    // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+    var timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
+    var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+    // 현재 날짜에 오프셋을 적용하고, 7일 후의 날짜를 계산하여 ISO 형식으로 변환하고, 날짜 부분만 가져옴
+    var maxDate = new Date(now_utc - timeOff + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    document.getElementById("Date").setAttribute("min", today);
+    document.getElementById("Date").setAttribute("max", maxDate);
+</script>
+<script>
+    $(".reservation_submit").on("click", function(){
+        let form_contents ='';
+
+    });
+</script>
+</html>

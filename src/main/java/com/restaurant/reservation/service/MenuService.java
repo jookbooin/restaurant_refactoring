@@ -2,10 +2,12 @@ package com.restaurant.reservation.service;
 
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.Menu;
+import com.restaurant.reservation.domain.enumType.MenuType;
 import com.restaurant.reservation.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,4 +40,25 @@ public class MenuService  {
         Menu menu = Menu.createMenu(menuDto);
         return menuRepository.save(menu);
     }
+
+    public List<MenuDto> findSpecialMenu(){
+        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
+        List<MenuDto> specialDtoList = MenuToMenuDto(specialList);
+        return specialDtoList;
+    }
+
+    private static List<MenuDto> MenuToMenuDto(List<Menu> specialList) {
+        List<MenuDto> specialDtoList = new ArrayList<>();
+        specialList.forEach(o -> {
+            MenuDto menuDto = new MenuDto();
+            menuDto.setId(o.getId());
+            menuDto.setPrice(o.getPrice());
+            menuDto.setIntro(o.getIntro());
+            menuDto.setName(o.getName());
+            menuDto.setMenuType(o.getMenuType());
+            specialDtoList.add(menuDto);
+        });
+        return specialDtoList;
+    }
+
 }
