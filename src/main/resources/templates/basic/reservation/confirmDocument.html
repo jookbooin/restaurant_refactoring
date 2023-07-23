@@ -4,48 +4,90 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<style>
+    .wrap {
+        display: flex;
+        flex-direction: column;
+        max-width: 50%;
+        margin: 0 auto;
+    }
+
+    .reservation {
+        margin: 20px 0;
+    }
+    #number{
+        width: 30px;
+    }
+    .menu_box {
+        display: flex;
+        flex-direction: row;
+        margin: 20px;
+    }
+
+    .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{
+        margin: 20px;
+    }
+
+</style>
 <body>
 <div class="wrap">
     <div class="reservation">
         <h3>2. 예약 확인 페이지</h3>
 
-        <!--    <form>-->
-        <div id="reservation_content">
-            <div class="reservation_number">
-                <label>인원수 : </label>
-                <span id="number" th:text="${document.number}" th:attr="data-menu-number=${document.number}" />
-            </div>
+        <form method="post" role="form" class="paymentForm" th:action="@{/reservation/advance/add}" th:object="${advanceReservation}">
+                <div id="reservation_content">
 
-            <div class="reservation_date">
-                <label>날 짜 : </label>
-                <span id="date" th:text="${document.date}" th:attr="data-menu-date=${document.date}" />
-            </div>
+                    <div class="reservation_number">
+                        <label>인원수 : </label>
+                        <span  th:text="|${advanceReservation.number}명|" th:attr="data-menu-number=${advanceReservation.number}" />
+                        <input  name="number" placeholder="인원수을 입력하세요"
+                               type="hidden"  th:value="${advanceReservation.number}" min="1">
+                    </div>
 
-            <div class="reservation_time">
-                <label>시 간 : </label>
-                <span id="time" th:text="${document.time}" th:attr="data-menu-time=${document.time}" />
-            </div>
+                    <div class="reservation_date">
+                        <label>날 짜 : </label>
+                        <span  th:text="${advanceReservation.date}" th:attr="data-menu-date=${advanceReservation.date}" />
+                        <input  id="date" name="date" th:value="${advanceReservation.date}" placeholder="날짜를 입력하세요"
+                                type="hidden">
+                    </div>
 
-            <div th:each="menu : ${document.getOrderMenuList()}" class="reservation_menu_list">
+                    <div class="reservation_time">
+                        <label>시 간 : </label>
+                        <span  th:text="${advanceReservation.time}" th:attr="data-menu-time=${advanceReservation.time}" />
+                        <input  id="time" name="time" th:value="${advanceReservation.time}" placeholder="날짜를 입력하세요"
+                                type="hidden">
+                    </div>
 
-                <div th:id="${menu.menuId}" class="menu_box">
-                    <!-- id 전달 -->
-                    <input type="hidden" class="menu_id" th:value="${menu.menuId}" th:attr="data-menu-menuId=${menu.menuId}">
-                    <div class="menu_name_count">
-                            <span th:text="|${menu.count}개|">이름 개수</span>
-                    </div >
                 </div>
-            </div>
+            </form>
 
-            <div>
-                <label>결제 금액 : </label>
-                <span th:text="|${totalPrice}원|">이름 개수</span>
-            </div>
-            <div id ="reservation_submit">
-                <button  class="reservation_submit_btn" >예약 확정</button>
+        <div th:each="menu : ${orderMenuList}" class="reservation_menu_list">
+
+            <div th:id="${menu.menuId}" class="menu_box">
+                <!-- id 전달 -->
+                <!--  메뉴 이름 : n개 -->
+                <label th:text="|${menu.name} : |"></label>
+                <input type="hidden" class="menu_id" th:value="${menu.menuId}" th:attr="data-menu-id=${menu.menuId}">
+                <div class="menu_name_count">
+                    <input type="hidden" class="menu_count" th:value="${menu.count}" th:attr="data-menu-count=${menu.count}">
+                    <span th:text="|${menu.count}개|">이름 개수</span>
+                </div >
             </div>
         </div>
-        <!--    </form>-->
+
+        <div>
+            <label>결제 금액 : </label>
+            <span th:text="|${totalPrice}원|">이름 개수</span>
+        </div>
+
+        <div id ="reservation_submit">
+            <button  class="reservation_submit_btn" >예약 확정</button>
+        </div>
+
+    </div>
 
     </div>
 
@@ -53,3 +95,32 @@
 
 </body>
 </html>
+
+<script >
+
+    $(".reservation_submit_btn").on("click", function() {
+
+        alert("눌렀다");
+
+        $(".reservation_menu_list").each((function (index, item) {
+
+            let menuId = $(this).find(".menu_id").attr("data-menu-id");
+            let menuCount = $(this).find(".menu_count").attr("data-menu-count");
+
+                let inputId = document.createElement('input');
+                inputId.setAttribute("type", "hidden");
+                inputId.setAttribute("name", "orderMenuList[" + index + "].menuId");
+                inputId.setAttribute("value", "" + menuId + "");
+
+                let inputCount = document.createElement('input');
+                inputCount.setAttribute("type", "hidden");
+                inputCount.setAttribute("name", "orderMenuList[" + index + "].count");
+                inputCount.setAttribute("value", "" + menuCount + "");
+
+                $(".paymentForm").append(inputId);
+                $(".paymentForm").append(inputCount);
+            }));
+
+        $(".paymentForm").submit();
+    });
+</script>

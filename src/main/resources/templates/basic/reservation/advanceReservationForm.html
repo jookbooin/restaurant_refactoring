@@ -55,56 +55,59 @@
     <div class="reservation">
         <h3>1. 사전 예약 페이지</h3>
 
-    <form>
-        <div id="reservation_content">
-            <div class="reservation_number">
-                <label>인원수</label>
-                <input id="number" placeholder="인원수을 입력하세요"
-                       type="number" value="1" min="1">
+        <form method="post" role="form" class="advanceForm" th:action="@{/reservation/advance/payment}" th:object="${form}">
+            <div id="reservation_content">
+                <div class="reservation_number">
+                    <label>인원수</label>
+                    <input id="number"  name="number" placeholder="인원수을 입력하세요"
+                           type="number"  value="1" min="1">
+                </div>
+
+                <div class="reservation_date">
+                    <label>날 짜</label>
+                    <input  id="date" name="date" th:field="*{date}" placeholder="날짜를 입력하세요"
+                            type="date">
+                </div>
+
+                <div class="reservation_time">
+                    <label>시 간</label>
+                    <select id="time" name="time">
+                        <option value="">예약시간</option>
+                        <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.ReservationTime).values()}"
+                                th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
+                    </select>
+                </div>
+
             </div>
+        </form>
 
-            <div class="reservation_date">
-                <label>날 짜</label>
-                <input  id="date" name="date" placeholder="날짜를 입력하세요"
-                        type="date">
-            </div>
+        <!-- input 한 값들을 count >0 인 것들만 form 내부로 집어넣는다??? -->
+                <div th:each="menu : ${menuList}" class="reservation_menu_list">
 
-            <div class="reservation_time">
-                <label>시 간</label>
-                <select id="time" name="time">
-                    <option value="">예약시간</option>
-                    <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.ReservationTime).values()}"
-                            th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
-                </select>
-            </div>
+                    <div th:id="${menu.id}" class="menu_box" >
+                        <!-- count 가 0 이상일 때 → id 전달 -->
+                        <input type="hidden" class="menu_id" th:value="${menu.id}" th:attr="data-menu-id=${menu.id}">
+                        <input type="hidden" class="menu_name" th:value="${menu.name}" th:attr="data-menu-name=${menu.name}">
+                        <input type="hidden" class="menu_price" th:value="${menu.price}" th:attr="data-menu-price=${menu.price}">
 
-            <div th:each="menu : ${menuList}" class="reservation_menu_list">
-
-                <div th:id="${menu.id}" class="menu_box">
-                    <!-- id 전달 -->
-                    <input type="hidden" class="menu_id" th:value="${menu.id}" th:attr="data-menu-id=${menu.id}">
-
-                    <div class="ordermenu_info">
-                        <div class="menu_name_price">
-                            <span th:text="|${menu.name} ${menu.price}원|">이름 가격</span>
-                            <input type="hidden" class="menu_price" th:attr="data-menu-price=${menu.price}">
-                        </div >
-                        <span th:text="${menu.intro}">intro</span>
-                    </div>
-                    <div class="ordermenu_count">
-                        <input name=""  type="number" class="menu_count" min="0" max="8" value="0" ><!--count 전달 -->
+                        <div class="ordermenu_info">
+                            <div class="menu_name_price">
+                                <span th:text="|${menu.name} ${menu.price}원|">이름 가격</span>
+<!--                                <input type="hidden" class="menu_price" th:attr="data-menu-price=${menu.price}">-->
+                            </div >
+                            <span th:text="${menu.intro}">intro</span>
+                        </div>
+                        <div class="ordermenu_count">
+                            <input name=""  type="number" class="menu_count" min="0" max="8" value="0" ><!--count 전달 -->
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div id ="reservation_submit">
-            <button  class="reservation_submit_btn" >확인</button>
-            </div>
-        </div>
-    </form>
+                <div id ="reservation_submit">
+                <button type ="button" class="reservation_submit_btn" >확인</button>
+                </div>
 
     </div>
-
 </div>
 
 </body>
@@ -119,11 +122,11 @@
     document.getElementById("date").setAttribute("min", today);
     document.getElementById("date").setAttribute("max", maxDate);
 </script>
-<script th:inline="javascript">
+<script >
 
     $(".reservation_submit_btn").on("click", function(){
 
-        let reservationForm = new Object();
+        // let reservationForm = new Object();
 
         //  기본 입력값들 넣어줌
         let number = $("#number").val();
@@ -138,35 +141,53 @@
             return;
         }
 
-        reservationForm.number = number;
-        reservationForm.date = date;
-        reservationForm.time = time;
-
-        let orderMenuList= new Array();
         let totalMenuCount = 0;
 
-        $(".reservation_menu_list").each(function() {
+        $(".reservation_menu_list").each((function (index, item) {
 
             let menuId = $(this).find(".menu_id").attr("data-menu-id");
+            let menuName = $(this).find(".menu_name").attr("data-menu-name");
             let menuPrice = $(this).find(".menu_price").attr("data-menu-price");
             let menuCount = $(this).find(".menu_count").val();
 
             if (menuCount > 0) {
-                let orderMenu = new Object();
-                orderMenu.menuId = menuId;
-                orderMenu.price = menuPrice;
-                orderMenu.count = menuCount;
-                orderMenuList.push(orderMenu);
+                let inputId = document.createElement('input');
+                inputId.setAttribute("type", "hidden");
+                inputId.setAttribute("name", "orderMenuList["+index+"].menuId");
+                inputId.setAttribute("value", ""+menuId+"");
+
+                let inputCount = document.createElement('input');
+                inputCount.setAttribute("type", "hidden");
+                inputCount.setAttribute("name", "orderMenuList["+index+"].count");
+                inputCount.setAttribute("value", ""+menuCount+"");
+
+                let inputName = document.createElement('input');
+                inputName.setAttribute("type", "hidden");
+                inputName.setAttribute("name", "orderMenuList["+index+"].name");
+                inputName.setAttribute("value", ""+menuName+"");
+
+
+                let inputPrice = document.createElement('input');
+                inputPrice.setAttribute("type", "hidden");
+                inputPrice.setAttribute("name", "orderMenuList["+index+"].price");
+                inputPrice.setAttribute("value", ""+menuPrice+"");
+
+                $(".advanceForm").append(inputId)
+                $(".advanceForm").append(inputCount)
+                $(".advanceForm").append(inputName)
+                $(".advanceForm").append(inputPrice)
+
                 totalMenuCount += parseInt(menuCount);
             }
-        });
+        }));
 
         if (totalMenuCount < number) {
             alert("인원수 만큼 주문 하셔야합니다");
             return;
         }
+        $(".advanceForm").submit();
 
-        reservationForm.orderMenuList = orderMenuList;
+        // reservationForm.orderMenuList = orderMenuList;
 
     /**
      * {
@@ -187,29 +208,30 @@
      *   ]
      * }*/
 
-        $.ajax({
 
-            type : 'POST',
 
-            url :   '/reservation/advance/add',
-
-            headers : { "content-type":"application/json"},
-
-            dataType: "text",
-
-            data :  JSON.stringify(reservationForm),
-
-            success : function(data) {
-
-            },
-
-            error : function(data) {
-                alert("실패");
-                console.log(data.body);
-
-            }
-
-        });
+        // $.ajax({
+        //
+        //     type : 'POST',
+        //
+        //     url :   '/reservation/advance/add',
+        //
+        //     headers : { "content-type":"application/json"},
+        //
+        //     dataType: "text",
+        //
+        //     data :  JSON.stringify(reservationForm),
+        //
+        //     success : function(data) {
+        //
+        //     },
+        //
+        //     error : function(data) {
+        //         alert("실패");
+        //         console.log(data.body);
+        //
+        //     }
+        // });
     });
 
 </script>
