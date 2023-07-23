@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <title>ReservationForm</title>
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
     .wrap {
         display: flex;
@@ -16,26 +19,32 @@
     .reservation {
         margin: 20px 0;
     }
+    #number{
+        width: 30px;
+    }
     .menu_box {
         display: flex;
         flex-direction: row;
         margin: 20px;
     }
-    .menu_info{
+    .ordermenu_info{
         flex-grow: 3;
         width: 100px;
     }
-    .menu_count {
+    .ordermenu_count {
         flex-grow: 1;
         width: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
 
+
     }
-    .ordermenu_count {
-        width: 50px;
+
+    .menu_count{
+        width: 30px;
     }
+
     .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{
         margin: 20px;
     }
@@ -46,24 +55,23 @@
     <div class="reservation">
         <h3>1. 사전 예약 페이지</h3>
 
-        <form method="post" role="form" th:action="@{/reservation/advance/add}" th:object="${form}">
-
+    <form>
+        <div id="reservation_content">
             <div class="reservation_number">
                 <label>인원수</label>
-                <input class="" placeholder="인원수을 입력하세요"
-                       th:field="*{number}"
-                       type="number">
+                <input id="number" placeholder="인원수을 입력하세요"
+                       type="number" value="1" min="1">
             </div>
 
             <div class="reservation_date">
-                <label>날짜</label>
-                <input class="" id="Date" placeholder="날짜를 입력하세요"
-                       th:field="*{date}" type="date">
+                <label>날 짜</label>
+                <input  id="date" name="date" placeholder="날짜를 입력하세요"
+                        type="date">
             </div>
 
             <div class="reservation_time">
-                <label>시간</label>
-                <select th:field="*{time}">
+                <label>시 간</label>
+                <select id="time" name="time">
                     <option value="">예약시간</option>
                     <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.ReservationTime).values()}"
                             th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
@@ -72,43 +80,138 @@
 
             <div th:each="menu : ${menuList}" class="reservation_menu_list">
 
-                <div th:id="'menu'+${menu.id}" class="menu_box">
+                <div th:id="${menu.id}" class="menu_box">
                     <!-- id 전달 -->
-                    <input name ="" type="hidden" class="ordermenu_id" th:value="${menu.id}" >
-                    <div class="menu_info">
+                    <input type="hidden" class="menu_id" th:value="${menu.id}" th:attr="data-menu-id=${menu.id}">
+
+                    <div class="ordermenu_info">
                         <div class="menu_name_price">
                             <span th:text="|${menu.name} ${menu.price}원|">이름 가격</span>
+                            <input type="hidden" class="menu_price" th:attr="data-menu-price=${menu.price}">
                         </div >
                         <span th:text="${menu.intro}">intro</span>
                     </div>
-                    <div class="menu_count">
-                        <input name=""  type="number" class="ordermenu_count" min="0" max="8" value="0" ><!--count 전달 -->
+                    <div class="ordermenu_count">
+                        <input name=""  type="number" class="menu_count" min="0" max="8" value="0" ><!--count 전달 -->
                     </div>
                 </div>
             </div>
 
+            <div id ="reservation_submit">
+            <button  class="reservation_submit_btn" >확인</button>
+            </div>
+        </div>
+    </form>
 
-                <button class="reservation_submit" type="submit">확인</button>
-        </form>
     </div>
+
 </div>
 
 </body>
 
 <script>
-    var now_utc = Date.now() // 지금 날짜를 밀리초로
+    let now_utc = Date.now() // 지금 날짜를 밀리초로
     // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
-    var timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
-    var today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+    let timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
+    let today = new Date(now_utc - timeOff).toISOString().split("T")[0];
     // 현재 날짜에 오프셋을 적용하고, 7일 후의 날짜를 계산하여 ISO 형식으로 변환하고, 날짜 부분만 가져옴
-    var maxDate = new Date(now_utc - timeOff + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
-    document.getElementById("Date").setAttribute("min", today);
-    document.getElementById("Date").setAttribute("max", maxDate);
+    let maxDate = new Date(now_utc - timeOff + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+    document.getElementById("date").setAttribute("min", today);
+    document.getElementById("date").setAttribute("max", maxDate);
 </script>
-<script>
-    $(".reservation_submit").on("click", function(){
-        let form_contents ='';
+<script th:inline="javascript">
 
+    $(".reservation_submit_btn").on("click", function(){
+
+        let reservationForm = new Object();
+
+        //  기본 입력값들 넣어줌
+        let number = $("#number").val();
+        let date = $("#date").val();
+        let time = $("#time").val();
+
+        if (date === "" || time === "") {
+            alert("날짜를 선택해주세요.");
+            return;
+        } else if (time === "") {
+            alert("시간을 선택해주세요.");
+            return;
+        }
+
+        reservationForm.number = number;
+        reservationForm.date = date;
+        reservationForm.time = time;
+
+        let orderMenuList= new Array();
+        let totalMenuCount = 0;
+
+        $(".reservation_menu_list").each(function() {
+
+            let menuId = $(this).find(".menu_id").attr("data-menu-id");
+            let menuPrice = $(this).find(".menu_price").attr("data-menu-price");
+            let menuCount = $(this).find(".menu_count").val();
+
+            if (menuCount > 0) {
+                let orderMenu = new Object();
+                orderMenu.menuId = menuId;
+                orderMenu.price = menuPrice;
+                orderMenu.count = menuCount;
+                orderMenuList.push(orderMenu);
+                totalMenuCount += parseInt(menuCount);
+            }
+        });
+
+        if (totalMenuCount < number) {
+            alert("인원수 만큼 주문 하셔야합니다");
+            return;
+        }
+
+        reservationForm.orderMenuList = orderMenuList;
+
+    /**
+     * {
+     *   "number": 2,
+     *   "date": "2023-07-20",
+     *   "time": "12:00",
+     *   "orderMenuList": [
+     *     {
+     *       "id": 1,
+     *       "price" : 9000
+     *       "count": 2
+     *     },
+     *     {
+     *       "id": 2,
+     *       "price" : 8000
+     *       "count": 1
+     *     }
+     *   ]
+     * }*/
+
+        $.ajax({
+
+            type : 'POST',
+
+            url :   '/reservation/advance/add',
+
+            headers : { "content-type":"application/json"},
+
+            dataType: "text",
+
+            data :  JSON.stringify(reservationForm),
+
+            success : function(data) {
+
+            },
+
+            error : function(data) {
+                alert("실패");
+                console.log(data.body);
+
+            }
+
+        });
     });
+
 </script>
+
 </html>

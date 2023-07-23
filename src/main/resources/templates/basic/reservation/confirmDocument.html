@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="wrap">
+    <div class="reservation">
+        <h3>2. 예약 확인 페이지</h3>
+
+        <!--    <form>-->
+        <div id="reservation_content">
+            <div class="reservation_number">
+                <label>인원수 : </label>
+                <span id="number" th:text="${document.number}" th:attr="data-menu-number=${document.number}" />
+            </div>
+
+            <div class="reservation_date">
+                <label>날 짜 : </label>
+                <span id="date" th:text="${document.date}" th:attr="data-menu-date=${document.date}" />
+            </div>
+
+            <div class="reservation_time">
+                <label>시 간 : </label>
+                <span id="time" th:text="${document.time}" th:attr="data-menu-time=${document.time}" />
+            </div>
+
+            <div th:each="menu : ${document.getOrderMenuList()}" class="reservation_menu_list">
+
+                <div th:id="${menu.menuId}" class="menu_box">
+                    <!-- id 전달 -->
+                    <input type="hidden" class="menu_id" th:value="${menu.menuId}" th:attr="data-menu-menuId=${menu.menuId}">
+                    <div class="menu_name_count">
+                            <span th:text="|${menu.count}개|">이름 개수</span>
+                    </div >
+                </div>
+            </div>
+
+            <div>
+                <label>결제 금액 : </label>
+                <span th:text="|${totalPrice}원|">이름 개수</span>
+            </div>
+            <div id ="reservation_submit">
+                <button  class="reservation_submit_btn" >예약 확정</button>
+            </div>
+        </div>
+        <!--    </form>-->
+
+    </div>
+
+</div>
+
+</body>
+</html>

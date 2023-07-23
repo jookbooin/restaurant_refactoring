@@ -31,7 +31,7 @@ public class ReservationService {
 
 
     @Transactional
-    public Reservation addReservation(Long memberId , ReservationDto reservationDto, List<OrderMenuDto> orderMenuDtoList){
+    public Reservation addReservation(Long memberId , ReservationDto reservationDto){
 
         // 엔티티 조회
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new RuntimeException("can't find Member"));
@@ -40,7 +40,7 @@ public class ReservationService {
         // 1. 주문 상품 생성 -> OrderMenuDto - MenuId, count 담김
         // 2. 리스트로 만들어야 함
         List<OrderMenu> orderMenuList = new ArrayList<>();
-        for (OrderMenuDto orderMenuDto : orderMenuDtoList) {
+        for (OrderMenuDto orderMenuDto : reservationDto.getOrderMenuList()) {
             Menu findMenu = menuRepository.findById(orderMenuDto.getMenuId()).orElseThrow(() -> new RuntimeException("can't find Menu"));
             OrderMenu createOrderMenu = OrderMenu.createOrderMenu(findMenu, orderMenuDto.getCount());
             orderMenuList.add(createOrderMenu);

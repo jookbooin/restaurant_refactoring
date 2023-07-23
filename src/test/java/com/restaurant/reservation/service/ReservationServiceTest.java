@@ -61,12 +61,14 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto2);
         orderMenuDtoList.add(orderMenuDto3);
 
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
-        ReservationDto reservationDto2 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList).build();
+        ReservationDto reservationDto2 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList).build();
 
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1);
         Assertions.assertEquals(reservation1.getId(),1L);
-        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2, orderMenuDtoList);
+        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2);
         Assertions.assertEquals(reservation2.getId(),2L);
 
         /***/
@@ -98,12 +100,14 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto2);
         orderMenuDtoList.add(orderMenuDto3);
 
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
-        ReservationDto reservationDto2 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList).build();
+        ReservationDto reservationDto2 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList).build();
 
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1);
         Assertions.assertEquals(reservation1.getId(),1L);
-        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2, orderMenuDtoList);
+        Reservation reservation2 = reservationService.addReservation(2L, reservationDto2);
         Assertions.assertEquals(reservation2.getId(),2L);
 
         Reservation findReservation = reservationRepository.findById(1L).get();
@@ -133,10 +137,11 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto2);
 //        orderMenuDtoList.add(orderMenuDto3);
 
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList).build();
 
 //
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList);
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1);
         Assertions.assertEquals(reservation1.getId(),1L);
 //        Reservation reservation2 = reservationService.addReservation(2L, todayDate, 4, todayTime, orderMenuDtoList);
 //        Assertions.assertEquals(reservation2.getId(),2L);
@@ -294,9 +299,11 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto1);
         orderMenuDtoList.add(orderMenuDto2);
 
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList)
+                .build();
 
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1); // 4
         Assertions.assertEquals(reservation1.getId(),1L);
 
 
@@ -354,10 +361,12 @@ class ReservationServiceTest {
         orderMenuDtoList.add(orderMenuDto1);
         orderMenuDtoList.add(orderMenuDto2);
 
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList)
+                .build();
 
 
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1); // 4
         Assertions.assertEquals(reservation1.getId(),1L);
 
         em.flush();
@@ -411,9 +420,11 @@ class ReservationServiceTest {
 
         orderMenuDtoList.add(orderMenuDto1);
         orderMenuDtoList.add(orderMenuDto2);
-        ReservationDto reservationDto1 = ReservationDto.builder().date(todayDate).time(todayTime).number(4).build();
+        ReservationDto reservationDto1 = ReservationDto.builder()
+                .date(todayDate).time(todayTime).number(4).orderMenuList(orderMenuDtoList)
+                .build();
 
-        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1, orderMenuDtoList); // 4
+        Reservation reservation1 = reservationService.addReservation(1L, reservationDto1); // 4
         Assertions.assertEquals(reservation1.getId(),1L);
 
         em.flush();
