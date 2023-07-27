@@ -73,7 +73,7 @@
                     <label>시 간</label>
                     <select id="time" name="time">
                         <option value="">예약시간</option>
-                        <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.ReservationTime).values()}"
+                        <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
                                 th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
                     </select>
                 </div>
@@ -142,8 +142,8 @@
         }
 
         let totalMenuCount = 0;
-
-        $(".reservation_menu_list").each((function (index, item) {
+        let orderCount = 0
+        $(".reservation_menu_list").each((function () {
 
             let menuId = $(this).find(".menu_id").attr("data-menu-id");
             let menuName = $(this).find(".menu_name").attr("data-menu-name");
@@ -153,23 +153,23 @@
             if (menuCount > 0) {
                 let inputId = document.createElement('input');
                 inputId.setAttribute("type", "hidden");
-                inputId.setAttribute("name", "orderMenuList["+index+"].menuId");
+                inputId.setAttribute("name", "orderMenuList["+orderCount+"].menuId");
                 inputId.setAttribute("value", ""+menuId+"");
 
                 let inputCount = document.createElement('input');
                 inputCount.setAttribute("type", "hidden");
-                inputCount.setAttribute("name", "orderMenuList["+index+"].count");
+                inputCount.setAttribute("name", "orderMenuList["+orderCount+"].count");
                 inputCount.setAttribute("value", ""+menuCount+"");
 
                 let inputName = document.createElement('input');
                 inputName.setAttribute("type", "hidden");
-                inputName.setAttribute("name", "orderMenuList["+index+"].name");
+                inputName.setAttribute("name", "orderMenuList["+orderCount+"].name");
                 inputName.setAttribute("value", ""+menuName+"");
 
 
                 let inputPrice = document.createElement('input');
                 inputPrice.setAttribute("type", "hidden");
-                inputPrice.setAttribute("name", "orderMenuList["+index+"].price");
+                inputPrice.setAttribute("name", "orderMenuList["+orderCount+"].price");
                 inputPrice.setAttribute("value", ""+menuPrice+"");
 
                 $(".advanceForm").append(inputId)
@@ -178,7 +178,9 @@
                 $(".advanceForm").append(inputPrice)
 
                 totalMenuCount += parseInt(menuCount);
+                orderCount+=1;
             }
+
         }));
 
         if (totalMenuCount < number) {
@@ -186,52 +188,6 @@
             return;
         }
         $(".advanceForm").submit();
-
-        // reservationForm.orderMenuList = orderMenuList;
-
-    /**
-     * {
-     *   "number": 2,
-     *   "date": "2023-07-20",
-     *   "time": "12:00",
-     *   "orderMenuList": [
-     *     {
-     *       "id": 1,
-     *       "price" : 9000
-     *       "count": 2
-     *     },
-     *     {
-     *       "id": 2,
-     *       "price" : 8000
-     *       "count": 1
-     *     }
-     *   ]
-     * }*/
-
-
-
-        // $.ajax({
-        //
-        //     type : 'POST',
-        //
-        //     url :   '/reservation/advance/add',
-        //
-        //     headers : { "content-type":"application/json"},
-        //
-        //     dataType: "text",
-        //
-        //     data :  JSON.stringify(reservationForm),
-        //
-        //     success : function(data) {
-        //
-        //     },
-        //
-        //     error : function(data) {
-        //         alert("실패");
-        //         console.log(data.body);
-        //
-        //     }
-        // });
     });
 
 </script>

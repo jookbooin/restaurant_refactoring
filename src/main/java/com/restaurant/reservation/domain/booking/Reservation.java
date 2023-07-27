@@ -6,6 +6,7 @@ import com.restaurant.reservation.domain.enumType.BookingStatus;
 import com.restaurant.reservation.domain.members.Member;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Setter
 @Getter
 @Entity
@@ -69,6 +71,8 @@ public class Reservation extends Booking {
         super.setDate(reservationDto.getDate());
         super.setNumber(reservationDto.getNumber());
     }
+
+
 
 
 }

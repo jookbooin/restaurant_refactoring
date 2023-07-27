@@ -31,6 +31,22 @@
         margin: 20px;
     }
 
+    #submit_cancel_btn {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .reservation_submit_btn {
+        margin: 15px;
+        flex: 1;
+    }
+
+    .reservation_cancel_btn {
+        margin: 15px;
+        flex: 1;
+    }
+
 </style>
 <body>
 <div class="wrap">
@@ -83,8 +99,10 @@
             <span th:text="|${totalPrice}원|">이름 개수</span>
         </div>
 
-        <div id ="reservation_submit">
+
+        <div id ="submit_cancel_btn">
             <button  class="reservation_submit_btn" >예약 확정</button>
+            <button  class="reservation_cancel_btn" th:onclick="|location.href='@{/}'|">취소</button>
         </div>
 
     </div>
@@ -99,8 +117,6 @@
 <script >
 
     $(".reservation_submit_btn").on("click", function() {
-
-        alert("눌렀다");
 
         $(".reservation_menu_list").each((function (index, item) {
 
@@ -123,4 +139,6 @@
 
         $(".paymentForm").submit();
     });
+
+
 </script>

@@ -3,11 +3,10 @@ package com.restaurant.reservation.domain;
 import com.restaurant.reservation.domain.booking.Reservation;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
-@ToString
+
 @Getter
 @Setter
 @Entity

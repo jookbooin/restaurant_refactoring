@@ -82,8 +82,10 @@ public class MemberController {
         HttpSession session = request.getSession();
         session.setAttribute(SessionID.LOGIN_MEMBER, loginMember.getId());
 
-        if(loginMember.getMemberType().equals(MemberType.ADMIN))
-            return "basic/admin/adminHome";
+        if(loginMember.getMemberType().equals(MemberType.ADMIN)) {
+//            return "basic/admin/adminHome";
+            return "redirect:/";
+        }
 
         log.info("redirect :{} 로 이동",redirectURL);
         return "redirect:"+redirectURL;

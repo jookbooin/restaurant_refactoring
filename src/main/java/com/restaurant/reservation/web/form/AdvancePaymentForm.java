@@ -14,7 +14,6 @@ import java.util.List;
 @Setter
 public class AdvancePaymentForm {
     @NotNull
-
     private Integer number;
     @NotBlank
     private String date;

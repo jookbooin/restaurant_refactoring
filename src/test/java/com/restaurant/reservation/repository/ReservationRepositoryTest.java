@@ -13,8 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -32,6 +34,9 @@ class ReservationRepositoryTest {
     MemberRepository memberRepository;
     @Autowired
     TableRepository tableRepository;
+
+    @Autowired
+    EntityManager em;
     @Test
     @Rollback(false)
     public void reservationInsert() throws Exception{
@@ -41,8 +46,10 @@ class ReservationRepositoryTest {
         Reservation reservation = new Reservation();
         LocalDate todayDate = LocalDate.of(2023, 7, 12);
         LocalTime todayTime = LocalTime.of(23, 30, 0);
+
         Tables findTables1 = tableRepository.findById(1L).get();
         System.out.println("todayTime = " + todayTime);
+
         reservation.setDate(todayDate);
         reservation.setTime(todayTime);
         reservation.setNumber(5);
@@ -66,4 +73,41 @@ class ReservationRepositoryTest {
         Waiting waiting1 = waitingRepository.findById(2L).orElse(null); // 영속성에 있나?
         System.out.println("waiting1 = " + waiting1.getDate());
     }
+
+    @Test
+    public void 주문_조회() throws Exception {
+
+//        List<Reservation> allReservation = reservationRepository.findAll();
+//
+//        allReservation.forEach(o->{
+//            System.out.println("o.getId() = " + o.getId());
+//            System.out.println("o.getNumber() = " + o.getNumber());
+//            System.out.println("o.getDate() = " + o.getDate());
+//            System.out.println("o.getTime() = " + o.getTime());
+//            System.out.println("o.getMember() = " + o.getMember());
+//            System.out.println();
+//        });
+
+        Member member = memberRepository.findById(1L).get();
+
+        System.out.println("== @query ==");
+        List<Reservation> queryList = reservationRepository.findReservationPre(member.getId());
+        queryList.forEach(o->{
+            System.out.println(o.getId());
+            System.out.println(o.getDate());
+            System.out.println(o.getTime());
+            System.out.println(o.getMember().getMemberInfo().getName());
+
+            System.out.println();
+        });
+
+//        List<Reservation> reservationList = reservationRepository.findByMemberIdOrderByDateAscTimeAsc(member.getId());
+//        reservationList.forEach(o -> {
+//            System.out.println(o.getId());
+//            System.out.println(o.getDate());
+//            System.out.println(o.getTime());
+//        });
+    }
+
+
 }

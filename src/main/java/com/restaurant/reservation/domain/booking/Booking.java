@@ -4,10 +4,12 @@ import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@ToString
 @Getter
 @Setter
 @Entity
@@ -26,4 +28,8 @@ public abstract class Booking {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
+
+    public void chageBookingStatus(BookingStatus status){
+        this.status = status;
+    }
 }

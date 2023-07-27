@@ -1,12 +1,15 @@
 package com.restaurant.reservation.controller;
 
+import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.repository.ReservationRepository;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.AdvancePaymentForm;
 import com.restaurant.reservation.web.form.AdvanceReservationForm;
+import com.restaurant.reservation.web.webDto.ReservationWebDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.restaurant.reservation.web.form.AdvanceReservationForm.advanceFormDto;
 
@@ -32,8 +37,11 @@ public class ReservationController {
     private final MenuService menuService;
 
     private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
+
     @GetMapping("/reservation/advance")
     public String reservationForm(Model model){
+        log.info("GET : /reservation/advance");
         model.addAttribute("form",new AdvanceReservationForm());
         List<MenuDto> specialMenuList = menuService.findSpecialMenu();
         model.addAttribute("menuList",specialMenuList);
@@ -45,14 +53,26 @@ public class ReservationController {
     @PostMapping("/reservation/advance/payment")
     public String reservationPost(@Validated @ModelAttribute("form") AdvanceReservationForm advanceReservation, BindingResult bindingResult, HttpSession request, Model model, RedirectAttributes redirectAttributes){
 
-        System.out.println("넘어온 객체 출력 = " + advanceReservation);
+        log.info("POST : /reservation/advance/payment");
+        log.info("넘어온 객체 출력 : {}",advanceReservation);
+
+        int totalCount = Optional.ofNullable(advanceReservation.getOrderMenuList())
+                        .map(list -> list.stream().mapToInt(o -> o.getCount())
+                        .sum())
+                        .orElse(0);
+
+        if( totalCount < advanceReservation.getNumber() && totalCount >= 0 ){
+            log.info("주문 메뉴 개수: {}", advanceReservation.getOrderMenuList().size());
+            log.info("신청 인원수 : : {}", advanceReservation.getNumber());
+            bindingResult.rejectValue("orderMenuList","listSize");
+        }
+
         if(bindingResult.hasErrors()){
             log.info("검증 오류 발생 errors = {}", bindingResult);
             List<MenuDto> specialMenuList = menuService.findSpecialMenu();
             model.addAttribute("menuList",specialMenuList);
             return "basic/reservation/advanceReservationForm";
         }
-
 
         redirectAttributes.addFlashAttribute("advanceReservation",advanceReservation);
 
@@ -62,14 +82,18 @@ public class ReservationController {
     @GetMapping("/reservation/advance/payment")
     public String advancePayGet (@ModelAttribute("advanceReservation") AdvanceReservationForm advanceReservation , Model model){
 
-        System.out.println("get - reservation/advance/payment 로 와썽");
-        System.out.println("advanceReservation 확인 = " + advanceReservation);
-        // price
-        // menu name
+        log.info("GET : /reservation/advance/payment");
+        log.info("advanceReservation toString :{} ",advanceReservation);
 
         List<advanceFormDto> advanceFormDtoList = advanceReservation.getOrderMenuList();
-        int totalPrice = advanceFormDtoList.stream().mapToInt(o -> o.getPrice()*o.getCount()).sum();
-        System.out.println("totalPrice = " + totalPrice);
+
+        int totalPrice = Optional.ofNullable(advanceFormDtoList)
+                .map(list -> list.stream().mapToInt(o -> o.getCount()*o.getPrice())
+                .sum())
+                .orElse(0);
+
+//        int totalPrice = advanceFormDtoList.stream().mapToInt(o -> o.getPrice()*o.getCount()).sum();
+        log.info("총 가격 : {} ",totalPrice);
 
         model.addAttribute("orderMenuList",advanceFormDtoList);
         model.addAttribute("totalPrice",totalPrice);
@@ -78,8 +102,8 @@ public class ReservationController {
     }
 
     @PostMapping("/reservation/advance/add")
-    public String advancePayGet (@ModelAttribute AdvancePaymentForm advancePayment ,BindingResult bindingResult, HttpSession request){
-
+    public String advancePayGet (@ModelAttribute AdvancePaymentForm advancePayment ,BindingResult bindingResult, HttpSession session){
+        log.info("POST : /reservation/advance/add");
         System.out.println("advancePayment 확인 = " + advancePayment);
         if(bindingResult.hasErrors()){
             log.info("검증 오류 발생 errors = {}", bindingResult);
@@ -87,8 +111,7 @@ public class ReservationController {
             return "basic/reservation/confirmDocument";
         }
 
-        Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
-
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
 
         ReservationDto reservationDto = ReservationDto.builder()
                 .date(LocalDate.parse(advancePayment.getDate()))
@@ -101,6 +124,53 @@ public class ReservationController {
 
         return "redirect:/";
     }
+
+    /** 예약조회 */
+    @GetMapping("/reservation/pre")
+    public String ReservationPre(Model model, HttpSession session){
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+        List<Reservation> reservationPreList = reservationRepository.findReservationPre(sessionId);
+
+        /** reservation -> dto로 변환하여 PrePage로 반환 */
+        List<ReservationWebDto> webDtoList = reservationPreList.stream()
+                .map(o -> ReservationWebDto.createDto(o))
+                .collect(Collectors.toList());
+
+        model.addAttribute("reservationList",webDtoList);
+        return "redirect:/";
+    }
+
+    @GetMapping("/reservation/history/complete")
+    public String ReservationHistoryComplete(Model model,HttpSession session){
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+        List<Reservation> reservationCompleteList = reservationRepository.findReservationComplete(sessionId);
+
+        /** reservation -> dto로 변환하여 CompletePage로 반환 */
+        List<ReservationWebDto> webDtoList = reservationCompleteList.stream()
+                .map(o -> ReservationWebDto.createDto(o))
+                .collect(Collectors.toList());
+
+        model.addAttribute("reservationList",webDtoList);
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/reservation/history/noshow")
+    public String ReservationHistoryNoShow(Model model,HttpSession session){
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+        List<Reservation> reservationNoShowList = reservationRepository.findReservationNoShow(sessionId);
+
+        /** reservation -> dto로 변환하여 NoShowPage로 반환 */
+        List<ReservationWebDto> webDtoList = reservationNoShowList.stream()
+                .map(o -> ReservationWebDto.createDto(o))
+                .collect(Collectors.toList());
+
+        model.addAttribute("reservationList",webDtoList);
+        return "redirect:/";
+    }
+
+
+
 
     
 }
