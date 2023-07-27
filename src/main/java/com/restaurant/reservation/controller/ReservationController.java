@@ -1,6 +1,5 @@
 package com.restaurant.reservation.controller;
 
-import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.dto.ReservationDto;
 import com.restaurant.reservation.repository.ReservationRepository;
@@ -9,7 +8,6 @@ import com.restaurant.reservation.service.ReservationService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.AdvancePaymentForm;
 import com.restaurant.reservation.web.form.AdvanceReservationForm;
-import com.restaurant.reservation.web.webDto.ReservationWebDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,7 +24,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.restaurant.reservation.web.form.AdvanceReservationForm.advanceFormDto;
 
@@ -125,49 +122,6 @@ public class ReservationController {
         return "redirect:/";
     }
 
-    /** 예약조회 */
-    @GetMapping("/reservation/pre")
-    public String ReservationPre(Model model, HttpSession session){
-        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
-        List<Reservation> reservationPreList = reservationRepository.findReservationPre(sessionId);
-
-        /** reservation -> dto로 변환하여 PrePage로 반환 */
-        List<ReservationWebDto> webDtoList = reservationPreList.stream()
-                .map(o -> ReservationWebDto.createDto(o))
-                .collect(Collectors.toList());
-
-        model.addAttribute("reservationList",webDtoList);
-        return "redirect:/";
-    }
-
-    @GetMapping("/reservation/history/complete")
-    public String ReservationHistoryComplete(Model model,HttpSession session){
-        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
-        List<Reservation> reservationCompleteList = reservationRepository.findReservationComplete(sessionId);
-
-        /** reservation -> dto로 변환하여 CompletePage로 반환 */
-        List<ReservationWebDto> webDtoList = reservationCompleteList.stream()
-                .map(o -> ReservationWebDto.createDto(o))
-                .collect(Collectors.toList());
-
-        model.addAttribute("reservationList",webDtoList);
-        return "redirect:/";
-    }
-
-
-    @GetMapping("/reservation/history/noshow")
-    public String ReservationHistoryNoShow(Model model,HttpSession session){
-        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
-        List<Reservation> reservationNoShowList = reservationRepository.findReservationNoShow(sessionId);
-
-        /** reservation -> dto로 변환하여 NoShowPage로 반환 */
-        List<ReservationWebDto> webDtoList = reservationNoShowList.stream()
-                .map(o -> ReservationWebDto.createDto(o))
-                .collect(Collectors.toList());
-
-        model.addAttribute("reservationList",webDtoList);
-        return "redirect:/";
-    }
 
 
 

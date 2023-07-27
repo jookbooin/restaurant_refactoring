@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 /** 사용자 MyPage에 예약 목록을 전달하는 Dto */
 @Setter
 @Getter
-public class ReservationWebDto {
+public class BookingWebDto {
 
 //    private String restaurantName;
     private Long id;
@@ -19,8 +19,8 @@ public class ReservationWebDto {
     private String time;
 
 
-    public static ReservationWebDto createDto(Reservation reservation){
-        ReservationWebDto webDto = new ReservationWebDto();
+    public static BookingWebDto createDto(Reservation reservation){
+        BookingWebDto webDto = new BookingWebDto();
         webDto.setId(reservation.getId());
         webDto.setNumber(reservation.getNumber());
 

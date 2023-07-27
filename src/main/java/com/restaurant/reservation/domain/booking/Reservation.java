@@ -56,7 +56,7 @@ public class Reservation extends Booking {
         for (OrderMenu orderMenu : orderMenuList) {
             reservation.addOrderMenu(orderMenu);
         }
-        reservation.setStatus(BookingStatus.PRE);
+        reservation.setStatus(BookingStatus.ADVANCE);
         return reservation;
 
     }
