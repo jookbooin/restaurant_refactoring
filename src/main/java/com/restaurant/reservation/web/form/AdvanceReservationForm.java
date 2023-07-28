@@ -1,6 +1,6 @@
 package com.restaurant.reservation.web.form;
 
-import lombok.Data;
+import com.restaurant.reservation.web.webDto.OrderMenuWebDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,16 +20,16 @@ public class AdvanceReservationForm {
     private String date;
     @NotBlank
     private String time;
-    List<advanceFormDto> orderMenuList;
+    List<OrderMenuWebDto> orderMenuList;
 
 
-    @Data
-    public static class advanceFormDto{
-        private Long menuId;
-        private String name;
-        private Integer price;
-
-        private Integer count;
-    }
+//    @Data
+//    public static class advanceFormDto{
+//        private Long menuId;
+//        private String name;
+//        private Integer price;
+//
+//        private Integer count;
+//    }
 
 }

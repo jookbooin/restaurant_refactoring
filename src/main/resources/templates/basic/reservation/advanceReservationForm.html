@@ -74,7 +74,7 @@
                     <select id="time" name="time">
                         <option value="">예약시간</option>
                         <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
-                                th:text="${selectTime.name}" th:value="${selectTime.time}"></option>
+                                th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
                     </select>
                 </div>
 

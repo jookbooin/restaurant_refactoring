@@ -2,12 +2,14 @@ package com.restaurant.reservation.controller;
 
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.domain.enumType.TimeEnum;
 import com.restaurant.reservation.repository.ReservationRepository;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.AdvancePaymentForm;
 import com.restaurant.reservation.web.form.AdvanceReservationForm;
+import com.restaurant.reservation.web.webDto.OrderMenuWebDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,11 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
-import static com.restaurant.reservation.web.form.AdvanceReservationForm.advanceFormDto;
 
 @Slf4j
 @Controller
@@ -82,9 +81,9 @@ public class ReservationController {
         log.info("GET : /reservation/advance/payment");
         log.info("advanceReservation toString :{} ",advanceReservation);
 
-        List<advanceFormDto> advanceFormDtoList = advanceReservation.getOrderMenuList();
+        List<OrderMenuWebDto> orderMenuList = advanceReservation.getOrderMenuList();
 
-        int totalPrice = Optional.ofNullable(advanceFormDtoList)
+        int totalPrice = Optional.ofNullable(orderMenuList)
                 .map(list -> list.stream().mapToInt(o -> o.getCount()*o.getPrice())
                 .sum())
                 .orElse(0);
@@ -92,7 +91,7 @@ public class ReservationController {
 //        int totalPrice = advanceFormDtoList.stream().mapToInt(o -> o.getPrice()*o.getCount()).sum();
         log.info("총 가격 : {} ",totalPrice);
 
-        model.addAttribute("orderMenuList",advanceFormDtoList);
+        model.addAttribute("orderMenuList",orderMenuList);
         model.addAttribute("totalPrice",totalPrice);
 
         return "basic/reservation/confirmDocument";
@@ -112,7 +111,7 @@ public class ReservationController {
 
         ReservationDto reservationDto = ReservationDto.builder()
                 .date(LocalDate.parse(advancePayment.getDate()))
-                .time(LocalTime.parse(advancePayment.getTime()))
+                .time(TimeEnum.transferStringToTime(advancePayment.getTime()))
                 .number(advancePayment.getNumber())
                 .orderMenuList(advancePayment.getOrderMenuList())
                 .build();

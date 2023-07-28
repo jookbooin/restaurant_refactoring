@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /** 사용자 MyPage에 예약 목록을 전달하는 Dto */
 @Setter
@@ -18,6 +19,7 @@ public class BookingWebDto {
     private String date;
     private String time;
 
+    private List<OrderMenuWebDto> orderMenuList;
 
     public static BookingWebDto createDto(Reservation reservation){
         BookingWebDto webDto = new BookingWebDto();
