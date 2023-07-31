@@ -17,6 +17,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100 # 자동 in Query 개수 -> 1:N 컬렉션 다룰때
 
 server:
   servlet:

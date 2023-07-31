@@ -20,12 +20,12 @@ public class OrderMenu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_id")
     private Reservation reservation;
-    private int orderPrice;
+    private int orderPrice;    // 할인이 포함된 가격일 수 있음 totalPrice랑 구별하는게 좋을듯?
     private int count;
 
-    public OrderMenu(Menu menu, int orderPrice, int count) {
+    public OrderMenu(Menu menu, int orderMenuPrice, int count) {
         this.menu = menu;
-        this.orderPrice = orderPrice;
+        this.orderPrice = orderMenuPrice;
         this.count = count;
     }
 
@@ -34,7 +34,7 @@ public class OrderMenu {
 
     // OrderMenu 생성 
     public static OrderMenu createOrderMenu(Menu menu, int count) {
-        return new OrderMenu(menu, menu.getPrice()*count,count );
+        return new OrderMenu(menu, menu.getPrice(),count );
     }
     // 개수 변경 -> orderPrice 변경
     public void changeCount(int count){

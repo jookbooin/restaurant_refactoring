@@ -84,7 +84,7 @@ public class ReservationController {
         List<OrderMenuWebDto> orderMenuList = advanceReservation.getOrderMenuList();
 
         int totalPrice = Optional.ofNullable(orderMenuList)
-                .map(list -> list.stream().mapToInt(o -> o.getCount()*o.getPrice())
+                .map(list -> list.stream().mapToInt(o -> o.getTotalPrice())
                 .sum())
                 .orElse(0);
 

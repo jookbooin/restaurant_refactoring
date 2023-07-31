@@ -57,6 +57,14 @@ public class ReservationService {
         reservationOpt.ifPresent(findReservation ->reservationRepository.delete(findReservation) );
     }
 
+    public List<OrderMenu> findOrderMenuList(Long id) {
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(()->new RuntimeException("not found reservation"));
+
+        if(reservation.getOrderMenus().size()>0)
+            return reservation.getOrderMenus();
+        return null;
+    }
+
     /**
      *  before : findReservation.getOrderMenus()
      *  modify:  modifyMenuDtoList
@@ -168,6 +176,10 @@ public class ReservationService {
 
 
 
+
+
+
+
     /**==============================================================================================================*/
     /** 1. 전체 리스트 삭제
      *  이전 orderMenuList : N 만큼 무조건 삭제
@@ -200,5 +212,6 @@ public class ReservationService {
             }
         }
     }
+
 
 }

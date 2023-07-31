@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@DiscriminatorValue("reservation")
+@DiscriminatorValue("예약")
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation extends Booking {
 

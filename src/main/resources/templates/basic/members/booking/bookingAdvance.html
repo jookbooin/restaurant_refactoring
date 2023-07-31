@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base/myPageBase :: layout(~{::title},~{::div})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base/myPageBase :: layout(~{::title},~{::link},~{::div})}">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,7 +7,10 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>BookingAdvance</title>
-    <link href="/css/template/styles.css" rel="stylesheet" />
+
+    <!-- 옮길 css 파일 -->
+    <link rel="stylesheet" th:href="@{/css/mypage/reservationList.css}">
+
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -34,16 +37,38 @@
                             <span th:text="|총 n개|"></span>
                         </div>
                         <div class="card-body">
-                            <div th:each="list : ${bookingList}" class="booking_advance_list">
-                                <div>
-                                    <div>
-                                        <h3>식당 이름</h3>
+                            <div th:each="list : ${bookingList}" class="booking-list">
+
+                                <div class="list-box">
+                                    <div class="box-area" data-cno="1" data-bno="1070">
+
+                                        <div class="restaurant-img">
+                                            <span class="restaurant-img-inner">
+                                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+
+                                        <div class="info-area">
+                                            <div class="restaurant-name">식당이름</div>
+                                            <div class="category">
+                                                 <span th:text="|카테고리  예약종류|">카테고리 예약 종류 </span>
+                                            </div>
+                                            <div class="reservation-info">
+                                                 <span th:text="|${list.date} (요일) ${list.time} ${list.number} 명 |">이름 날짜</span>
+                                            </div>
+                                            <div class="reservation-info-bottom">
+                                                <span class="up_date" th:text="|[ 예약일시 ] |">예약 일시</span>
+                                                <!-- <a href="#" class="btn-write" data-cno="1" data-bno="1070" data-pcno="">답글쓰기</a> -->
+                                                <a href="#" class="btn-info" th:attr="data-reservation-id=${list.id}"  >주문 내역</a>
+                                                <a href="#" class="btn-modify" th:attr="data-reservation-id=${list.id}" >예약 수정</a>
+                                                <a href="#" class="btn-delete" th:attr="data-reservation-id=${list.id}" >예약 취소</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <span th:text="|${list.date} |">이름 날짜</span>
-                                    <span th:text="|${list.time}|">이름 시간</span>
-                                    <span th:text="|${list.number} 명|">이름 개수</span>
                                 </div>
+
                                 <br>
+
                             </div>
                         </div>
                     </div>
@@ -62,9 +87,104 @@
                     </div>
                 </div>
             </footer>
+            <!--modal-->
+            <div id="modalWin" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>
+                    <h2> | 주문 내역</h2>
+                    <div id="modal-body">
+                        <div class="modal-body-top"></div>
+                        <div class="modal-body-content">
+                            <!--주문 메뉴를 가지고 와야하는것-->
+                            <!--<li>1</li>-->
+                            <!--<li>2</li>-->
+                            <!--<li>3</li>-->
+                        </div>
+                        <div id="modal-body-bottom">
+<!--                            총 합계:-->
+                        </div>
+                    </div>
+                    </p>
+                </div>
+
+            <!--스크립트-->
+            <script>
+                <!-- 삭제 -->
+                $("a.btn-delete").click(function (e) {
+                    // let rid = $(this).find(".btn-info").attr("data-reservation-id");
+                    let rid = $(this).attr("data-reservation-id");
+                    // let rid = $(this).data('reservation-id');
+                    alert(rid);
+                });
+                <!-- modal 주문 내역 확인  -->
+                $("a.btn-info").click(function (e) {
+                    let target = e.target;
+                    // let rid = $(this).attr("data-reservation-id");
+                    let rid = $(this).attr("data-reservation-id");
+                    // alert(rid);
+
+                    $.ajax({
+
+                        type : 'GET',
+
+                        url :   '/booking/'+rid+'/orderMenuList',
+
+
+                        success : function(result) {
+                            $('.modal-body-content').empty();
+                            let ul = $('<ul/>').addClass('orderMenuUl');
+                            // result : js 객체
+                            result["data"].forEach(function (item) {
+
+                                let id = item.menuId.toString();
+                                let itemName = item.name;
+                                let totalPrice = item.totalPrice.toString();
+                                let itemCount = item.count.toString();
+
+                                let li = $('<li/>').addClass('orderMenuLi');
+                                li.text(itemName + ' : ' + itemCount + ' 개');
+                                li.attr('value', id);
+                                ul.append(li);
+
+                                $('.modal-body-content').append(ul);
+                            });
+
+                            $('.modal-body-bottom').empty();
+                            let sum = result["sum"].toString();
+                            let sumText = '총 합계 : '+sum+'원';
+                            $('#modal-body-bottom').text(sumText);
+                        },
+
+                        error : function(result) {
+
+                            console.log(result.body);
+
+                        }
+
+                });
+
+                    $("#modalWin").css("display", "block");
+                });
+                <!-- 모달창 끄기 -->
+                $(".close").click(function () {
+                    $("#modalWin").css("display", "none");
+                });
+
+
+            </script>
         </div>
+
+
+</div>
 <!--    </section>-->
-</body>
-</html>
+<!--script-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+</html>

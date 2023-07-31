@@ -33,6 +33,7 @@ public enum TimeEnum {   // abstract class  -> enum 추상클래스다 .
     }
 
     public static LocalTime transferStringToTime(String enumTime){
+        /** DateTimeFormatter ofPattern -> 원하는 형식 출력 */
         DateTimeFormatter transferToLocalTime = DateTimeFormatter.ofPattern("a h:mm");
         LocalTime formatTime = LocalTime.parse(enumTime, transferToLocalTime);
         return formatTime;
