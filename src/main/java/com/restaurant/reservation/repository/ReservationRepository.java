@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
@@ -15,7 +16,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("select r From Reservation r" +
             " where r.member.id=:id and r.date >= CURRENT_DATE" +
             " order by r.date,r.time")
-    List<Reservation> findReservationPre(@Param("id") Long id);
+    List<Reservation> findReservationAdvance(@Param("id") Long id);
 
     @Query("select r From Reservation r" +
             " where r.member.id=:id and r.date <= CURRENT_DATE and r.status = 'COMPLETE'" +
@@ -27,7 +28,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             " order by r.date,r.time")
     List<Reservation> findReservationNoShow(@Param("id") Long id);
 
-
+    Optional<Reservation> findReservationByIdAndMember_Id(Long id, Long memberId);
 
     /** Service 로직 */
 

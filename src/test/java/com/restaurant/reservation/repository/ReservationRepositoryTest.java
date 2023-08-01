@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -91,7 +92,7 @@ class ReservationRepositoryTest {
         Member member = memberRepository.findById(1L).get();
 
         System.out.println("== @query ==");
-        List<Reservation> queryList = reservationRepository.findReservationPre(member.getId());
+        List<Reservation> queryList = reservationRepository.findReservationAdvance(member.getId());
         queryList.forEach(o->{
             System.out.println(o.getId());
             System.out.println(o.getDate());
@@ -107,6 +108,17 @@ class ReservationRepositoryTest {
 //            System.out.println(o.getDate());
 //            System.out.println(o.getTime());
 //        });
+    }
+
+    @Test
+    public void queryMethodTest() throws Exception{
+
+//        Member member = memberRepository.findById(1L).get();
+        Long sessionId =1L;
+        Long reservaionId = 6L;
+        Optional<Reservation> findReservationOpt = reservationRepository.findReservationByIdAndMember_Id(reservaionId, sessionId);
+        findReservationOpt.ifPresent(findReservation-> System.out.println(findReservation.toString()));
+
     }
 
 

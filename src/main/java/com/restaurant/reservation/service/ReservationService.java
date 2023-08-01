@@ -52,9 +52,15 @@ public class ReservationService {
     }
 
     @Transactional
-    public void deleteReservation(Long id ) {
-        Optional<Reservation> reservationOpt = reservationRepository.findById(id);
-        reservationOpt.ifPresent(findReservation ->reservationRepository.delete(findReservation) );
+    public int deleteReservation(Long rid , Long memberId ) {
+        int rowCount = 0;
+        Optional<Reservation> reservationOpt = reservationRepository.findReservationByIdAndMember_Id(rid, memberId);
+
+        if(reservationOpt.isPresent()){
+            reservationRepository.delete(reservationOpt.get());
+            rowCount++;
+        }
+        return rowCount;
     }
 
     public List<OrderMenu> findOrderMenuList(Long id) {
