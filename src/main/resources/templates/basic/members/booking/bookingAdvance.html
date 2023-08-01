@@ -37,39 +37,7 @@
                             <span th:text="|총 n개|"></span>
                         </div>
                         <div id ="list-body" class="card-body">
-<!--                            <div th:each="list : ${bookingList}" class="booking-list">-->
 
-<!--                                <div class="list-box">-->
-<!--                                    <div class="box-area" >-->
-
-<!--                                        <div class="restaurant-img">-->
-<!--                                            <span class="restaurant-img-inner">-->
-<!--                                                <i class="fa fa-user-circle" aria-hidden="true"></i>-->
-<!--                                            </span>-->
-<!--                                        </div>-->
-
-<!--                                        <div class="info-area">-->
-<!--                                            <div class="restaurant-name">식당이름</div>-->
-<!--                                            <div class="category">-->
-<!--                                                 <span th:text="|카테고리  [ 예약종류 ]|">카테고리 예약 종류 </span>-->
-<!--                                            </div>-->
-<!--                                            <div class="reservation-info">-->
-<!--                                                 <span th:text="|${list.date} (요일) ${list.time} ${list.number} 명 |">이름 날짜</span>-->
-<!--                                            </div>-->
-<!--                                            <div class="reservation-info-bottom">-->
-<!--                                                <span class="up_date" th:text="|[ 예약일시 ] |">예약 일시</span>-->
-<!--                                                &lt;!&ndash; <a href="#" class="btn-write" data-cno="1" data-bno="1070" data-pcno="">답글쓰기</a> &ndash;&gt;-->
-<!--                                                <a href="#" class="btn-info" th:attr="data-reservation-id=${list.id}"  >주문 내역</a>-->
-<!--                                                <a href="#" class="btn-modify" th:attr="data-reservation-id=${list.id}" >예약 수정</a>-->
-<!--                                                <a href="#" class="btn-delete" th:attr="data-reservation-id=${list.id}" >예약 취소</a>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                <br>-->
-
-<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -88,13 +56,13 @@
                 </div>
             </footer>
             <!--modal-->
-            <div id="modalWin" class="modal">
+            <div id="orderMenuModal" class="modal">
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <p>
                     <h2> | 주문 내역</h2>
-                    <div id="modal-body">
+                    <div class="modal-body">
                         <div class="modal-body-top"></div>
                         <div class="modal-body-content">
                             <!--주문 메뉴를 가지고 와야하는것-->
@@ -102,15 +70,59 @@
                             <!--<li>2</li>-->
                             <!--<li>3</li>-->
                         </div>
-                        <div id="modal-body-bottom">
+                        <div class="modal-body-bottom">
 <!--                            총 합계:-->
                         </div>
                     </div>
                     </p>
                 </div>
+            </div>
+
+            <div id="modifyModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>
+                    <h2> | 예약 변경</h2>
+                    <div class="modal-body">
+                        <div class="modify-writebox-content">
+
+                        <div id="reservation_content">
+                            <div class="reservation_number">
+                                <label>인원수</label>
+                                <input id="number"  name="number" placeholder="인원수을 입력하세요"
+                                       type="number"  value="1" min="1">
+                            </div>
+
+                            <div class="reservation_date">
+                                <label>날 짜</label>
+                                <input  id="date" name="date"  placeholder="날짜를 입력하세요"
+                                        type="date">
+                            </div>
+
+                            <div class="reservation_time">
+                                <label>시 간</label>
+                                <select id="time" name="time">
+                                    <option value="">예약시간</option>
+                                    <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
+                                            th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                        <div id="modify-writebox-bottom">
+                            <div class="register-box">
+                                <a href="#" class="btn" id="btn-write-modify">수정</a>
+                            </div>
+                        </div>
+                    </div>
+                    </p>
+                </div>
+            </div>
 
 
-        </div>
             <!--스크립트-->
             <script>
                 $(document).ready(function(){
@@ -150,13 +162,14 @@
                     tmp+= ' <div class="restaurant-img"><span class="restaurant-img-inner"><i class="fa fa-user-circle" aria-hidden="true"></i></span></div>';
                     tmp+= '<div class="info-area"><div class="restaurant-name">식당이름</div>';
                     tmp+= '<div class="category"><span>카테고리 [ '+dto.status+' ]</span></div>';
-                    tmp+='<div class="reservation-info"><span>'+dto.date+' (요일) '+dto.time+' '+dto.number+' 명</span></div>';
-                    tmp+= '<div class="reservation-info-bottom">';
+                    tmp+= '<div class="reservation-info" data-reservation-date="'+dto.date+'" data-reservation-time="'+dto.time+'" data-reservation-number="'+dto.number+'">'
+                    tmp+= '<span>'+dto.date+' (요일) '+dto.time+' '+dto.number+' 명</span></div>';
+                    tmp+= '<div class="reservation-info-bottom" data-reservation-id="' + dto.id + '">';
                     tmp+='<span >'+dto.modifiedDate+' </span>';
 
-                        tmp += '<a href="#" class="btn-info" data-reservation-id="' + dto.id + '">주문내역</a>';
-                        tmp += '<a href="#" class="btn-modify" data-reservation-id="' + dto.id + '">예약 수정</a>';
-                        tmp += '<a href="#" class="btn-delete" data-reservation-id="' + dto.id + '">예약 취소</a>';
+                        tmp += '<a href="#" class="btn-info" ">주문내역</a>';
+                        tmp += '<a href="#" class="btn-modify" >예약 수정</a>';
+                        tmp += '<a href="#" class="btn-delete" >예약 취소</a>';
                     tmp+='</div></div></div></div><br>';
 
                     })
@@ -166,9 +179,9 @@
             <script>
 
                 <!-- 삭제 -->
-                // $("a.btn-delete").click(function (e) {
                 $("#list-body").on("click",".btn-delete",function(){
-                    let rid = $(this).attr("data-reservation-id");
+                    let rid = $(this).parent().attr("data-reservation-id");
+
                     if(confirm("예약 취소하시겠습니까?")) {
                         $.ajax({
 
@@ -188,12 +201,42 @@
                         });
                     }
                 });
+                <!-- modal 예약 수정  -->
+                $("#list-body").on("click",".btn-modify",function(){
+                    /* modal-body 삭제 */
+                    let reservationDate = $(this).parent().siblings(".reservation-info").attr("data-reservation-date");
+                    let reservationTime = $(this).parent().siblings(".reservation-info").attr("data-reservation-time");
+                    let reservationNumber = $(this).parent().siblings(".reservation-info").attr("data-reservation-number");
 
+                    $("#number").val(reservationNumber);
+                    $("#date").val(reservationDate);
+                    $("#time").val(reservationTime);
+
+                    $("#modifyModal").css("display", "block");
+                });
+
+                <!-- update modal 수정 + 끄기 -->
+                $(".close").click(function () {
+                    $("#modifyModal").css("display", "none");
+                });
+                $("#btn-write-modify").click(function () {
+                    let number = $("#number").val();
+                    let time = $("#time").val();
+                    let date = $("#date").val();
+                    // 1. 변경된 내용을 서버로 전송
+                    // 2. 모달 창을 닫는다.
+                    alert("인원수: " + number + ", 시간: " + time + ", 날짜: " + date);
+                    $(".close").trigger("click");
+                });
                 <!-- modal 주문 내역 확인  -->
-                // $("a.btn-info").click(function (e) {
+
                 $("#list-body").on("click",".btn-info",function(){
-                    // let rid = $(this).attr("data-reservation-id");
-                    let rid = $(this).attr("data-reservation-id");
+                    /* modal-body 삭제 */
+                    $('.modal-body-top').empty();
+                    $('.modal-body-content').empty();
+                    $('.modal-body-bottom').empty();
+
+                    let rid = $(this).parent().attr("data-reservation-id");
                     // alert(rid);
 
                     $.ajax({
@@ -225,7 +268,7 @@
                             $('.modal-body-bottom').empty();
                             let sum = result["sum"].toString();
                             let sumText = '총 합계 : ' + sum + '원';
-                            $('#modal-body-bottom').text(sumText);
+                            $('.modal-body-bottom').text(sumText);
                         },
 
                         error: function (result) {
@@ -235,14 +278,14 @@
                         }
                     });
 
-                    $("#modalWin").css("display", "block");
+                    $("#orderMenuModal").css("display", "block");
                 });
 
                 <!-- 모달창 끄기 -->
                 $(".close").click(function () {
-                    $("#modalWin").css("display", "none");
+                    $("#orderMenuModal").css("display", "none");
+                    $("#modifyModal").css("display", "none");
                 });
-
 
 
             </script>
@@ -258,3 +301,39 @@
 
 </body>
 </html>
+
+
+                         <!--리스트 처리한것-->
+<!--                            <div th:each="list : ${bookingList}" class="booking-list">-->
+
+<!--                                <div class="list-box">-->
+<!--                                    <div class="box-area" >-->
+
+<!--                                        <div class="restaurant-img">-->
+<!--                                            <span class="restaurant-img-inner">-->
+<!--                                                <i class="fa fa-user-circle" aria-hidden="true"></i>-->
+<!--                                            </span>-->
+<!--                                        </div>-->
+
+<!--                                        <div class="info-area">-->
+<!--                                            <div class="restaurant-name">식당이름</div>-->
+<!--                                            <div class="category">-->
+<!--                                                 <span th:text="|카테고리  [ 예약종류 ]|">카테고리 예약 종류 </span>-->
+<!--                                            </div>-->
+<!--                                            <div class="reservation-info">-->
+<!--                                                 <span th:text="|${list.date} (요일) ${list.time} ${list.number} 명 |">이름 날짜</span>-->
+<!--                                            </div>-->
+<!--                                            <div class="reservation-info-bottom">-->
+<!--                                                <span class="up_date" th:text="|[ 예약일시 ] |">예약 일시</span>-->
+<!--                                                &lt;!&ndash; <a href="#" class="btn-write" data-cno="1" data-bno="1070" data-pcno="">답글쓰기</a> &ndash;&gt;-->
+<!--                                                <a href="#" class="btn-info" th:attr="data-reservation-id=${list.id}"  >주문 내역</a>-->
+<!--                                                <a href="#" class="btn-modify" th:attr="data-reservation-id=${list.id}" >예약 수정</a>-->
+<!--                                                <a href="#" class="btn-delete" th:attr="data-reservation-id=${list.id}" >예약 취소</a>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <br>-->
+
+<!--                            </div>-->

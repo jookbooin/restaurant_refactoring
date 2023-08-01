@@ -58,7 +58,7 @@
 }
 
 
-#modal-body {
+.modal-body {
     background-color: beige;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
@@ -75,7 +75,7 @@
     list-style-type: none;
 }
 
-#modal-body-bottom {
+.modal-body-bottom {
     margin-left: 10px;
     padding: 3px 10px 10px 10px;
     min-height: 35px;
@@ -138,4 +138,14 @@
 }
 
 .orderMenuLi {
+}
+/* 수정 버튼*/
+#modify-writebox-bottom {
+    padding: 3px 10px 10px 10px;
+    min-height: 35px;
+}
+
+#btn-write-modify {
+    color: #009f47;
+    background-color: #e0f8eb;
 }
