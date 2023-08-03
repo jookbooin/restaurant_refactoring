@@ -30,16 +30,17 @@ public class BookingController {
     /** 예약조회 */
     @GetMapping("/booking/advance")
     public String ReservationAdvance(Model model, HttpSession session){
+
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
-        List<Reservation> reservationAdvanceList = reservationRepository.findReservationAdvance(sessionId);
+//        List<Reservation> reservationAdvanceList = reservationRepository.findReservationAdvance(sessionId);
 
-        reservationAdvanceList.forEach(System.out::println);
-        /** reservation -> dto로 변환하여 PrePage로 반환 */
-        List<BookingWebDto> webDtoList = reservationAdvanceList.stream()
-                .map(o -> BookingWebDto.createDto(o))
-                .collect(Collectors.toList());
-
-        model.addAttribute("bookingList",webDtoList);
+//        reservationAdvanceList.forEach(System.out::println);
+//        /** reservation -> dto로 변환하여 PrePage로 반환 */
+//        List<BookingWebDto> webDtoList = reservationAdvanceList.stream()
+//                .map(o -> BookingWebDto.createDto(o))
+//                .collect(Collectors.toList());
+//
+//        model.addAttribute("bookingList",webDtoList);
         return "basic/members/booking/bookingAdvance";
     }
 

@@ -72,7 +72,7 @@ public class ReservationService {
     }
 
     /**
-     *  before : findReservation.getOrderMenus()
+     *  기존 주문메뉴 list  : findReservation.getOrderMenus()
      *  modify:  modifyMenuDtoList
      *
      * 리스트 2개 비교해서  두가지 리스트 추출
@@ -89,9 +89,9 @@ public class ReservationService {
      *                      id 존재 x -> list에 추가
      * */
     @Transactional
-    public void updateReservation (Long id , ReservationDto reservationDto ,List<OrderMenuDto> modifyMenuDtoList) {
+    public void updateReservation (ReservationDto reservationDto ) {
 
-        Optional<Reservation> reservationOpt = reservationRepository.findById(id);
+        Optional<Reservation> reservationOpt = reservationRepository.findById(reservationDto.getRid());  // join 1번
 
         if (reservationOpt.isPresent()) {
             Reservation findReservation = reservationOpt.get();
@@ -100,7 +100,7 @@ public class ReservationService {
 
             // 2. collection 수정
             // 2-(1) findReservation.getOrderMenus 리스트에 [ modify리스트안에 존재하지 않는 ] id들로 이루어진 list 추출
-            List<OrderMenu> removeList = collectRemoveFromReservation(findReservation,modifyMenuDtoList);
+            List<OrderMenu> removeList = collectRemoveFromReservation(findReservation,reservationDto.getOrderMenuList());
 
             // 2-(2) 리스트 삭제
             if(!removeList.isEmpty()){
@@ -108,7 +108,7 @@ public class ReservationService {
             }
             // 2-(3) modifyList 추가 및 변경감지
             // 기존에 존재하는 것들 변경감지
-            List<OrderMenuDto> insertList = collectInsertFromModify(findReservation,modifyMenuDtoList);
+            List<OrderMenuDto> insertList = collectInsertFromModify(findReservation,reservationDto.getOrderMenuList());
 
             // 2-(4) 메뉴 추가
             insertOrderMenu(findReservation, insertList);

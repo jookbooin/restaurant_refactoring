@@ -435,12 +435,6 @@ class ReservationServiceTest {
         LocalDate modifyDate = LocalDate.of(2023, 8, 6);
         LocalTime modifyTime = LocalTime.of(14, 0, 0);
 
-        ReservationDto reservationDto = ReservationDto.builder()
-                .number(8)
-                .date(modifyDate)
-                .time(modifyTime)
-                .build();
-
         /** 수정할 주문리스트 목록  1,2 -> 3,4*/
         List<OrderMenuDto> modifyDtoList = new ArrayList<>();
         OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(1L).count(1).build();
@@ -450,8 +444,16 @@ class ReservationServiceTest {
         modifyDtoList.add(orderMenuDto4);
         modifyDtoList.add(orderMenuDto5);
 
+        ReservationDto reservationDto = ReservationDto.builder()
+                .rid(1L)
+                .number(8)
+                .date(modifyDate)
+                .time(modifyTime)
+                .orderMenuList(modifyDtoList)
+                .build();
+
         /** update 메서드 */
-        reservationService.updateReservation(1L,reservationDto,modifyDtoList);
+        reservationService.updateReservation(reservationDto);
 
         Reservation reservation2 = reservationRepository.findById(1L).get();
         Assertions.assertEquals(reservation2.getOrderMenus().size(),3);

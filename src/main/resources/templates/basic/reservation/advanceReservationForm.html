@@ -4,51 +4,52 @@
 <head>
     <meta charset="UTF-8">
     <title>ReservationForm</title>
+    <link rel="stylesheet" th:href="@{/css/reservation/advanceReservation.css}">
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<style>
-    .wrap {
-        display: flex;
-        flex-direction: column;
-        max-width: 50%;
-        margin: 0 auto;
-    }
+<!--<style>-->
+<!--    .wrap {-->
+<!--        display: flex;-->
+<!--        flex-direction: column;-->
+<!--        max-width: 50%;-->
+<!--        margin: 0 auto;-->
+<!--    }-->
 
-    .reservation {
-        margin: 20px 0;
-    }
-    #number{
-        width: 30px;
-    }
-    .menu_box {
-        display: flex;
-        flex-direction: row;
-        margin: 20px;
-    }
-    .ordermenu_info{
-        flex-grow: 3;
-        width: 100px;
-    }
-    .ordermenu_count {
-        flex-grow: 1;
-        width: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+<!--    .reservation {-->
+<!--        margin: 20px 0;-->
+<!--    }-->
+<!--    #number{-->
+<!--        width: 30px;-->
+<!--    }-->
+<!--    .menu_box {-->
+<!--        display: flex;-->
+<!--        flex-direction: row;-->
+<!--        margin: 20px;-->
+<!--    }-->
+<!--    .ordermenu_info{-->
+<!--        flex-grow: 3;-->
+<!--        width: 100px;-->
+<!--    }-->
+<!--    .ordermenu_count {-->
+<!--        flex-grow: 1;-->
+<!--        width: 100px;-->
+<!--        display: flex;-->
+<!--        justify-content: center;-->
+<!--        align-items: center;-->
 
 
-    }
+<!--    }-->
 
-    .menu_count{
-        width: 30px;
-    }
+<!--    .menu_count{-->
+<!--        width: 30px;-->
+<!--    }-->
 
-    .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{
-        margin: 20px;
-    }
-</style>
+<!--    .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{-->
+<!--        margin: 20px;-->
+<!--    }-->
+<!--</style>-->
 <body>
 
 <div class="wrap">
@@ -143,7 +144,7 @@
 
         let totalMenuCount = 0;
         let orderCount = 0
-        $(".reservation_menu_list").each((function () {
+        $(".reservation_menu_list").each(function () {
 
             let menuId = $(this).find(".menu_id").attr("data-menu-id");
             let menuName = $(this).find(".menu_name").attr("data-menu-name");
@@ -181,7 +182,7 @@
                 orderCount+=1;
             }
 
-        }));
+        });
 
         if (totalMenuCount < number) {
             alert("인원수 만큼 주문 하셔야합니다");

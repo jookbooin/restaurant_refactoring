@@ -123,29 +123,32 @@ public class InitDb {
             Menu generalB = menuRepository.save(general2);
 
             /** OrderMenu */
-            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(specialA.getId()).count(1).build();
-            OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(specialA.getId()).count(6).build();
+            /** A */
+//            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(specialA.getId()).count(1).build();
+            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(specialA.getId()).count(3).build();
+            OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(specialA.getId()).count(5).build();
+            OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(specialA.getId()).count(6).build();
 
-            OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(specialB.getId()).count(2).build();
+            /** B */
+            OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(specialB.getId()).count(2).build();
+            OrderMenuDto orderMenuDto5 = OrderMenuDto.builder().menuId(specialB.getId()).count(4).build();
+            OrderMenuDto orderMenuDto6 = OrderMenuDto.builder().menuId(specialB.getId()).count(6).build();
 
-            OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(specialC.getId()).count(3).build();
-            OrderMenuDto orderMenuDto5 = OrderMenuDto.builder().menuId(specialC.getId()).count(4).build();
-            OrderMenuDto orderMenuDto6 = OrderMenuDto.builder().menuId(specialC.getId()).count(4).build();
+            /** C */
+            OrderMenuDto orderMenuDto7 = OrderMenuDto.builder().menuId(specialC.getId()).count(3).build();
+            OrderMenuDto orderMenuDto8 = OrderMenuDto.builder().menuId(specialC.getId()).count(4).build();
+            OrderMenuDto orderMenuDto9 = OrderMenuDto.builder().menuId(specialC.getId()).count(5).build();
 
-            OrderMenuDto orderMenuDto7 = OrderMenuDto.builder().menuId(generalA.getId()).count(3).build();
-            OrderMenuDto orderMenuDto8 = OrderMenuDto.builder().menuId(generalA.getId()).count(5).build();
-
-            OrderMenuDto orderMenuDto9 = OrderMenuDto.builder().menuId(generalB.getId()).count(3).build();
 
             /** */
 
             List<OrderMenuDto> orderMenuDtoList1= new ArrayList<>();
             orderMenuDtoList1.add(orderMenuDto1);
-            orderMenuDtoList1.add(orderMenuDto2);
-            orderMenuDtoList1.add(orderMenuDto3);
+            orderMenuDtoList1.add(orderMenuDto4);
+            orderMenuDtoList1.add(orderMenuDto8);
 
             List<OrderMenuDto> orderMenuDtoList2= new ArrayList<>();
-            orderMenuDtoList2.add(orderMenuDto4);
+            orderMenuDtoList2.add(orderMenuDto1);
             orderMenuDtoList2.add(orderMenuDto5);
 
 
@@ -154,13 +157,14 @@ public class InitDb {
             orderMenuDtoList3.add(orderMenuDto7);
 
             List<OrderMenuDto> orderMenuDtoList4= new ArrayList<>();
-            orderMenuDtoList4.add(orderMenuDto8);
+            orderMenuDtoList4.add(orderMenuDto3);
             orderMenuDtoList4.add(orderMenuDto9);
+            orderMenuDtoList4.add(orderMenuDto4);
 
             List<OrderMenuDto> orderMenuDtoList5= new ArrayList<>();
-            orderMenuDtoList5.add(orderMenuDto1);
-            orderMenuDtoList5.add(orderMenuDto8);
-            orderMenuDtoList5.add(orderMenuDto9);
+            orderMenuDtoList5.add(orderMenuDto2);
+            orderMenuDtoList5.add(orderMenuDto6);
+            orderMenuDtoList5.add(orderMenuDto7);
 
             /** Date Time */
             LocalDate date1 = LocalDate.of(2023, 7, 12);

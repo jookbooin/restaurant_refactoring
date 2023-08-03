@@ -10,7 +10,7 @@
 
     <!-- 옮길 css 파일 -->
     <link rel="stylesheet" th:href="@{/css/mypage/reservationList.css}">
-
+    <link rel="stylesheet" th:href="@{/css/reservation/advanceReservation.css}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -88,10 +88,11 @@
                         <div class="modify-writebox-content">
 
                         <div id="reservation_content">
+                            <input id="rid" type="hidden">
                             <div class="reservation_number">
                                 <label>인원수</label>
                                 <input id="number"  name="number" placeholder="인원수을 입력하세요"
-                                       type="number"  value="1" min="1">
+                                       type="number" min="1">
                             </div>
 
                             <div class="reservation_date">
@@ -109,7 +110,11 @@
                                 </select>
                             </div>
 
+                            <div class="reservation_menu_list">
+
+                            </div>
                         </div>
+
 
                     </div>
                         <div id="modify-writebox-bottom">
@@ -157,14 +162,14 @@
                     let tmp ="";
                     results.forEach(function(dto){
 
-                    tmp += '<div class="list-box">';
+                    tmp += '<div class="list-box" data-reservation-id="' + dto.id + '">';
                     tmp+= '<div class="box-area">';
                     tmp+= ' <div class="restaurant-img"><span class="restaurant-img-inner"><i class="fa fa-user-circle" aria-hidden="true"></i></span></div>';
                     tmp+= '<div class="info-area"><div class="restaurant-name">식당이름</div>';
                     tmp+= '<div class="category"><span>카테고리 [ '+dto.status+' ]</span></div>';
                     tmp+= '<div class="reservation-info" data-reservation-date="'+dto.date+'" data-reservation-time="'+dto.time+'" data-reservation-number="'+dto.number+'">'
                     tmp+= '<span>'+dto.date+' (요일) '+dto.time+' '+dto.number+' 명</span></div>';
-                    tmp+= '<div class="reservation-info-bottom" data-reservation-id="' + dto.id + '">';
+                    tmp+= '<div class="reservation-info-bottom">';
                     tmp+='<span >'+dto.modifiedDate+' </span>';
 
                         tmp += '<a href="#" class="btn-info" ">주문내역</a>';
@@ -176,11 +181,13 @@
                     return tmp;
                 };
             </script>
+
+            <!-- AJAX 및 버튼-->
             <script>
 
-                <!-- 삭제 -->
+                <!-- 예약삭제  -->
                 $("#list-body").on("click",".btn-delete",function(){
-                    let rid = $(this).parent().attr("data-reservation-id");
+                    let rid = $(this).closest(".list-box").attr("data-reservation-id");
 
                     if(confirm("예약 취소하시겠습니까?")) {
                         $.ajax({
@@ -201,52 +208,193 @@
                         });
                     }
                 });
+
+
                 <!-- modal 예약 수정  -->
                 $("#list-body").on("click",".btn-modify",function(){
                     /* modal-body 삭제 */
                     let reservationDate = $(this).parent().siblings(".reservation-info").attr("data-reservation-date");
                     let reservationTime = $(this).parent().siblings(".reservation-info").attr("data-reservation-time");
                     let reservationNumber = $(this).parent().siblings(".reservation-info").attr("data-reservation-number");
+                    let rid = $(this).closest(".list-box").attr("data-reservation-id");
+
 
                     $("#number").val(reservationNumber);
                     $("#date").val(reservationDate);
                     $("#time").val(reservationTime);
+                    $("#rid").val(rid);
+
+                    $.ajax({
+
+                        type: 'GET',
+
+                        url: '/booking/' + rid + '/orderMenuList/specialMenu',
+
+
+                        success: function (result) {
+                            let menuList = result["list1"];
+                            let orderMenuList = result["list2"];
+
+                            let tmp ='';
+                            result["list1"].forEach(function (menu) {
+                                $('.reservation_menu_list').empty();
+
+                                // alert(item["id"])
+                                tmp += '<div id ="'+menu["id"]+'" class="menu_box" data-menu-id="'+menu["id"]+'">'
+                                tmp += '<div class="ordermenu_info">'
+                                tmp += '<div class="menu_name_price">'
+                                tmp += '<span data-menu-name="'+ menu["name"]+'" data-menu-price="'+menu["price"] +'">'+menu["name"]+' '+menu["price"]+'원</span>'
+                                tmp += '</div>'
+                                tmp += '<span>'+menu["intro"]+'</span></div>';
+                                tmp += '<div class="ordermenu_count">'
+                                tmp += '<input name=""  type="number" class="menu_count" min="0" max="8" value="0" >'
+                                tmp += '</div>'
+                                tmp += '</div>'
+                            });
+                                $('.reservation_menu_list').append(tmp);
+
+                            result["list2"].forEach(function (order) {
+                                let mid = order["menuId"];
+                                let count = order["count"];
+
+
+                                $(".menu_box[data-menu-id=" + mid + "] .ordermenu_count .menu_count").val(count);
+
+                            });
+
+                        },
+
+                        error: function (result) {
+
+                            console.log(result.body);
+
+                        }
+                    });
 
                     $("#modifyModal").css("display", "block");
                 });
 
-                <!-- update modal 수정 + 끄기 -->
-                $(".close").click(function () {
-                    $("#modifyModal").css("display", "none");
-                });
+
                 $("#btn-write-modify").click(function () {
-                    let number = $("#number").val();
+                    let rid = parseInt($("#rid").val());
+                    let number = parseInt($("#number").val());
                     let time = $("#time").val();
                     let date = $("#date").val();
                     // 1. 변경된 내용을 서버로 전송
                     // 2. 모달 창을 닫는다.
-                    alert("인원수: " + number + ", 시간: " + time + ", 날짜: " + date);
-                    $(".close").trigger("click");
-                });
-                <!-- modal 주문 내역 확인  -->
 
+                    if (date === "" || time === "") {
+                        alert("날짜를 선택해주세요.");
+                        return;
+                    } else if (time === "") {
+                        alert("시간을 선택해주세요.");
+                        return;
+                    }
+
+                    // ajax로 보낼 객체 생성
+                    let modifyForm = new Object();
+
+                    modifyForm.rid = rid;
+                    modifyForm.number = number;
+                    modifyForm.date = date;
+                    modifyForm.time = time;
+
+
+                    // orderMenuList 담을 배열 생성
+                    let orderMenuList= new Array();
+                    let totalMenuCount = 0;
+
+                    $(".reservation_menu_list").children().each(function () {
+
+                        let menuId = $(this).attr("data-menu-id");
+                        let menuCount = $(this).find(".menu_count").val();
+
+                        if (menuCount > 0) {
+                            totalMenuCount += parseInt(menuCount);
+
+                            //  객체 생성
+                            let orderMenu = new Object();
+                            orderMenu.menuId = menuId;
+                            orderMenu.count = menuCount;
+                            orderMenuList.push(orderMenu);
+                        }
+
+                    });
+
+                    if (totalMenuCount < number) {
+                        alert("인원수 만큼 주문 하셔야합니다");
+                        return;
+                    }
+
+                    modifyForm.orderMenuList = orderMenuList;
+
+
+                    /**
+                     * {
+                     *    "rid" : 3 ,
+                     *    "number" : 2 ,
+                     *    "date" : "2023-07-20" ,
+                     *    "time" : "오후 5:00" ,
+                     *    "orderMenuList":[
+                     *              {
+                     *                    "menuId" : 1,
+                     *                    "count" : 2
+                     *              },
+                     *              {
+                     *                    "menuId" : 3,
+                     *                    "count" : 3
+                     *              }
+                     *                     ]
+                     * }
+                     * */
+
+                    $.ajax({
+
+                        type : 'PATCH',
+
+                        url :   '/booking/'+rid+'/modify',
+
+                        headers : { "content-type":"application/json"},
+
+                        dataType: "text",
+
+                        data :  JSON.stringify(modifyForm),
+
+                        success : function(result) {        // service 쿼리
+                            alert(result);
+                            $(".close").trigger("click");
+                            showList();                     // 쿼리 1번
+                        },
+
+                        error : function(result) {
+                            alert(result.responseText);
+                            console.log(result.statusText+' : '+result.responseText);
+                        }
+
+                    });
+
+                });
+
+                <!-- modal 주문 내역 확인  -->
                 $("#list-body").on("click",".btn-info",function(){
                     /* modal-body 삭제 */
                     $('.modal-body-top').empty();
                     $('.modal-body-content').empty();
                     $('.modal-body-bottom').empty();
 
-                    let rid = $(this).parent().attr("data-reservation-id");
+
+                    let rid = $(this).closest(".list-box").attr("data-reservation-id");
                     // alert(rid);
 
                     $.ajax({
 
                         type: 'GET',
 
-                        url: '/booking/' + rid + '/orderMenuList',
+                        url: '/booking/' + rid + '/orderMenuList/view',
 
 
                         success: function (result) {
+
                             $('.modal-body-content').empty();
                             let ul = $('<ul/>').addClass('orderMenuUl');
                             // result : js 객체
@@ -289,6 +437,19 @@
 
 
             </script>
+
+            <!-- 서브 동작 스크립트 -->
+            <script>
+                let now_utc = Date.now() // 지금 날짜를 밀리초로
+                // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+                let timeOff = new Date().getTimezoneOffset() * 60000; // 분단위를 밀리초로 변환
+                let today = new Date(now_utc - timeOff).toISOString().split("T")[0];
+                // 현재 날짜에 오프셋을 적용하고, 7일 후의 날짜를 계산하여 ISO 형식으로 변환하고, 날짜 부분만 가져옴
+                let maxDate = new Date(now_utc - timeOff + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+                document.getElementById("date").setAttribute("min", today);
+                document.getElementById("date").setAttribute("max", maxDate);
+            </script>
+
 
 </div>
 <!--    </section>-->
