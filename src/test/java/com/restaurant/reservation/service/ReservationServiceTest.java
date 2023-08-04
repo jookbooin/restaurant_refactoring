@@ -453,7 +453,8 @@ class ReservationServiceTest {
                 .build();
 
         /** update 메서드 */
-        reservationService.updateReservation(reservationDto);
+        /** sessionId 넣어주어야 할 것 같음 */
+        reservationService.updateReservation(reservationDto,1L);
 
         Reservation reservation2 = reservationRepository.findById(1L).get();
         Assertions.assertEquals(reservation2.getOrderMenus().size(),3);

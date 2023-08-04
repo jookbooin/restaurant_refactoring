@@ -89,19 +89,23 @@ public class ReservationService {
      *                      id 존재 x -> list에 추가
      * */
     @Transactional
-    public void updateReservation (ReservationDto reservationDto ) {
-
-        Optional<Reservation> reservationOpt = reservationRepository.findById(reservationDto.getRid());  // join 1번
-
+    public int updateReservation (ReservationDto reservationDto , Long sid) {
+        log.info("updateReservation");
+        Optional<Reservation> reservationOpt = reservationRepository.findReservationByIdAndMember_Id(reservationDto.getRid(),sid);  // join 1번
+//        Optional<Reservation> reservationOpt = reservationRepository.fetchReservationByIdMember_Id(reservationDto.getRid(),sid);  // join 1번
+        int cnt = 0 ;
         if (reservationOpt.isPresent()) {
             Reservation findReservation = reservationOpt.get();
+            log.info("findReservation : {}",findReservation);
             // 1. 컬렉션 이외의 요소 변경감지
             findReservation.updateReservation(reservationDto);
 
             // 2. collection 수정
             // 2-(1) findReservation.getOrderMenus 리스트에 [ modify리스트안에 존재하지 않는 ] id들로 이루어진 list 추출
             List<OrderMenu> removeList = collectRemoveFromReservation(findReservation,reservationDto.getOrderMenuList());
-
+            for (OrderMenu orderMenu : removeList) {
+                log.info("removeOrderMenu : {}",orderMenu);
+            }
             // 2-(2) 리스트 삭제
             if(!removeList.isEmpty()){
                 deleteRemoveList(findReservation, removeList);
@@ -109,10 +113,14 @@ public class ReservationService {
             // 2-(3) modifyList 추가 및 변경감지
             // 기존에 존재하는 것들 변경감지
             List<OrderMenuDto> insertList = collectInsertFromModify(findReservation,reservationDto.getOrderMenuList());
-
+            for (OrderMenuDto orderMenuDto : insertList) {
+                log.info("orderMenuDto : {}",orderMenuDto);
+            }
             // 2-(4) 메뉴 추가
             insertOrderMenu(findReservation, insertList);
+            cnt ++;
         }
+        return cnt;
     }
 
 

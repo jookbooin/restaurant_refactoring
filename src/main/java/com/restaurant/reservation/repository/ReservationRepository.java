@@ -28,7 +28,13 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             " order by r.date,r.time")
     List<Reservation> findReservationNoShow(@Param("id") Long id);
 
-    Optional<Reservation> findReservationByIdAndMember_Id(Long id, Long memberId);
+    Optional<Reservation> findReservationByIdAndMember_Id(Long rid, Long memberId);
+
+    @Query("SELECT r FROM Reservation r " +
+            "JOIN FETCH r.member m WHERE r.id = :rid AND m.id = :memberId")
+    Optional<Reservation> fetchReservationByIdMember_Id(@Param("rid") Long rid, @Param("memberId") Long memberId);
+
+
 
     /** Service 로직 */
 

@@ -43,8 +43,9 @@ public class BookingApiController {
 
             orderList.forEach(System.out::println);
             int sum = orderList.stream().mapToInt(o->o.getTotalPrice()).sum();
-
+            System.out.println("sum = " + sum);
             return new ModalMenuResult(sum,orderList);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -102,8 +103,13 @@ public class BookingApiController {
         ReservationDto reservationDto = ReservationDto.requestToDto(updateReservationRequest);
         System.out.println("reservationDto = " + reservationDto);
 
-        reservationService.updateReservation(reservationDto);
-        return new ResponseEntity<>("예약 수정되었습니다.",HttpStatus.OK);
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+
+        int cnt = reservationService.updateReservation(reservationDto, sessionId);
+        if (cnt == 1)
+            return new ResponseEntity<>("예약 수정되었습니다.",HttpStatus.OK);
+
+        return new ResponseEntity<>("시스템 오류오류오류오류!!!",HttpStatus.BAD_REQUEST);
     }
 
 

@@ -11,7 +11,7 @@ import lombok.ToString;
 public class OrderMenuApiDto {
     private Long menuId;
     private String name;
-    private Integer totalPrice;
+    private Integer orderPrice;
     private Integer count;
 
     public static OrderMenuApiDto createWebDto(OrderMenu orderMenu){
@@ -19,7 +19,11 @@ public class OrderMenuApiDto {
         orderMenuApiDto.setMenuId(orderMenu.getId());
         orderMenuApiDto.setName(orderMenu.getMenu().getName());
         orderMenuApiDto.setCount(orderMenu.getCount());
-        orderMenuApiDto.setTotalPrice(orderMenu.getTotalPrice());
+        orderMenuApiDto.setOrderPrice(orderMenu.getOrderPrice());
         return orderMenuApiDto;
+    }
+
+    public int getTotalPrice(){
+        return this.getOrderPrice()*this.getCount();
     }
 }

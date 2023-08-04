@@ -39,7 +39,6 @@ public class OrderMenu {
     // 개수 변경 -> orderPrice 변경
     public void changeCount(int count){
         this.count=count;
-        orderPrice = menu.getPrice()*count;
     }
     
     // OrderMenu 가격 총합 계산용
