@@ -51,14 +51,46 @@ public class BookingApiController {
         }
     }
 
-    @GetMapping("/booking/list")
-    public oneListResult bookingList(HttpSession session){
+    @GetMapping("/booking/advance/list")
+    public oneListResult bookingAdvanceList(HttpSession session){
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
 //        Long sessionId = 1L;
         List<Reservation> reservationAdvanceList = reservationRepository.findReservationAdvance(sessionId);
 
         List<ReservationApiDto> apiDtoList = reservationAdvanceList.stream()
+                .map(o -> ReservationApiDto.createApiDto(o))
+                .collect(Collectors.toList());
+
+        apiDtoList.forEach(System.out::println);
+
+        return new oneListResult(apiDtoList);
+    }
+
+    @GetMapping("/booking/complete/list")
+    public oneListResult bookingCompleteList(HttpSession session){
+
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+//        Long sessionId = 1L;
+        List<Reservation> reservationCompleteList = reservationRepository.findReservationComplete(sessionId);
+
+        List<ReservationApiDto> apiDtoList = reservationCompleteList.stream()
+                .map(o -> ReservationApiDto.createApiDto(o))
+                .collect(Collectors.toList());
+
+        apiDtoList.forEach(System.out::println);
+
+        return new oneListResult(apiDtoList);
+    }
+
+    @GetMapping("/booking/noshow/list")
+    public oneListResult bookingNoShowList(HttpSession session){
+
+        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+//        Long sessionId = 1L;
+        List<Reservation> reservationNoShowList = reservationRepository.findReservationNoShow(sessionId);
+
+        List<ReservationApiDto> apiDtoList = reservationNoShowList.stream()
                 .map(o -> ReservationApiDto.createApiDto(o))
                 .collect(Collectors.toList());
 

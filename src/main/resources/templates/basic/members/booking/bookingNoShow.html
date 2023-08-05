@@ -9,6 +9,10 @@
     <title>Static Navigation - SB Admin</title>
     <link href="/css/template/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- 옮길 css 파일-->
+    <link rel="stylesheet" th:href="@{/css/mypage/reservationList.css}">
+    <link rel="stylesheet" th:href="@{/css/reservation/advanceReservation.css}">
 </head>
 
 <body>
@@ -28,9 +32,11 @@
                             <code> card-body</code>
                             <code>mb-0</code>
                         <div></div>
-                        <code>.sb-nav-fixed <- 빨간줄</code>
-                        class from the
-                        <code>body<- 빨간줄 </code>
+                        bookingController :
+                        <code>/booking/history/noshow</code>
+                        <div></div>
+                        bookingApiController
+                        <code>/booking/noshow/list</code>
 
                         </p>
                     </div>
@@ -43,16 +49,8 @@
 
                     </div>
                     <div class="card-body">
-                        <div th:each="list : ${bookingList}" class="booking_advance_list">
-                            <div>
-                                <div>
-                                    <h3>식당 이름</h3>
-                                </div>
-                                <span th:text="|${list.date} |">이름 날짜</span>
-                                <span th:text="|${list.time}|">이름 시간</span>
-                                <span th:text="|${list.number} 명|">이름 개수</span>
-                            </div>
-                            <br>
+                        <div id ="list-body" class="card-body">
+
                         </div>
                     </div>
                 </div>
@@ -72,6 +70,57 @@
                 </div>
             </div>
         </footer>
+
+        <!--스크립트-->
+        <script>
+            $(document).ready(function(){
+                showList();
+            })
+
+            // <!-- 목록을 가져오는  -->
+            let showList =function(){
+                $.ajax({
+
+                    type: 'GET',
+
+                    url: '/booking/noshow/list',
+
+
+                    success: function (result) {
+                        //  .html : 이전내용을 지우고 새로운 내용을 넣는다.
+                        $("#list-body").html(toHtml(result["data"]));
+                    },
+
+                    error: function (result) {
+
+                        console.log(result.body);
+
+                    }
+
+                });
+
+            }
+
+            let toHtml = function (results){
+                let tmp ="";
+                results.forEach(function(dto){
+
+                    tmp += '<div class="list-box" data-reservation-id="' + dto.id + '">';
+                    tmp+= '<div class="box-area">';
+                    tmp+= ' <div class="restaurant-img"><span class="restaurant-img-inner"><i class="fa fa-user-circle" aria-hidden="true"></i></span></div>';
+                    tmp+= '<div class="info-area"><div class="restaurant-name">식당이름</div>';
+                    tmp+= '<div class="category"><span>카테고리 [ '+dto.status+' ]</span></div>';
+                    tmp+= '<div class="reservation-info" data-reservation-date="'+dto.date+'" data-reservation-time="'+dto.time+'" data-reservation-number="'+dto.number+'">'
+                    tmp+= '<span>'+dto.date+' (요일) '+dto.time+' '+dto.number+' 명</span></div>';
+                    tmp+= '<div class="reservation-info-bottom">';
+
+
+                    tmp+='</div></div></div></div><br>';
+
+                })
+                return tmp;
+            };
+        </script>
     </div>
 
 </body>

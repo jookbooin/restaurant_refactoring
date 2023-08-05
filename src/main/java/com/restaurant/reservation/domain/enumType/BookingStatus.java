@@ -1,7 +1,7 @@
 package com.restaurant.reservation.domain.enumType;
 
 public enum BookingStatus {
-    ADVANCE("사전예약"),COMPLETE("방문"),NOSHOW("노쇼");
+    ADVANCE("방문 예정"),COMPLETE("방문 완료"),NOSHOW("노쇼/취소");
 
     private final String status;
 

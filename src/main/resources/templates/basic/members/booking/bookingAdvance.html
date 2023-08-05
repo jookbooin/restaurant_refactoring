@@ -26,9 +26,16 @@
                     </ol>
                     <div class="card mb-4">
                         <div class="card-body">
-                            DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                            <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                            .
+                            <p class="mb-0">
+                                <code>card mb-4 </code>
+                                <code> card-body</code>
+                                <code>mb-0</code>
+                            <div></div>
+                            bookingController :
+                            <code>/booking/advance</code>
+                            <div></div>
+                            bookingApiController
+                            <code>/booking/advance/list</code>
                         </div>
                     </div>
                     <div class="card mb-4">
@@ -140,7 +147,7 @@
 
                         type: 'GET',
 
-                        url: '/booking/list',
+                        url: '/booking/advance/list',
 
 
                         success: function (result) {
@@ -434,8 +441,6 @@
                     $("#orderMenuModal").css("display", "none");
                     $("#modifyModal").css("display", "none");
                 });
-
-
             </script>
 
             <!-- 서브 동작 스크립트 -->
