@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base/myPageBase :: layout(~{::title},~{::link},~{::div})}">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Static Navigation - SB Admin</title>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+
+  <!-- 옮길 css 파일 -->
+  <link rel="stylesheet" th:href="@{/css/mypage/reservationList.css}">
+  <link rel="stylesheet" th:href="@{/css/reservation/advanceReservation.css}">
+  <link rel="stylesheet" th:href="@{/css/table.css}">
+  <link rel="stylesheet" th:href="@{/css/paging/pagination.css}">
+</head>
+
+<body>
+
+<div id="layoutSidenav_content">
+  <main>
+    <div class="container-fluid px-4">
+      <h1 class="mt-4" th:text="|고객 관리|">안녕하세요. </h1>
+      <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="index.html">대쉬보드</a></li>
+        <li class="breadcrumb-item active">Static Navigation</li>
+      </ol>
+      <div class="card mb-4">
+        <div class="card-body">
+          <p class="mb-0">
+          AdminController :
+          <code>/Admin/</code>
+          <div></div>
+          AdminApiController
+          <code>/Admin/complete/list</code>
+
+          </p>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header">
+          <i class="fas fa-table me-1"></i>
+          데이터 테이블 이그젬플
+        </div>
+        <div class="card-body">
+          <table id="datatablesSimple">
+            <thead>
+            <tr>
+              <th>id</th>
+              <th>이름</th>
+              <th>번호</th>
+              <th>이메일</th>
+              <th>등급</th>
+              <th>가입일</th>
+              <th>최근 수정일</th>
+<!--              <th>최근 방문일</th>-->
+            </tr>
+            </thead>
+
+            <tbody id="member-table-body">
+
+
+            </tbody>
+          </table>
+        </div>
+
+
+        <div id ="pagination">
+          <ul id="pagination-ul">
+
+          </ul>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </main>
+
+  <footer class="py-4 bg-light mt-auto">
+    <div class="container-fluid px-4">
+      <div class="d-flex align-items-center justify-content-between small">
+        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+        <div>
+          <a href="#">Privacy Policy</a>
+          &middot;
+          <a href="#">Terms &amp; Conditions</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!--스크립트-->
+
+  <script>
+    <!-- default 변수 -->
+    let default_size = 5;
+    let default_page = 0;
+    let default_sort = 'id';
+
+    <!-- default 변수 -->
+    $(document).ready(function(){
+      showList(default_size,default_page,default_sort);
+    })
+
+    // <!-- 목록을 가져오는  -->
+    let showList =function(Size,currentPage,Sort){
+      let size = Size;
+      let page = currentPage;
+      let sort = Sort;
+
+      $.ajax({
+
+        type: 'GET',
+
+        url: '/api/admin/member/manage?size='+size+'&page='+page+'&sort='+sort,
+
+
+        success: function (result) {
+          //  테이블 넣는다 .
+          $("#member-table-body").html(toHtml(result["content"]));
+
+          // pageable
+          let pageable = result["pageable"]
+          console.log('response [pageable]: '+JSON.stringify(pageable));
+          let offset = pageable["offset"];
+          console.log('response [pageable-offset]: '+JSON.stringify(offset));
+          let pageSize = pageable["pageSize"];
+          console.log('response [pageable-pageSize]: '+JSON.stringify(pageSize));
+          let pageNumber = pageable["pageNumber"];
+          console.log('response [pageable-pageNumber]: '+JSON.stringify(pageNumber));
+
+          // slice 멤버인듯
+          let totalElements = result["totalElements"]
+          console.log('response [totalElements]: '+JSON.stringify(totalElements));
+
+          // 페이징 필요 변수
+          const pageCount = 5;
+
+          let totalPages = result["totalPages"]
+          console.log('response [totalPages]: '+JSON.stringify(totalPages));
+
+          let currentPage = result["number"]
+          console.log('실제 db Page [currentPage]: '+JSON.stringify(currentPage));
+          // page Group
+          // page Group == 0 이면 firstCheck = True
+          // page Group == 마지막 이면 lastCheck = True
+          let pageGroup = Math.ceil((currentPage+1)/pageCount);
+          console.log('response [pageGroup]: '+JSON.stringify(pageGroup));
+          console.log('')
+
+          pagingNav(currentPage,totalPages,pageGroup); // 0 , 21 , 1
+
+          },
+
+        error: function (result) {
+
+          console.log(result);
+
+        }
+
+      });
+
+    }
+
+    let toHtml = function (results){
+      let tmp ="";
+      results.forEach(function(dto){
+
+        tmp+='<tr>';
+        tmp+='<td>'+dto["id"]+'</td>';
+        tmp+='<td>'+dto["name"]+'</td>';
+        tmp+='<td>'+dto["number"]+'</td>';
+        tmp+='<td>'+dto["email"]+'</td>';
+        tmp+='<td>'+dto["grade"]+'</td>';
+        tmp+='<td>'+dto["createdDateTime"]+'</td>';
+        tmp+='<td>'+dto["modifiedDateTime"]+'</td>';
+        tmp+='</tr>';
+
+      })
+      return tmp;
+    };
+
+    let pagingNav = function pagingNav(CurrentPage,totalPage,pageGroup){
+      const pageCount = 5;
+      let currentPage = CurrentPage + 1 ;
+      let last = pageGroup * pageCount;
+      let first = last - (pageCount - 1);
+
+      if(last > totalPage)
+        last = totalPage;
+
+      const next = last + 1 - 1
+      const prev = first -1 - 1;
+
+
+      console.log('first : '+first)
+      console.log('last : '+last)
+      console.log('next : '+next)
+      console.log('prev :'+prev)
+
+      let pageNavHtml = "";
+
+
+      if (prev > 0) {
+        pageNavHtml += "<li><a href='#' id='"+prev+"'>이전</a></li>";
+      }
+
+      //페이징 번호 표시
+      for (let i = first; i <= last; i++) {
+        let rid = i-1
+        if (currentPage == i) {
+          pageNavHtml +=
+                  "<li class='on'><a href='#' id='" + rid + "'>" + i + "</a></li>";
+        } else {
+          pageNavHtml += "<li><a href='#' id='" + rid + "'>" + i + "</a></li>";
+        }
+      }
+
+      if (last < totalPage) {
+        pageNavHtml += "<li><a href='#' id='"+next+"'>다음</a></li>";
+      }
+
+      $("#pagination-ul").html(pageNavHtml);
+
+
+    }
+    // $("#list-body").on("click",".btn-delete",function(){
+    $("#pagination-ul").on("click","li a",function(){
+    // $("#pagination-ul li a").click(function () {
+      let id = $(this).attr("id");
+
+      showList(5,id,default_sort);
+      alert(id)
+    });
+  </script>
+
+  <!-- 페이징 버튼-->
+  <script>
+
+
+
+
+  </script>
+
+</div>
+<!--  <script th:src="@{/js/datatables-simple-demo.js}"></script>-->
+
+</body>
+</html>

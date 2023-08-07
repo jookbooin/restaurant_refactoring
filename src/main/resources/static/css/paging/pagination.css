@@ -1,0 +1,38 @@
+#pagination {
+    display: flex;
+    justify-content: center;
+}
+
+#pagination-ul {
+    text-align: center;
+    display: inline-block;
+
+    border: 1px solid #ccc;
+    border-right: 0;
+    padding-left :0;
+}
+
+#pagination-ul>li {
+    text-align: center;
+    float: left;
+    list-style:none;
+
+}
+
+#pagination-ul>li >a {
+    display: block;
+    font-size: 14px;
+    color: black;
+    padding: 9px 12px;
+    border-right: solid 1px #ccc;
+    box-sizing: border-box;
+    text-decoration-line:none;
+}
+
+#pagination-ul>li.on {
+    background: #eda712;
+}
+
+#pagination-ul>li.on a {
+    color: #fff;
+}

@@ -147,7 +147,7 @@
 
                         type: 'GET',
 
-                        url: '/booking/advance/list',
+                        url: '/api/booking/advance/list',
 
 
                         success: function (result) {
@@ -201,7 +201,7 @@
 
                             type: 'DELETE',
 
-                            url: '/booking/' + rid + '/delete',
+                            url: '/api/booking/' + rid + '/delete',
 
 
                             success: function (result) {
@@ -235,7 +235,7 @@
 
                         type: 'GET',
 
-                        url: '/booking/' + rid + '/orderMenuList/specialMenu',
+                        url: '/api/booking/' + rid + '/orderMenuList/specialMenu',
 
 
                         success: function (result) {
@@ -359,7 +359,7 @@
 
                         type : 'PATCH',
 
-                        url :   '/booking/'+rid+'/modify',
+                        url :   '/api/booking/'+rid+'/modify',
 
                         headers : { "content-type":"application/json"},
 
@@ -397,7 +397,7 @@
 
                         type: 'GET',
 
-                        url: '/booking/' + rid + '/orderMenuList/view',
+                        url: '/api/booking/' + rid + '/orderMenuList',
 
 
                         success: function (result) {

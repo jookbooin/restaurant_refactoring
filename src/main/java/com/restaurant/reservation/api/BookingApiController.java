@@ -33,7 +33,7 @@ public class BookingApiController {
     private final ReservationRepository reservationRepository;
     private final ReservationService reservationService;
 
-    @GetMapping("/booking/{rid}/orderMenuList/view")
+    @GetMapping("/api/booking/{rid}/orderMenuList")
     public ModalMenuResult bookOrderMenuList(@PathVariable("rid") Long rid, HttpSession session){
         try {
             List<OrderMenu> orderMenuList = getOrderMenuList(rid);
@@ -51,7 +51,7 @@ public class BookingApiController {
         }
     }
 
-    @GetMapping("/booking/advance/list")
+    @GetMapping("/api/booking/advance/list")
     public oneListResult bookingAdvanceList(HttpSession session){
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
@@ -67,7 +67,7 @@ public class BookingApiController {
         return new oneListResult(apiDtoList);
     }
 
-    @GetMapping("/booking/complete/list")
+    @GetMapping("/api/booking/complete/list")
     public oneListResult bookingCompleteList(HttpSession session){
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
@@ -83,7 +83,7 @@ public class BookingApiController {
         return new oneListResult(apiDtoList);
     }
 
-    @GetMapping("/booking/noshow/list")
+    @GetMapping("/api/booking/noshow/list")
     public oneListResult bookingNoShowList(HttpSession session){
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
@@ -98,7 +98,7 @@ public class BookingApiController {
 
         return new oneListResult(apiDtoList);
     }
-    @DeleteMapping("/booking/{rid}/delete")
+    @DeleteMapping("/api/booking/{rid}/delete")
     public ResponseEntity<String> deleteBooking(@PathVariable("rid") Long rid , HttpSession session ){
         try {
             Long sessionId = 1L;
@@ -111,7 +111,7 @@ public class BookingApiController {
             return new ResponseEntity<>("삭제 실패했습니다..",HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/booking/{rid}/orderMenuList/specialMenu")
+    @GetMapping("/api/booking/{rid}/orderMenuList/specialMenu")
     public twoListResult getMenuOrderMenuList(@PathVariable("rid") Long rid){
         List<MenuDto> specialMenuList = menuService.findSpecialMenu();
         List<OrderMenu> orderMenuList = getOrderMenuList(rid);
@@ -123,7 +123,7 @@ public class BookingApiController {
         return new twoListResult(specialMenuList,orderMenuDtoList);
     }
 
-    @PatchMapping("/booking/{rid}/modify")
+    @PatchMapping("/api/booking/{rid}/modify")
     public ResponseEntity<String> modifyReservation(@RequestBody UpdateReservationRequest updateReservationRequest, HttpSession session ){
 
         System.out.println("updateReservationRequest = " + updateReservationRequest);

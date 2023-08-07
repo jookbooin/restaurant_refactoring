@@ -35,6 +35,7 @@ public class InitDb {
     @PostConstruct // bean에 올라오면 spring이 불러오는 것 : 초기화
     public void init() {
         initService.InitDb();
+        initService.InitMember();
     }
 
     @Component
@@ -47,6 +48,7 @@ public class InitDb {
         private final MenuRepository menuRepository;
 
         private final ReservationService reservationService;
+
 
         public void InitDb() {
 
@@ -242,6 +244,19 @@ public class InitDb {
 
             /** Reservation */
 
+        }
+
+        public void InitMember() {
+            for (int i = 3; i < 103; i++) {
+                MemberDto memberDto = MemberDto.builder()
+                        .email("3670lsh@naver.c"+i)
+                        .password("dltmdgjs413!"+i)
+                        .name("고객"+i)
+                        .phoneNumber("010719741"+i)
+                        .build();
+                Member member = Member.createCustomer(memberDto);
+                 memberRepository.save(member);
+            }
         }
 
     }

@@ -1,7 +1,8 @@
 package com.restaurant.reservation.domain.members;
 
-import com.restaurant.reservation.domain.dto.MemberDto;
 import com.restaurant.reservation.domain.TimeEntity;
+import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.MemberType;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,11 @@ public class Member extends TimeEntity {
     private String password;
     @Embedded
     private MemberInfo memberInfo;
+
+
+    @Column(name="member_grade")
+    @Enumerated(EnumType.STRING)
+    private MemberGrade memberGrade;
     @Column(name="member_type")
     @Enumerated(EnumType.STRING)
     private MemberType memberType;
@@ -39,10 +45,22 @@ public class Member extends TimeEntity {
 
     }
 
+    public Member( String email, String password, MemberInfo memberInfo,MemberGrade memberGrade, MemberType memberType) {
+        this.email = email;
+        this.password = password;
+        this.memberInfo = memberInfo;
+        this.memberGrade=memberGrade;
+        this.memberType = memberType;
+
+    }
+
+
+
     public static Member createCustomer(MemberDto memberDto){
 
         MemberInfo info = new MemberInfo(memberDto.getName(), memberDto.getPhoneNumber());
-        return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberType.CUSTOMER);
+
+        return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberGrade.BRONZE,MemberType.CUSTOMER);
     }
     public static Member createAdmin(MemberDto memberDto){
 
