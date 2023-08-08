@@ -8,7 +8,7 @@ import lombok.Data;
 public class OrderMenuWebDto {
     private Long menuId;
     private String name;
-    private Integer totalPrice;
+    private Integer orderPrice;
     private Integer count;
 
     public static OrderMenuWebDto createWebDto(OrderMenu orderMenu){
@@ -16,7 +16,7 @@ public class OrderMenuWebDto {
         orderMenuWebDto.setMenuId(orderMenu.getId());
         orderMenuWebDto.setName(orderMenu.getMenu().getName());
         orderMenuWebDto.setCount(orderMenu.getCount());
-        orderMenuWebDto.setTotalPrice(orderMenu.getTotalPrice());
+        orderMenuWebDto.setOrderPrice(orderMenu.getOrderPrice());
         return orderMenuWebDto;
     }
 }

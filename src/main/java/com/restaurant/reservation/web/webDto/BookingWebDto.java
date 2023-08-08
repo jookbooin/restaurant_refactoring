@@ -52,7 +52,7 @@ public class BookingWebDto {
             int totalPrice = 0;
             for (OrderMenu orderMenu : reservation.getOrderMenus()) {
                 OrderMenuWebDto orderMenuWebDto = OrderMenuWebDto.createWebDto(orderMenu);
-                totalPrice+=orderMenuWebDto.getTotalPrice();
+                totalPrice+=orderMenuWebDto.getOrderPrice();
                 webDto.getOrderMenuList().add(orderMenuWebDto);
             }
         webDto.setTotalPrice(totalPrice);

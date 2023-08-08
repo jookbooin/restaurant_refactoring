@@ -2,7 +2,6 @@ package com.restaurant.reservation.controller;
 
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.dto.ReservationDto;
-import com.restaurant.reservation.domain.enumType.TimeEnum;
 import com.restaurant.reservation.repository.ReservationRepository;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +44,30 @@ public class ReservationController {
     }
 
 
+
+
+    @GetMapping("/reservation/advance/payment")
+    public String advancePayGet (@ModelAttribute("advanceReservation") AdvanceReservationForm advanceReservation , Model model){
+
+        log.info("GET : /reservation/advance/payment");
+        log.info("advanceReservation toString :{} ",advanceReservation);
+
+        List<OrderMenuWebDto> orderMenuList = advanceReservation.getOrderMenuList();
+
+        int totalPrice = Optional.ofNullable(orderMenuList)
+                .map(list -> list.stream().mapToInt(o -> o.getOrderPrice()*o.getCount())
+                .sum())
+                .orElse(0);
+
+//        int totalPrice = advanceFormDtoList.stream().mapToInt(o -> o.getPrice()*o.getCount()).sum();
+        log.info("총 가격 : {} ",totalPrice);
+
+        model.addAttribute("orderMenuList",orderMenuList);
+        model.addAttribute("totalPrice",totalPrice);
+
+        return "basic/reservation/confirmDocument";
+    }
+
     @PostMapping("/reservation/advance/payment")
     public String reservationPost(@Validated @ModelAttribute("form") AdvanceReservationForm advanceReservation, BindingResult bindingResult, HttpSession request, Model model, RedirectAttributes redirectAttributes){
 
@@ -53,9 +75,9 @@ public class ReservationController {
         log.info("넘어온 객체 출력 : {}",advanceReservation);
 
         int totalCount = Optional.ofNullable(advanceReservation.getOrderMenuList())
-                        .map(list -> list.stream().mapToInt(o -> o.getCount())
+                .map(list -> list.stream().mapToInt(o -> o.getCount())
                         .sum())
-                        .orElse(0);
+                .orElse(0);
 
         if( totalCount < advanceReservation.getNumber() && totalCount >= 0 ){
             log.info("주문 메뉴 개수: {}", advanceReservation.getOrderMenuList().size());
@@ -75,43 +97,17 @@ public class ReservationController {
         return "redirect:/reservation/advance/payment";
     }
 
-    @GetMapping("/reservation/advance/payment")
-    public String advancePayGet (@ModelAttribute("advanceReservation") AdvanceReservationForm advanceReservation , Model model){
-
-        log.info("GET : /reservation/advance/payment");
-        log.info("advanceReservation toString :{} ",advanceReservation);
-
-        List<OrderMenuWebDto> orderMenuList = advanceReservation.getOrderMenuList();
-
-        int totalPrice = Optional.ofNullable(orderMenuList)
-                .map(list -> list.stream().mapToInt(o -> o.getTotalPrice())
-                .sum())
-                .orElse(0);
-
-//        int totalPrice = advanceFormDtoList.stream().mapToInt(o -> o.getPrice()*o.getCount()).sum();
-        log.info("총 가격 : {} ",totalPrice);
-
-        model.addAttribute("orderMenuList",orderMenuList);
-        model.addAttribute("totalPrice",totalPrice);
-
-        return "basic/reservation/confirmDocument";
-    }
-
     @PostMapping("/reservation/advance/add")
-    public String advancePayGet (@ModelAttribute AdvancePaymentForm advancePayment ,BindingResult bindingResult, HttpSession session){
+    public String advancePayGet (@ModelAttribute AdvancePaymentForm advancePayment , HttpSession session){
         log.info("POST : /reservation/advance/add");
         System.out.println("advancePayment 확인 = " + advancePayment);
-        if(bindingResult.hasErrors()){
-            log.info("검증 오류 발생 errors = {}", bindingResult);
 
-            return "basic/reservation/confirmDocument";
-        }
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
 
         ReservationDto reservationDto = ReservationDto.builder()
-                .date(LocalDate.parse(advancePayment.getDate()))
-                .time(TimeEnum.transferStringToTime(advancePayment.getTime()))
+                .date(advancePayment.getDate())
+                .time(advancePayment.getTime())
                 .number(advancePayment.getNumber())
                 .orderMenuList(advancePayment.getOrderMenuList())
                 .build();

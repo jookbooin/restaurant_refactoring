@@ -4,20 +4,23 @@ import com.restaurant.reservation.domain.dto.OrderMenuDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @ToString
 @Getter
 @Setter
 public class AdvancePaymentForm {
-    @NotNull
+
     private Integer number;
-    @NotBlank
-    private String date;
-    @NotBlank
-    private String time;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
+    @DateTimeFormat(pattern = "a h:mm")
+    private LocalTime time;
     List<OrderMenuDto> orderMenuList;
 }
