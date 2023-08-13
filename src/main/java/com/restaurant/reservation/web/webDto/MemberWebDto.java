@@ -26,7 +26,7 @@ public class MemberWebDto {
         webDto.setNumber(member.getMemberInfo().getPhoneNumber());
         webDto.setEmail(member.getEmail());
 
-        webDto.setGrade(member.getMemberGrade().getGrade());
+        webDto.setGrade(member.getMemberGrade().getName());
         /** String 으로 변환 */
         DateTimeFormatter transferToString = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String createdDateTime = member.getCreatedDate().format(transferToString);

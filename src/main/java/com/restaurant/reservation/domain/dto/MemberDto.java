@@ -1,6 +1,6 @@
 package com.restaurant.reservation.domain.dto;
 
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,6 +13,6 @@ public class MemberDto {
     private String name;
     private String phoneNumber;
 
-    private MemberType memberType;
+    private MemberRole memberRole;
 
 }

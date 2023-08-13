@@ -1,5 +1,6 @@
 package com.restaurant.reservation.basic;
 
+import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -69,6 +70,28 @@ class methodTest {
        LocalTime stringTime1ToLocalTime = TimeEnum.transferStringToTime(stringTime1);
        System.out.println("stringTime1ToLocalTime = " + stringTime1ToLocalTime);
 
+
+   }
+
+   @Test
+   public void enum_Test() throws Exception{
+       MemberGrade gold = MemberGrade.GOLD;
+       System.out.println("gold = " + gold);
+       System.out.println("gold.getClass() = " + gold.getClass());
+       System.out.println("gold.getName() = " + gold.getName());
+       System.out.println("gold.getName().getClass() = " + gold.getName().getClass());
+
+       
+       try {
+           MemberGrade gold1 = MemberGrade.valueOf("GOLD");
+           System.out.println("gold1 = " + gold1);
+           System.out.println("gold1.getClass() = " + gold1.getClass());
+           System.out.println("   gold1 통과");
+           MemberGrade gold2 = MemberGrade.valueOf("골드");
+           System.out.println("   gold2 통과");
+       } catch (IllegalArgumentException e) {
+           System.out.println("IllegalArgumentException 발생");
+       }
 
    }
 }

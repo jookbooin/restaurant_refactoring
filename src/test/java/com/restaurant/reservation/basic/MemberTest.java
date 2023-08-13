@@ -1,6 +1,6 @@
 package com.restaurant.reservation.basic;
 
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.web.webDto.MemberWebDto;
@@ -28,7 +28,7 @@ public class MemberTest {
         // given
         PageRequest pageRequest = PageRequest.of(0, 3);
         // when
-        Page<Member> page = memberRepository.findAllByMemberType(MemberType.CUSTOMER, pageRequest);
+        Page<Member> page = memberRepository.findAllByMemberRole(MemberRole.CUSTOMER, pageRequest);
 
         List<Member> content = page.getContent();
         assertThat(content.size()).isEqualTo(3);

@@ -1,6 +1,6 @@
 package com.restaurant.reservation.domain.enumType;
 
-public enum MemberType {
+public enum MemberRole {
     CUSTOMER,ADMIN,GUEST
 
 }

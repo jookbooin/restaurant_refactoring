@@ -2,7 +2,7 @@ package com.restaurant.reservation.controller;
 
 
 import com.restaurant.reservation.domain.dto.MemberDto;
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
@@ -82,7 +82,7 @@ public class MemberController {
         HttpSession session = request.getSession();
         session.setAttribute(SessionID.LOGIN_MEMBER, loginMember.getId());
 
-        if(loginMember.getMemberType().equals(MemberType.ADMIN)) {
+        if(loginMember.getMemberRole().equals(MemberRole.ADMIN)) {
 //            return "basic/admin/adminHome";
             return "redirect:/";
         }
@@ -109,7 +109,7 @@ public class MemberController {
         log.info("session : {}",sessionId);
 
         model.addAttribute("member",findMember);
-        if(findMember.getMemberType().equals(MemberType.ADMIN))
+        if(findMember.getMemberRole().equals(MemberRole.ADMIN))
             return "basic/admin/adminHome";
 
 

@@ -7,15 +7,15 @@ import com.restaurant.reservation.domain.dto.MemberDto;
 import com.restaurant.reservation.domain.dto.MenuDto;
 import com.restaurant.reservation.domain.dto.OrderMenuDto;
 import com.restaurant.reservation.domain.dto.ReservationDto;
-import com.restaurant.reservation.domain.enumType.BookingStatus;
-import com.restaurant.reservation.domain.enumType.MenuType;
-import com.restaurant.reservation.domain.enumType.TableType;
+import com.restaurant.reservation.domain.enumType.*;
 import com.restaurant.reservation.domain.members.Member;
+import com.restaurant.reservation.domain.members.MemberInfo;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.TableRepository;
 import com.restaurant.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Profile("local")
 @Component
 @RequiredArgsConstructor
 public class InitDb {
@@ -65,7 +66,7 @@ public class InitDb {
             MemberDto memberDto2=MemberDto.builder()
                     .email("3670lsh@gmail.com")
                     .password("dltmdgjs4139!")
-                    .name("관리자3670")
+                    .name("관리자")
                     .phoneNumber("01041397197")
                     .build();
             Member member2= Member.createAdmin(memberDto2);
@@ -247,6 +248,18 @@ public class InitDb {
         }
 
         public void InitMember() {
+            List<String> emailList = new ArrayList<>();
+            emailList.add("naver");
+            emailList.add("gmail");
+            emailList.add("empail");
+
+            List<String> nameList = new ArrayList<>();
+            nameList.add("cccc");
+            nameList.add("zzzz");
+            nameList.add("ttttt");
+            nameList.add("bbb");
+
+
             for (int i = 3; i < 103; i++) {
                 MemberDto memberDto = MemberDto.builder()
                         .email("3670lsh@naver.c"+i)
@@ -254,8 +267,22 @@ public class InitDb {
                         .name("고객"+i)
                         .phoneNumber("010719741"+i)
                         .build();
-                Member member = Member.createCustomer(memberDto);
-                 memberRepository.save(member);
+
+                int divInt = i % 4 ;
+                MemberInfo info = new MemberInfo(nameList.get(divInt), memberDto.getPhoneNumber());
+
+                Member member = null;
+
+                if (i%3==1){
+                    member = new Member(emailList.get(1)+i, memberDto.getPassword(), info , MemberGrade.BRONZE, MemberRole.CUSTOMER);
+                }
+                else if (i%3==2){
+                    member = new Member(emailList.get(2)+i, memberDto.getPassword(), info , MemberGrade.SILVER, MemberRole.CUSTOMER);
+                }
+                else
+                    member =  new Member(emailList.get(0)+i, memberDto.getPassword(), info , MemberGrade.GOLD, MemberRole.CUSTOMER);
+//
+                memberRepository.save(member);
             }
         }
 

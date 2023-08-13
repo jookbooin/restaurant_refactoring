@@ -1,7 +1,7 @@
 package com.restaurant.reservation;
 
 import com.restaurant.reservation.domain.dto.MemberDto;
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class HomeController {
         model.addAttribute("name", findMember.getName());
 
 
-        if(findMember.getMemberType().equals(MemberType.ADMIN))
+        if(findMember.getMemberRole().equals(MemberRole.ADMIN))
             return "basic/admin/adminHome";
 
         return "basic/members/customerHome";

@@ -3,7 +3,7 @@ package com.restaurant.reservation.repository;
 import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.booking.Waiting;
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.entityManagerRepo.ReservationRepo;
 import org.junit.jupiter.api.Assertions;
@@ -68,7 +68,7 @@ class ReservationRepositoryTest {
         Tables findTables2 = tableRepository.findById(2L).get();
         waiting.setDate(todayDate);
         waiting.setNumber(4);
-        waiting.setMemberType(MemberType.GUEST);
+        waiting.setMemberRole(MemberRole.GUEST);
         Waiting saveWaiting = waitingRepository.save(waiting);
         Assertions.assertEquals(saveWaiting.getId(),2L);
         Waiting waiting1 = waitingRepository.findById(2L).orElse(null); // 영속성에 있나?

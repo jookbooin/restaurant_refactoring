@@ -6,10 +6,11 @@ import lombok.Getter;
 public enum MemberGrade {
     BRONZE("브론즈"),SILVER("실버"),GOLD("골드");
 
-    private final String grade;
+    private final String name;
 
-    MemberGrade(String grade) {
-        this.grade = grade;
+    MemberGrade(String name) {
+        this.name = name;
     }
+
 
 }

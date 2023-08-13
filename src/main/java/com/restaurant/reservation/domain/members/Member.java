@@ -3,7 +3,7 @@ package com.restaurant.reservation.domain.members;
 import com.restaurant.reservation.domain.TimeEntity;
 import com.restaurant.reservation.domain.dto.MemberDto;
 import com.restaurant.reservation.domain.enumType.MemberGrade;
-import com.restaurant.reservation.domain.enumType.MemberType;
+import com.restaurant.reservation.domain.enumType.MemberRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -32,25 +32,25 @@ public class Member extends TimeEntity {
     private MemberGrade memberGrade;
     @Column(name="member_type")
     @Enumerated(EnumType.STRING)
-    private MemberType memberType;
+    private MemberRole memberRole;
 
     public Member() {
     }
 
-    public Member( String email, String password, MemberInfo memberInfo, MemberType memberType) {
+    public Member( String email, String password, MemberInfo memberInfo, MemberRole memberRole) {
         this.email = email;
         this.password = password;
         this.memberInfo = memberInfo;
-        this.memberType = memberType;
+        this.memberRole = memberRole;
 
     }
 
-    public Member( String email, String password, MemberInfo memberInfo,MemberGrade memberGrade, MemberType memberType) {
+    public Member( String email, String password, MemberInfo memberInfo,MemberGrade memberGrade, MemberRole memberRole) {
         this.email = email;
         this.password = password;
         this.memberInfo = memberInfo;
         this.memberGrade=memberGrade;
-        this.memberType = memberType;
+        this.memberRole = memberRole;
 
     }
 
@@ -60,12 +60,12 @@ public class Member extends TimeEntity {
 
         MemberInfo info = new MemberInfo(memberDto.getName(), memberDto.getPhoneNumber());
 
-        return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberGrade.BRONZE,MemberType.CUSTOMER);
+        return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberGrade.BRONZE, MemberRole.CUSTOMER);
     }
     public static Member createAdmin(MemberDto memberDto){
 
         MemberInfo info = new MemberInfo(memberDto.getName(), memberDto.getPhoneNumber());
-        return new Member(memberDto.getEmail(), memberDto.getPassword(), info ,MemberType.ADMIN);
+        return new Member(memberDto.getEmail(), memberDto.getPassword(), info , MemberRole.ADMIN);
     }
 
     public void update(String email,String password){
