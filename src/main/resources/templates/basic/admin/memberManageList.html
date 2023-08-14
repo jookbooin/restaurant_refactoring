@@ -48,7 +48,7 @@
             <div class="d-flex flex-column gap-2">
               <div class="d-flex gap-2">
                 <div class="col-auto">
-                  <select class="form-select" id="searchType" name="searchType">
+                  <select class="form-select" id="searchType" name="searchType" th:field="*{searchType}" >
                     <option value="name">이름</option>
                     <option value="phoneNumber">번호</option>
                     <option value="email">이메일</option>
@@ -58,7 +58,7 @@
                 <div class="col-auto">
                   <div class="input-group">
                     <input id ="keyword" name ="keyword" class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
-                           aria-describedby="btnNavbarSearch" />
+                           aria-describedby="btnNavbarSearch" th:field="*{keyword}"/>
                     <button class="btn btn-primary"  type="submit"><i
                             class="fas fa-search"></i></button>
                   </div>
@@ -119,21 +119,21 @@
                        ">
 
             <li th:if="${start > 1}" class='on page-item'>
-              <a class='page-link' th:href="@{/admin/member/list(page=0)}" th:text="'<<'"></a>
+              <a class='page-link' th:href="@{/admin/member/list(page=0,searchType=${memberSearch.searchType}, keyword=${memberSearch.keyword}, grades=${memberSearch.grades})}" th:text="'<<'"></a>
             </li>
             <li th:if="${start > 1}" class='on page-item'>
               <a class='page-link' th:href="@{/admin/member/list(page=${start - 2})}" th:text="'<'"></a>
             </li>
 
             <li th:each="pos: ${#numbers.sequence(start, end)}" class='on page-item'>
-              <a class='page-link' th:text="${pos}" th:href="@{/admin/member/list(page=${pos - 1})}" ></a>
+              <a class='page-link' th:text="${pos}" th:href="@{/admin/member/list(page=${pos - 1},searchType=${memberSearch.searchType}, keyword=${memberSearch.keyword}, grades=${memberSearch.grades})}" ></a>
             </li>
 
             <li th:if="${end < totalPages}" class='on page-item'>
-              <a class='page-link' th:href="@{/admin/member/list(page=${start + maxSize - 1})}"   th:text="'>'"></a>
+              <a class='page-link' th:href="@{/admin/member/list(page=${start + maxSize - 1},searchType=${memberSearch.searchType}, keyword=${memberSearch.keyword}, grades=${memberSearch.grades})}"   th:text="'>'"></a>
             </li>
             <li th:if="${end < totalPages}" class='on page-item'>
-              <a class='page-link' th:href="@{/admin/member/list(page=${totalPages -1})}"  th:text="'>>'"></a>
+              <a class='page-link' th:href="@{/admin/member/list(page=${totalPages -1},searchType=${memberSearch.searchType}, keyword=${memberSearch.keyword}, grades=${memberSearch.grades})}"  th:text="'>>'"></a>
             </li>
 
           </ul>
@@ -306,9 +306,9 @@
     }
 
     $(".pagination").on("click","li a",function(){
-      let id = $(this).attr("id");
+      // let id = $(this).attr("id");
 
-      showList(5,id,default_sort);
+      // showList(5,id,default_sort);
     });
   </script>
 

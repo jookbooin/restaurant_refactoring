@@ -42,5 +42,7 @@ public class AdminController {
 
         return "basic/admin/memberManageList";
     }
+
+//    @PostMapping("/admin/member/list")
 }
 
