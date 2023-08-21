@@ -142,8 +142,10 @@ a {
 #reservation_content{
     /* background-color: aqua; */
     height: 500px;
-    position: relative;
-    font-family: 'Nanum Gothic', sans-serif;
+    /*position: relative;*/
+    /*font-family: 'Nanum Gothic', sans-serif;*/
+    /*display: flex;*/
+    /*justify-content: center;*/
 }
 #reservation_content div{
     

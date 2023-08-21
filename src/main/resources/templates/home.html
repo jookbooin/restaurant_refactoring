@@ -4,31 +4,71 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" th:href="@{/css/template/styles.css}">
+
 </head>
 
 <body>
 
 <div class="main_site">
-  <nav>
-    <div class="navbar">
-      <div class="navbar_logo">
-        <a href="/"><img src="img/LOGO(1).png" alt="LOGO_img" width="100"></a>
-      </div>
-      <ul class="navbar_menu">
-        <li><a href="#main_About">About</a></li>
-        <li><a href="#main_Menu">Menu</a></li>
-        <li><a href="#main_Reservation">Reservation</a></li>
-        <li><a href="#main_Location">Location</a></li>
-        <li onclick="javascript:btn()"><a th:href="@{/members/info}">MyPage</a></li>
-        <!-- <li><a th:href="@{login/login}">MyPage</a></li> -->
-      </ul>
+  <!-- Navigation-->
+  <nav id="navbar-example2" class="navbar bg-body-tertiary px-3 mb-3">
+    <a class="navbar-brand" th:href="@{/}"><img src="img/LOGO(1).png" alt="LOGO_img" width="100"></a>
+    <ul class="nav nav-pills">
 
-      <ul class="navbar_member">
-        <li><a th:href="@{/members/login}">LOG-IN</a></li>
-        <li><a th:href="@{/members/register}">SIGN-UP</a></li>
-      </ul>
-    </div>
+     <li class="nav-item">
+        <a class="nav-link fs-4 text-reset" href="#main_About">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fs-4 text-reset"  href="#main_Menu">Menu</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fs-4 text-reset" href="#main_Reservation">Reservation</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fs-4 text-reset" href="#main_Location">Location</a>
+      </li>
+      <li class="nav-item" onclick="javascript:btn()">
+        <a class="nav-link fs-4 text-reset" th:href="@{/members/info}">MyPage</a>
+      </li>
+    </ul>
+
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a class="nav-link fs-6 text-reset" th:href="@{/members/login}">LOG-IN</a></li>
+      <li class="nav-item" ><a class="nav-link fs-6 text-reset" th:href="@{/members/register}">SIGN-UP</a></li>
+    </ul>
+
+      <!--      <li class="nav-item dropdown">-->
+<!--        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Dropdown</a>-->
+<!--        <ul class="dropdown-menu">-->
+<!--          <li><a class="dropdown-item" href="#scrollspyHeading3">Third</a></li>-->
+<!--          <li><a class="dropdown-item" href="#scrollspyHeading4">Fourth</a></li>-->
+<!--          <li><hr class="dropdown-divider"></li>-->
+<!--          <li><a class="dropdown-item" href="#scrollspyHeading5">Fifth</a></li>-->
+<!--        </ul>-->
+      </li>
+    </ul>
   </nav>
+<!--  <nav>-->
+<!--    <div class="navbar">-->
+<!--      <div class="navbar_logo">-->
+<!--        <a href="/"><img src="img/LOGO(1).png" alt="LOGO_img" width="100"></a>-->
+<!--      </div>-->
+<!--      <ul class="navbar_menu">-->
+<!--        <li><a href="#main_About">About</a></li>-->
+<!--        <li><a href="#main_Menu">Menu</a></li>-->
+<!--        <li><a href="#main_Reservation">Reservation</a></li>-->
+<!--        <li><a href="#main_Location">Location</a></li>-->
+<!--        <li onclick="javascript:btn()"><a th:href="@{/members/info}">MyPage</a></li>-->
+<!--        &lt;!&ndash; <li><a th:href="@{login/login}">MyPage</a></li> &ndash;&gt;-->
+<!--      </ul>-->
+
+<!--      <ul class="navbar_member">-->
+<!--        <li><a th:href="@{/members/login}">LOG-IN</a></li>-->
+<!--        <li><a th:href="@{/members/register}">SIGN-UP</a></li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </nav>-->
 </div>
 
 <div class="main_img_text">
@@ -121,20 +161,31 @@
 
     <li class="mainsite_section" id="main_Reservation">
       <div class="Reservation_header">
-        <div class="text_center">
-          <h2>Reservation</h2>
-          <hr>
-        </div>
-        <div id="reservation_content">
-          <div>
-            <button type="button" onclick="javascript:btn()">
-              <a class="" th:href="@{/reservation/advance}">사전 예약</a>
-            </button>
-            <p style="padding-top: 50px;">SWEB만의 사전 예약 서비스를 통해 웨이팅 없이 레스토랑을 즐겨보세요!</p>
+          <div class="text_center">
+            <h2>Reservation</h2>
+            <hr>
           </div>
-        </div>
       </div>
+
+        <div class=" my-auto p-2" >
+
+            <div id ="class-btn" class="container align-middle" style="height: 500px;">
+                <div  class="row gx-5">
+
+                    <div class="col d-grid">
+                      <a class="btn btn-primary btn-lg" role="button" th:href="@{/reservation/advance}"  onclick="javascript:btn()">사전 예약</a>
+                    </div>
+
+                    <div class="col d-grid">
+                      <a class="btn btn-secondary btn-lg" role="button" th:href="@{/reservation/advance}">당일 예약</a>
+                    </div>
+
+                </div>
+          </div>
+
+        </div>
     </li>
+
     <li class="mainsite_section" id="main_Location">
       <div class="Location_header">
         <div class="text_center">

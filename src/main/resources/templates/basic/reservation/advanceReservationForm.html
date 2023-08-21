@@ -111,9 +111,21 @@
                     </div>
                 </div>
 
-                <div id ="reservation_submit">
-                    <button type ="button" class="reservation_submit_btn btn btn-primary" >확인</button>
+        <hr class="my-2">
+
+        <div class="container px-4 text-center mt-4">
+                <div id ="reservation_submit " class="row gx-5">
+                    <div class="col d-grid">
+                            <button type ="button" id="reservation_submit_btn" class="btn btn-primary btn-lg" >확인</button>
+                    </div>
+                    <div class="col d-grid">
+                        <button  class=" btn btn-secondary btn-lg"  th:onclick="|location.href='@{/}'|">취소</button>
+                    </div>
                 </div>
+        </div>
+
+
+
 
     </div>
 </div>
@@ -132,7 +144,7 @@
 </script>
 <script >
 
-    $(".reservation_submit_btn").on("click", function(){
+    $("#reservation_submit_btn").on("click", function(){
 
         // let reservationForm = new Object();
 

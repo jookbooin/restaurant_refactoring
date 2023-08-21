@@ -32,11 +32,11 @@
         margin: 20px;
     }
 
-    #submit_cancel_btn {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
+    /*#submit_cancel_btn {*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    margin-bottom: 10px;*/
+    /*}*/
 
     .reservation_submit_btn {
         margin: 15px;
@@ -98,12 +98,20 @@
         <div>
             <label>결제 금액 : </label>
             <span th:text="|${totalPrice}원|">이름 개수</span>
-        </div>
 
 
-        <div id ="submit_cancel_btn">
-            <button  class="reservation_submit_btn btn btn-primary" >예약 확정</button>
-            <button  class="reservation_cancel_btn btn btn-primary"  th:onclick="|location.href='@{/}'|">취소</button>
+        <hr class="my-2">
+
+
+        <div class="container px-4 text-center mt-4">
+            <div id ="reservation_submit " class="row gx-5">
+                <div class="col d-grid">
+                    <button type ="button" id="reservation_submit_btn" class="btn btn-primary btn-lg" >확인</button>
+                </div>
+                <div class="col d-grid">
+                    <button  class=" btn btn-secondary btn-lg"  th:onclick="|location.href='@{/}'|">취소</button>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -117,7 +125,7 @@
 
 <script >
 
-    $(".reservation_submit_btn").on("click", function() {
+    $("#reservation_submit_btn").on("click", function() {
 
         $(".reservation_menu_list").each((function (index, item) {
 
