@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
-import com.restaurant.reservation.repository.dto.MemberSearchCondition;
+import com.restaurant.reservation.repository.dto.MemberSearch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     }
 
     @Override
-    public Page<Member> findMemberSearchCondition(MemberSearchCondition condition, Pageable pageable) {
+    public Page<Member> findMemberSearchCondition(MemberSearch memberSearch, Pageable pageable) {
         /**
          * searchType : name
          * searchInput : % 이승 %
@@ -41,8 +41,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
         List<Member> content = queryFactory.selectFrom(member)
                 .where(
-                        conditionAndRole(condition.getSearchType(), condition.getKeyword(), MemberRole.CUSTOMER),
-                        gradeEq(condition.getGrades())
+                        conditionAndRole(memberSearch.getSearchType(), memberSearch.getKeyword(), MemberRole.CUSTOMER),
+                        gradeEq(memberSearch.getGrades())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -52,8 +52,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         JPAQuery<Member> countQuery = queryFactory
                 .selectFrom(member)
                 .where(
-                        searchCondition(condition.getSearchType(), condition.getKeyword()),
-                        gradeEq(condition.getGrades())
+                        searchCondition(memberSearch.getSearchType(), memberSearch.getKeyword()),
+                        gradeEq(memberSearch.getGrades())
                        );
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchCount());

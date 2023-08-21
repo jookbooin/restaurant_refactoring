@@ -13,7 +13,7 @@ import java.util.List;
 /** 사용자 MyPage에 예약 목록을 전달하는 Dto */
 @Setter
 @Getter
-public class BookingWebDto {
+public class MyBookingWebDto {
 
     /** 0729
      * Pre 조회때 reservation - waiting 문제점
@@ -37,9 +37,9 @@ public class BookingWebDto {
     private List<OrderMenuWebDto> orderMenuList = new ArrayList<>();
 
 
-    public static BookingWebDto createDto(Reservation reservation){
+    public static MyBookingWebDto createDto(Reservation reservation){
 
-        BookingWebDto webDto = new BookingWebDto();
+        MyBookingWebDto webDto = new MyBookingWebDto();
         webDto.setId(reservation.getId());
         webDto.setNumber(reservation.getNumber());
 

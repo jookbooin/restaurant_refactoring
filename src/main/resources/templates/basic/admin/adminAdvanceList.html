@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base/adminBase :: layout(~{::title},~{::link},~{::div})}">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>adminMemberList</title>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+
+    <!-- 옮길 css 파일 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+</head>
+
+<body>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4" th:text="|방문 예정|">안녕하세요. </h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="index.html">대쉬보드</a></li>
+                    <li class="breadcrumb-item active">Static Navigation</li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="mb-0">
+                            AdminController :
+                            <code>/admin/advance/list</code>
+                        <div></div>
+                        AdminApiController
+                        <code>/Admin/complete/list</code>
+
+                        </p>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        데이터 테이블 이그젬플
+                    </div>
+                    <div class="card-body">
+
+                        <form class="" th:object="${bookingSearch}">
+
+                            <div class="d-flex justify-content-end">
+                                <div class="d-flex flex-column gap-2">
+                                    <div id="up" class="row g-2">
+                                        <div class="col-4">
+                                            <select class="form-select" id="searchType" th:field="*{searchType}">
+                                                <option value="">검색 조건</option>
+                                                <option value="name">이름</option>
+                                                <option value="phoneNumber">번호</option>
+                                                <option value="number">인원수</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                                                       aria-describedby="btnNavbarSearch" th:field="*{keyword}" />
+                                                <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i
+                                                        class="fas fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="down" class="row g-2">
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <input class="form-control" type="date" th:field="*{startDate}"  placeholder="Search for..." aria-label="Search for..."
+                                                       aria-describedby="btnNavbarSearch" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="input-group">
+                                                <input class="form-control" type="date" th:field="*{endDate}" placeholder="Search for..." aria-label="Search for..."
+                                                       aria-describedby="btnNavbarSearch" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <table class="table table-hover table-striped mt-4">
+                            <thead >
+                            <tr>
+                                <th>번호</th>
+                                <th>주문번호</th>
+                                <th>이름</th>
+                                <th>번호</th>
+                                <th>인원수</th>
+                                <th>예약일</th>
+                                <th>예약 시간</th>
+                                <th>예약 기록</th>
+                                <th></th>
+
+                            </tr>
+                            </thead>
+
+
+                            <tbody id="member-table-body">
+                            <tr th:each="content : ${dtoPage.content}">
+                                <th scope="row">start</th>
+                                <td th:text="${content.id}">주문번호</td>
+                                <td th:text="${content.name}">이름</td>
+                                <td th:text="${content.phoneNumber}">번호</td>
+                                <td th:text="${content.number}">인원수</td>
+                                <td th:text="${content.date}">예약일</td>
+                                <td th:text="${content.time}">예약 시간</td>
+                                <td th:text="${content.modifiedDate}">예약</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center"
+                            th:with="maxSize=10,
+                           totalPages=${dtoPage.totalPages},
+                           start=${(dtoPage.number/maxSize)*maxSize + 1},
+                           end=${(dtoPage.totalPages == 0) ? 1 : (start + (maxSize - 1) < totalPages ? start + (maxSize - 1) : totalPages)}
+                           ">
+
+                            <li th:if="${start > 1}" class='on page-item'>
+                                <a class='page-link' th:href="@{/admin/advance/list(page=0,searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" th:text="'<<'"></a>
+                            </li>
+                            <li th:if="${start > 1}" class='on page-item'>
+                                <a class='page-link' th:href="@{/admin/advance/list(page=${start - 2})}" th:text="'<'"></a>
+                            </li>
+
+                            <li th:each="pos: ${#numbers.sequence(start, end)}" class='on page-item'>
+                                <a class='page-link' th:text="${pos}" th:href="@{/admin/advance/list(page=${pos - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" ></a>
+                            </li>
+
+                            <li th:if="${end < totalPages}" class='on page-item'>
+                                <a class='page-link' th:href="@{/admin/advance/list(page=${start + maxSize - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"   th:text="'>'"></a>
+                            </li>
+                            <li th:if="${end < totalPages}" class='on page-item'>
+                                <a class='page-link' th:href="@{/admin/advance/list(page=${totalPages -1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"  th:text="'>>'"></a>
+                            </li>
+
+                        </ul>
+                    </nav>
+
+
+                </div>
+            </div>
+        </main>
+
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

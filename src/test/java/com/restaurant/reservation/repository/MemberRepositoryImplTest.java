@@ -5,7 +5,7 @@ import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.domain.members.MemberInfo;
-import com.restaurant.reservation.repository.dto.MemberSearchCondition;
+import com.restaurant.reservation.repository.dto.MemberSearch;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -25,13 +26,11 @@ class MemberRepositoryImplTest {
 
     @BeforeEach
     public void before(){
-        List<String> emailList = new ArrayList<>();
-        emailList.add("naver");
-        emailList.add("gmail");
-        emailList.add("kkao");
+
+        List<String> emailList = Arrays.asList("@naver.com","@gmail.com","@empal.com");
 
         List<String> nameList = new ArrayList<>();
-        nameList.add("cccc");
+        nameList.add("고객");
         nameList.add("zzzz");
         nameList.add("ttttt");
         nameList.add("bbb");
@@ -68,7 +67,7 @@ class MemberRepositoryImplTest {
 
         PageRequest pageRequest = PageRequest.of(0,5);
 
-        MemberSearchCondition msc = new MemberSearchCondition();
+        MemberSearch msc = new MemberSearch();
 
         msc.getGrades().add(MemberGrade.BRONZE);
         msc.getGrades().add(MemberGrade.SILVER);

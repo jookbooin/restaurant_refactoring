@@ -8,9 +8,9 @@
 .reservation {
     margin: 20px 0;
 }
-#number{
-    width: 30px;
-}
+/*#number{*/
+/*    width: 30px;*/
+/*}*/
 .menu_box {
     display: flex;
     flex-direction: row;
@@ -30,10 +30,10 @@
 
 }
 
-.menu_count{
-    width: 30px;
-}
+/*.menu_count{*/
+/*    width: 30px;*/
+/*}*/
 
-.reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{
-    margin: 20px;
-}
+/*.reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{*/
+/*    margin: 20px;*/
+/*}*/

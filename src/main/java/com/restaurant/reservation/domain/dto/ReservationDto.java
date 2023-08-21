@@ -4,7 +4,6 @@ import com.restaurant.reservation.api.request.UpdateReservationRequest;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 
 @ToString
 @Getter
-@Setter
 @Builder
 public class ReservationDto {
     private Long rid;
@@ -22,7 +20,7 @@ public class ReservationDto {
     private LocalDate date;
     private LocalTime time;
 
-    private List<OrderMenuDto> orderMenuList;
+    private List<OrderMenuDto> orderMenuList ;
 
     public static ReservationDto requestToDto(UpdateReservationRequest request){
 

@@ -24,6 +24,7 @@ import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Profile("local")
@@ -36,7 +37,7 @@ public class InitDb {
     @PostConstruct // bean에 올라오면 spring이 불러오는 것 : 초기화
     public void init() {
         initService.InitDb();
-        initService.InitMember();
+        initService.plus_Member_Reservation();
     }
 
     @Component
@@ -247,42 +248,94 @@ public class InitDb {
 
         }
 
-        public void InitMember() {
-            List<String> emailList = new ArrayList<>();
-            emailList.add("naver");
-            emailList.add("gmail");
-            emailList.add("empail");
+        public void plus_Member_Reservation() {
+            /** date */
+            LocalDate date9 = LocalDate.of(2023, 9, 11);
+            LocalTime time9 = LocalTime.of(13, 0, 0);
 
-            List<String> nameList = new ArrayList<>();
-            nameList.add("cccc");
-            nameList.add("zzzz");
-            nameList.add("ttttt");
-            nameList.add("bbb");
+            LocalDate date10 = LocalDate.of(2023, 9, 11);
+            LocalTime time10 = LocalTime.of(16, 0, 0);
+
+            LocalDate date11 = LocalDate.of(2023, 9, 11);
+            LocalTime time11 = LocalTime.of(19, 0, 0);
+
+            LocalDate date12 = LocalDate.of(2023, 10, 14);
+            LocalTime time12 = LocalTime.of(19, 0, 0);
+
+            LocalDate date13 = LocalDate.of(2023, 10, 13);
+            LocalTime time13 = LocalTime.of(19, 0, 0);
+
+            LocalDate date14 = LocalDate.of(2023, 10, 14);
+            LocalTime time14 = LocalTime.of(15, 0, 0);
+
+            LocalDate date15 = LocalDate.of(2023, 10, 15);
+            LocalTime time15 = LocalTime.of(12, 0, 0);
+
+            LocalDate date16 = LocalDate.of(2023, 10, 16);
+            LocalTime time16 = LocalTime.of(16, 0, 0);
+
+            LocalDate date17 = LocalDate.of(2023, 10, 17);
+            LocalTime time17 = LocalTime.of(14, 0, 0);
+
+            LocalDate date18 = LocalDate.of(2023, 10, 18);
+            LocalTime time18 = LocalTime.of(19, 0, 0);
+
+            LocalDate date19 = LocalDate.of(2023, 11, 11);
+            LocalTime time19 = LocalTime.of(12, 0, 0);
+
+            LocalDate date20 = LocalDate.of(2023, 11, 20);
+            LocalTime time20 = LocalTime.of(15, 0, 0);
+
+
+            /** reservation */
+            List<ReservationDto> reservationList = new ArrayList<>();
+            ReservationDto reservationDto9 = ReservationDto.builder() .date(date9).time(time9).number(4).build();
+            ReservationDto reservationDto10 = ReservationDto.builder().date(date10).time(time10).number(4).build();
+            ReservationDto reservationDto11 = ReservationDto.builder().date(date11).time(time11).number(2).build();
+            ReservationDto reservationDto12 = ReservationDto.builder().date(date12).time(time12).number(3).build();
+            ReservationDto reservationDto13 = ReservationDto.builder().date(date13).time(time13).number(6).build();
+            ReservationDto reservationDto14 = ReservationDto.builder().date(date14).time(time14).number(4).build();
+            ReservationDto reservationDto15 = ReservationDto.builder().date(date15).time(time15).number(8).build();
+            ReservationDto reservationDto16 = ReservationDto.builder().date(date16).time(time16).number(4).build();
+            ReservationDto reservationDto17 = ReservationDto.builder().date(date17).time(time17).number(5).build();
+            ReservationDto reservationDto18 = ReservationDto.builder().date(date18).time(time18).number(6).build();
+            ReservationDto reservationDto19 = ReservationDto.builder().date(date19).time(time19).number(3).build();
+            ReservationDto reservationDto20 = ReservationDto.builder().date(date20).time(time20).number(7).build();
+            reservationList.add(reservationDto9);reservationList.add(reservationDto10);
+            reservationList.add(reservationDto11);reservationList.add(reservationDto12);
+            reservationList.add(reservationDto13);reservationList.add(reservationDto14);
+            reservationList.add(reservationDto15);reservationList.add(reservationDto16);
+            reservationList.add(reservationDto17);reservationList.add(reservationDto18);
+            reservationList.add(reservationDto19);reservationList.add(reservationDto20);
+
+            /** Member */
+            List<String> emailList = Arrays.asList("@naver.com","@gmail.com","@empal.com","@kakao.com");
+            List<String> nameList = Arrays.asList("이승헌","감스트","죽부인","마우스");
+            List<String> phoneList = Arrays.asList("02","010","031","052");
+
 
 
             for (int i = 3; i < 103; i++) {
-                MemberDto memberDto = MemberDto.builder()
-                        .email("3670lsh@naver.c"+i)
-                        .password("dltmdgjs413!"+i)
-                        .name("고객"+i)
-                        .phoneNumber("010719741"+i)
-                        .build();
+                int four = i % 4 ;
 
-                int divInt = i % 4 ;
-                MemberInfo info = new MemberInfo(nameList.get(divInt), memberDto.getPhoneNumber());
-
+                MemberInfo info = new MemberInfo(nameList.get(four),"010"+i);
                 Member member = null;
 
-                if (i%3==1){
-                    member = new Member(emailList.get(1)+i, memberDto.getPassword(), info , MemberGrade.BRONZE, MemberRole.CUSTOMER);
+                if (i%4==1){
+                    member = new Member(emailList.get(1), "1", info , MemberGrade.BRONZE, MemberRole.CUSTOMER);
                 }
-                else if (i%3==2){
-                    member = new Member(emailList.get(2)+i, memberDto.getPassword(), info , MemberGrade.SILVER, MemberRole.CUSTOMER);
+                else if (i%4==2){
+                    member = new Member(emailList.get(2), "1", info , MemberGrade.SILVER, MemberRole.CUSTOMER);
                 }
+                else if (i%4==3)
+                    member =  new Member(emailList.get(0), "1", info , MemberGrade.GOLD, MemberRole.CUSTOMER);
                 else
-                    member =  new Member(emailList.get(0)+i, memberDto.getPassword(), info , MemberGrade.GOLD, MemberRole.CUSTOMER);
-//
-                memberRepository.save(member);
+                    member =  new Member(emailList.get(0), "1", info , MemberGrade.BRONZE, MemberRole.CUSTOMER);
+
+                Member findMember = memberRepository.save(member);
+
+                int twelve= i%12;
+                reservationService.addReservation(findMember.getId(), reservationList.get(twelve));
             }
         }
 

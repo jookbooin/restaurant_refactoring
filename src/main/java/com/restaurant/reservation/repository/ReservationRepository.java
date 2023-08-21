@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation,Long> {
+public interface ReservationRepository extends JpaRepository<Reservation,Long> , ReservatinoRepositoryCustom{
 
     /** 단순 조회 */
     @Query("select r From Reservation r" +
             " where r.member.id=:id and r.date >= CURRENT_DATE" +
             " order by r.date,r.time")
     List<Reservation> findReservationAdvance(@Param("id") Long id);
+
 
     @Query("select r From Reservation r" +
             " where r.member.id=:id and r.date <= CURRENT_DATE and r.status = 'COMPLETE'" +
@@ -33,6 +34,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("SELECT r FROM Reservation r " +
             "JOIN FETCH r.member m WHERE r.id = :rid AND m.id = :memberId")
     Optional<Reservation> fetchReservationByIdMember_Id(@Param("rid") Long rid, @Param("memberId") Long memberId);
+
 
 
 

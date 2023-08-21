@@ -53,9 +53,11 @@ public class Reservation extends Booking {
         Reservation reservation = new Reservation(member,reservationDto.getTime());
         reservation.setDate(reservationDto.getDate());
         reservation.setNumber(reservationDto.getNumber());
+
         for (OrderMenu orderMenu : orderMenuList) {
             reservation.addOrderMenu(orderMenu);
         }
+
         reservation.setStatus(BookingStatus.ADVANCE);
         return reservation;
 

@@ -1,4 +1,4 @@
-package com.restaurant.reservation.basic;
+package com.restaurant.reservation.staticClass;
 
 import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.TimeEnum;

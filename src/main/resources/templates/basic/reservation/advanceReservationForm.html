@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>ReservationForm</title>
     <link rel="stylesheet" th:href="@{/css/reservation/advanceReservation.css}">
+    <link rel="stylesheet" th:href="@{/css/template/styles.css}">
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
@@ -52,40 +53,45 @@
 <!--</style>-->
 <body>
 
-<div class="wrap">
+<div class="wrap justify-content-center">
     <div class="reservation">
         <h3>1. 사전 예약 페이지</h3>
 
         <form method="post" role="form" class="advanceForm" th:action="@{/reservation/advance/payment}" th:object="${form}">
-            <div id="reservation_content">
-                <div class="reservation_number">
-                    <label>인원수</label>
-                    <input id="number"  name="number" placeholder="인원수을 입력하세요"
-                           type="number"  value="1" min="1">
-                </div>
 
-                <div class="reservation_date">
-                    <label>날 짜</label>
-                    <input  id="date" name="date" th:field="*{date}" placeholder="날짜를 입력하세요"
-                            type="date">
+            <div class="row mb-3">
+                <label  class="col-sm-2 col-form-label">인원수</label>
+                <div class="reservation_number col-sm-10">
+                    <input class="form-control" id="number"  name="number" th:field="*{number}" type="number"  min="0" max="8" value="0">
                 </div>
+            </div>
 
-                <div class="reservation_time">
-                    <label>시 간</label>
-                    <select id="time" name="time">
+
+
+            <div class="row mb-3">
+                <label  class="col-sm-2 col-form-label">날 짜</label>
+                <div class="reservation_date col-sm-10">
+                    <input class="form-control" id="date" name="date" th:field="*{date}" placeholder="날짜를 입력하세요" type="date">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label  class="col-sm-2 col-form-label">시 간</label>
+                <div class="reservation_date col-sm-10">
+                    <select class="form-select" id="time" name="time">
                         <option value="">예약시간</option>
                         <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
                                 th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
                     </select>
                 </div>
-
             </div>
+
         </form>
 
         <!-- input 한 값들을 count >0 인 것들만 form 내부로 집어넣는다??? -->
-                <div th:each="menu : ${menuList}" class="reservation_menu_list">
+                <div th:each="menu : ${menuList}" class="reservation_menu_list ">
 
-                    <div th:id="${menu.id}" class="menu_box" >
+                    <div th:id="${menu.id}" class="menu_box " >
                         <!-- count 가 0 이상일 때 → id 전달 -->
                         <input type="hidden" class="menu_id" th:value="${menu.id}" th:attr="data-menu-id=${menu.id}">
                         <input type="hidden" class="menu_name" th:value="${menu.name}" th:attr="data-menu-name=${menu.name}">
@@ -98,14 +104,15 @@
                             </div >
                             <span th:text="${menu.intro}">intro</span>
                         </div>
+
                         <div class="ordermenu_count">
-                            <input name=""  type="number" class="menu_count" min="0" max="8" value="0" ><!--count 전달 -->
+                            <input  name=""  type="number" class="menu_count form-control" min="0" max="8" value="0" ><!--count 전달 -->
                         </div>
                     </div>
                 </div>
 
                 <div id ="reservation_submit">
-                <button type ="button" class="reservation_submit_btn" >확인</button>
+                    <button type ="button" class="reservation_submit_btn btn btn-primary" >확인</button>
                 </div>
 
     </div>

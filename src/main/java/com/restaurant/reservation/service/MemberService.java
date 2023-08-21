@@ -3,7 +3,7 @@ package com.restaurant.reservation.service;
 import com.restaurant.reservation.domain.dto.MemberDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
-import com.restaurant.reservation.repository.dto.MemberSearchCondition;
+import com.restaurant.reservation.repository.dto.MemberSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -66,7 +66,7 @@ public class MemberService {
         findMember.update(memberDto.getEmail(), memberDto.getPassword());
         log.info("update!");
     }
-    public Page<Member> findMemberAll(MemberSearchCondition condition , Pageable pageable){
+    public Page<Member> findMemberAll(MemberSearch condition , Pageable pageable){
 
         Page<Member> memberPage = memberRepository.findMemberSearchCondition(condition, pageable);
         return memberPage;

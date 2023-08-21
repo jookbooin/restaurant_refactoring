@@ -1,10 +1,14 @@
 package com.restaurant.reservation.api;
 
+import com.restaurant.reservation.api.dto.BookingSearchApi;
 import com.restaurant.reservation.api.dto.MemberApiDto;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
-import com.restaurant.reservation.repository.dto.MemberSearchCondition;
+import com.restaurant.reservation.repository.ReservationRepository;
+import com.restaurant.reservation.repository.dto.BookingSearch;
+import com.restaurant.reservation.repository.dto.BookingSearchDto;
+import com.restaurant.reservation.repository.dto.MemberSearch;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,7 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminApiController {
 
     private final MemberRepository memberRepository;
-    @GetMapping("/api/admin/member/manage")
+    private final ReservationRepository reservationRepository;
+    @GetMapping("/api/admin/member/list")
     public Page<MemberApiDto> memberManageList(@PageableDefault(page = 0,sort = "id") Pageable pageable){
 
         /**
@@ -35,7 +40,7 @@ public class AdminApiController {
     }
 
     @GetMapping("/api/admin/member/search")
-    public Page<MemberApiDto> memberSearchList(MemberSearchCondition condition , @PageableDefault(page = 0,size = 5) Pageable pageable){
+    public Page<MemberApiDto> memberSearchList(MemberSearch condition , @PageableDefault(page = 0,size = 5) Pageable pageable){
         log.info("condition : {}",condition.getSearchType());
         log.info("condition : {}",condition.getKeyword());
 
@@ -50,6 +55,27 @@ public class AdminApiController {
         Page<MemberApiDto> apiDtoPage = result.map(o -> MemberApiDto.createDto(o));
 
         return apiDtoPage;
+    }
+
+
+    /** api는 Jackson 라이브러리 써야한다고 한다. -> 임의로 java로 parsing함.*/
+    @GetMapping("/api/admin/advance/list")
+    public Page<BookingSearchDto> advanceList(BookingSearchApi bookingSearchApi, @PageableDefault(page = 0,size = 10)Pageable pageable){
+
+        log.info("bookingSearchApi : {}",bookingSearchApi);
+        log.info("pageable : {}",pageable);
+        BookingSearch bookingSearch = BookingSearch.TransformApi(bookingSearchApi);
+        log.info("bookingSearch : {}",bookingSearch);
+        log.info("=== Before ==");
+
+        Page<BookingSearchDto> result = reservationRepository.findAllAdvanceReservation(bookingSearch, pageable);
+
+        log.info("=== After ===");
+        log.info("totalPage : {}",result.getTotalPages());
+        log.info("totalElements : {}",result.getTotalElements());
+        log.info("numberOfElements : {}",result.getNumberOfElements());
+        log.info("number : {}",result.getNumber());
+        return result;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.restaurant.reservation.basic;
+package com.restaurant.reservation.staticClass;
 
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
