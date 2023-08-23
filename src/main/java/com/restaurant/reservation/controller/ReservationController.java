@@ -40,7 +40,7 @@ public class ReservationController {
         List<MenuDto> specialMenuList = menuService.findSpecialMenu();
         model.addAttribute("menuList",specialMenuList);
 
-        return "basic/reservation/advanceReservationForm";
+        return "basic/booking/advanceReservationForm";
     }
 
 
@@ -65,7 +65,7 @@ public class ReservationController {
         model.addAttribute("orderMenuList",orderMenuList);
         model.addAttribute("totalPrice",totalPrice);
 
-        return "basic/reservation/confirmDocument";
+        return "basic/booking/confirmDocument";
     }
 
     @PostMapping("/reservation/advance/payment")
@@ -89,7 +89,7 @@ public class ReservationController {
             log.info("검증 오류 발생 errors = {}", bindingResult);
             List<MenuDto> specialMenuList = menuService.findSpecialMenu();
             model.addAttribute("menuList",specialMenuList);
-            return "basic/reservation/advanceReservationForm";
+            return "basic/booking/advanceReservationForm";
         }
 
         redirectAttributes.addFlashAttribute("advanceReservation",advanceReservation);
