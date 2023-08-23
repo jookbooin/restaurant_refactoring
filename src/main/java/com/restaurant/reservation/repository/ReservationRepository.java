@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,12 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> ,
     Optional<Reservation> fetchReservationByIdMember_Id(@Param("rid") Long rid, @Param("memberId") Long memberId);
 
 
+    @Query("SELECT r.time , count(*) FROM Reservation r " +
+            "where r.date =:date and r.status = 'ADVANCE' " +
+            "group by  r.time " +
+            "having count(*) = :limit " +
+            "order by r.time")
+    List<Object[]> findPossibleTimeByDate(@Param("date") LocalDate date , @Param("limit") Long limit);
 
 
     /** Service 로직 */

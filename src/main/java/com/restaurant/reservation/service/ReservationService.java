@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,8 @@ public class ReservationService {
     private final MemberRepository memberRepository;
     private final MenuRepository menuRepository;
     private final ReservationRepository reservationRepository;
+
+    private final Long limit = 9L;
 
 
     @Transactional
@@ -72,6 +76,18 @@ public class ReservationService {
         if(reservation.getOrderMenus().size()>0)
             return reservation.getOrderMenus();
         return null;
+    }
+
+    public List<LocalTime> findPossibleTime(LocalDate date){
+        List<Object[]> objectList = reservationRepository.findPossibleTimeByDate(date, limit);
+        log.info("objectList : {}",objectList);
+        List<LocalTime> collect = null;
+        try {
+            collect = objectList.stream().map(objects -> (LocalTime) objects[0]).collect(Collectors.toList());
+        } catch (ClassCastException e) {
+            throw new RuntimeException(e);
+        }
+        return collect;
     }
 
     /**

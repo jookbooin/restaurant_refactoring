@@ -23,11 +23,11 @@ import java.util.List;
 @DiscriminatorValue("예약")
 @EntityListeners(AuditingEntityListener.class)
 public class Reservation extends Booking {
-
-    private LocalTime time; // 사전 예약 시간 -> enum으로 돌릴지 보류
+    private LocalDate date; //방문 예정 날짜 2023-09-11
+    private LocalTime time; //방문 예정 시간 11:00 , 12:00
 
     @LastModifiedDate
-    private LocalDate modifiedDate;  /** 예약 시점 + 예약 변경 시점  <-> 위약금 비교하기위해서 필요*/
+    private LocalDate modifiedDate;  /** 예약 시점 + 예약 변경 시점 날짜  <-> 위약금 비교하기위해서 필요*/
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,9 +54,10 @@ public class Reservation extends Booking {
         reservation.setDate(reservationDto.getDate());
         reservation.setNumber(reservationDto.getNumber());
 
-        for (OrderMenu orderMenu : orderMenuList) {
-            reservation.addOrderMenu(orderMenu);
-        }
+        if (orderMenuList != null)
+            for (OrderMenu orderMenu : orderMenuList) {
+                reservation.addOrderMenu(orderMenu);
+            }
 
         reservation.setStatus(BookingStatus.ADVANCE);
         return reservation;
@@ -69,8 +70,9 @@ public class Reservation extends Booking {
     }
 
     public void updateReservation(ReservationDto reservationDto){
+        this.date =reservationDto.getDate();
         this.time = reservationDto.getTime();
-        super.setDate(reservationDto.getDate());
+//        super.setDate(reservationDto.getDate());
         super.setNumber(reservationDto.getNumber());
     }
 

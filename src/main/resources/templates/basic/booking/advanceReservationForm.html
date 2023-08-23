@@ -10,83 +10,47 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!--<style>-->
-<!--    .wrap {-->
-<!--        display: flex;-->
-<!--        flex-direction: column;-->
-<!--        max-width: 50%;-->
-<!--        margin: 0 auto;-->
-<!--    }-->
 
-<!--    .reservation {-->
-<!--        margin: 20px 0;-->
-<!--    }-->
-<!--    #number{-->
-<!--        width: 30px;-->
-<!--    }-->
-<!--    .menu_box {-->
-<!--        display: flex;-->
-<!--        flex-direction: row;-->
-<!--        margin: 20px;-->
-<!--    }-->
-<!--    .ordermenu_info{-->
-<!--        flex-grow: 3;-->
-<!--        width: 100px;-->
-<!--    }-->
-<!--    .ordermenu_count {-->
-<!--        flex-grow: 1;-->
-<!--        width: 100px;-->
-<!--        display: flex;-->
-<!--        justify-content: center;-->
-<!--        align-items: center;-->
-
-
-<!--    }-->
-
-<!--    .menu_count{-->
-<!--        width: 30px;-->
-<!--    }-->
-
-<!--    .reservation_number,.reservation_date,.reservation_time,.reservation_menu_list{-->
-<!--        margin: 20px;-->
-<!--    }-->
-<!--</style>-->
 <body>
 
 <div class="wrap justify-content-center">
     <div class="reservation">
-        <h3>1. 사전 예약 페이지</h3>
+        <h3 class = "mt-lg-5 ">1. 사전 예약 페이지</h3>
 
-        <form method="post" role="form" class="advanceForm" th:action="@{/reservation/advance/payment}" th:object="${form}">
+        <hr class="my-2">
 
-            <div class="row mb-3">
-                <label  class="col-sm-2 col-form-label">인원수</label>
-                <div class="reservation_number col-sm-10">
-                    <input class="form-control" id="number"  name="number" th:field="*{number}" type="number"  min="0" max="8" value="0">
+        <div class ="mt-4">
+            <form method="post" role="form" class="advanceForm" th:action="@{/reservation/advance/payment}" th:object="${form}">
+
+                <div class="row mb-3">
+                    <label  class="col-sm-2 col-form-label">인원수</label>
+                    <div class="reservation_number col-sm-10">
+                        <input class="form-control" id="number"  name="number" th:field="*{number}" type="number"  min="0" max="8" value="0">
+                    </div>
                 </div>
-            </div>
 
 
 
-            <div class="row mb-3">
-                <label  class="col-sm-2 col-form-label">날 짜</label>
-                <div class="reservation_date col-sm-10">
-                    <input class="form-control" id="date" name="date" th:field="*{date}" placeholder="날짜를 입력하세요" type="date">
+                <div class="row mb-3">
+                    <label  class="col-sm-2 col-form-label">날 짜</label>
+                    <div class="reservation_date col-sm-10">
+                        <input class="form-control" id="date" name="date" th:field="*{date}" placeholder="날짜를 입력하세요" type="date">
+                    </div>
                 </div>
-            </div>
 
-            <div class="row mb-3">
-                <label  class="col-sm-2 col-form-label">시 간</label>
-                <div class="reservation_date col-sm-10">
-                    <select class="form-select" id="time" name="time">
-                        <option value="">예약시간</option>
-                        <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
-                                th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
-                    </select>
+                <div class="row mb-3">
+                    <label  class="col-sm-2 col-form-label">시 간</label>
+                    <div class="reservation_date col-sm-10">
+                        <select class="form-select" id="time" name="time">
+                            <option value="" disabled selected>예약시간</option>
+                            <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
+                                    th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-        </form>
+            </form>
+        </div>
 
         <!-- input 한 값들을 count >0 인 것들만 form 내부로 집어넣는다??? -->
                 <div th:each="menu : ${menuList}" class="reservation_menu_list ">
@@ -208,6 +172,51 @@
             return;
         }
         $(".advanceForm").submit();
+    });
+
+</script>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#time').prop('disabled', true);
+
+        $('#date').change(function () {
+            let selectedDate = $(this).val(); // 선택된 날짜 값 가져오기
+            $('#time').prop('disabled', false);
+
+            // AJAX 요청 보내기
+            $.ajax({
+                type: 'GET',
+                url: '/api/reservation/'+selectedDate+"/time",
+                success: function (result) {
+                    let resultArray = result.data;
+
+                    $('#time').empty();
+
+                    for(let i = 0; i < resultArray.length; i++) {
+                        let item = resultArray[i];
+                        let time = item.time;
+                        let check = item.check;
+
+                        let option = $('<option>').val(time);
+                        if (check === 1) {
+                            option.attr('disabled', 'disabled').text(time+' - 예약 완료');
+
+                        }else{
+                            option.text(time)
+                        }
+
+                        $('#time').append(option);
+                    }
+                },
+                error: function (result) {
+
+                }
+
+            });
+        });
     });
 
 </script>
