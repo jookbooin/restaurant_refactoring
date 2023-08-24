@@ -31,7 +31,7 @@ public class ReservationService {
     private final MenuRepository menuRepository;
     private final ReservationRepository reservationRepository;
 
-    private final Long limit = 9L;
+    private final Long limit = 10L;
 
 
     @Transactional

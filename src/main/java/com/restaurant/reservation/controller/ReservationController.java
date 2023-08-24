@@ -73,16 +73,24 @@ public class ReservationController {
 
         log.info("POST : /reservation/advance/payment");
         log.info("넘어온 객체 출력 : {}",advanceReservation);
+        int menuCount = 0;
 
-        int totalCount = Optional.ofNullable(advanceReservation.getOrderMenuList())
-                .map(list -> list.stream().mapToInt(o -> o.getCount())
-                        .sum())
-                .orElse(0);
+        if (advanceReservation.getOrderMenuList().size()>0) {
+            menuCount = Optional.ofNullable(advanceReservation.getOrderMenuList())
+                    .map(list -> list.stream().mapToInt(o -> o.getCount())
+                            .sum())
+                    .orElse(0);
+        }
 
-        if( totalCount < advanceReservation.getNumber() && totalCount >= 0 ){
+        if(advanceReservation.getNumber() == null){
+            bindingResult.rejectValue("number","number.min",new Object[]{1},null);
+        }else if(menuCount == 0){
+            bindingResult.rejectValue("orderMenuList","orderMenuList","인원 수 만큼 주문하셔야합니다");
+        }
+        else if( menuCount < advanceReservation.getNumber()){
             log.info("주문 메뉴 개수: {}", advanceReservation.getOrderMenuList().size());
             log.info("신청 인원수 : : {}", advanceReservation.getNumber());
-            bindingResult.rejectValue("orderMenuList","listSize");
+            bindingResult.rejectValue("orderMenuList","orderMenuList.menuCount",new Object[]{advanceReservation.getNumber()},null);
         }
 
         if(bindingResult.hasErrors()){

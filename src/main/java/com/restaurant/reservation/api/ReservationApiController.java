@@ -24,18 +24,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationApiController {
 
-
-
     private final ReservationService reservationService;
     @GetMapping("/api/reservation/{date}/time")
     public ResponseEntity<OneListResult> findPossibleTime(@PathVariable("date") String date){
         log.info("date : {}",date);
         List<LocalTime> possibleTimeList = null;
         LocalDate localDate = LocalDate.parse(date);
+
         try {
             possibleTimeList = reservationService.findPossibleTime(localDate);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            List<String> original = Arrays.stream(TimeEnum.values()).map(o -> o.getTime()).collect(Collectors.toList());
+            return new ResponseEntity<>(new OneListResult(original),HttpStatus.BAD_REQUEST);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a h:mm");

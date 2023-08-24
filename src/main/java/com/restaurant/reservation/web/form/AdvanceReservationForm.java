@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Setter
 public class AdvanceReservationForm {
     @NotNull
+    @Min(1)
     private Integer number;
     @NotBlank
     private String date;

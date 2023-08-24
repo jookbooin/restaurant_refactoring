@@ -42,9 +42,7 @@
                     <label  class="col-sm-2 col-form-label">시 간</label>
                     <div class="reservation_date col-sm-10">
                         <select class="form-select" id="time" name="time">
-                            <option value="" disabled selected>예약시간</option>
-                            <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
-                                    th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
+
                         </select>
                     </div>
                 </div>
@@ -116,7 +114,10 @@
         let number = $("#number").val();
         let date = $("#date").val();
         let time = $("#time").val();
-
+        // if (number ===""){
+        //     alert(" 인원수를 입력해주세요");
+        //     return;
+        // }
         if (date === "" || time === "") {
             alert("날짜를 선택해주세요.");
             return;
