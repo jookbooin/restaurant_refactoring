@@ -1,6 +1,6 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.domain.dto.MenuDto;
+import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import com.restaurant.reservation.repository.MenuRepository;

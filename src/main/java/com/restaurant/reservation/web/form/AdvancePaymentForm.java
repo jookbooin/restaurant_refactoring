@@ -1,6 +1,6 @@
 package com.restaurant.reservation.web.form;
 
-import com.restaurant.reservation.domain.dto.OrderMenuDto;
+import com.restaurant.reservation.repository.dto.OrderMenuDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,6 +1,6 @@
 package com.restaurant.reservation.controller;
 
-import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.repository.dto.MemberDto;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.SessionID;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.domain.Menu;
-import com.restaurant.reservation.domain.dto.MenuDto;
+import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import com.restaurant.reservation.service.MenuService;
 import org.junit.jupiter.api.Assertions;

@@ -1,7 +1,7 @@
 package com.restaurant.reservation.controller;
 
-import com.restaurant.reservation.domain.dto.MenuDto;
-import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.repository.dto.MenuDto;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.repository.ReservationRepository;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;

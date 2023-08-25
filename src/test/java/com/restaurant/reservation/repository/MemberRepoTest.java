@@ -2,7 +2,7 @@ package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.repository.entityManagerRepo.MemberRepo;
 import com.restaurant.reservation.domain.members.Member;
-import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.repository.dto.MemberDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

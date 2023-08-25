@@ -1,4 +1,4 @@
-package com.restaurant.reservation.domain.dto;
+package com.restaurant.reservation.repository.dto;
 
 import lombok.Getter;
 import lombok.Setter;

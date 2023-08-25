@@ -3,8 +3,8 @@ package com.restaurant.reservation.service;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.OrderMenu;
 import com.restaurant.reservation.domain.booking.Reservation;
-import com.restaurant.reservation.domain.dto.OrderMenuDto;
-import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.repository.dto.OrderMenuDto;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.MenuRepository;
@@ -141,10 +141,6 @@ public class ReservationService {
         }
         return cnt;
     }
-
-
-
-
 
     /** 수정된 orderMenu를 받아서 reservation에 추가 */
     private void insertOrderMenu(Reservation findReservation, List<OrderMenuDto> insertList) {

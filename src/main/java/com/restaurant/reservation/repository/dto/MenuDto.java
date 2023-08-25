@@ -1,4 +1,4 @@
-package com.restaurant.reservation.domain.dto;
+package com.restaurant.reservation.repository.dto;
 
 import com.restaurant.reservation.domain.enumType.MenuType;
 import lombok.Getter;

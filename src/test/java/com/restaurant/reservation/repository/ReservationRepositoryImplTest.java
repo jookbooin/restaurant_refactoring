@@ -1,7 +1,7 @@
 package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.domain.booking.Reservation;
-import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
 import com.restaurant.reservation.domain.enumType.MemberGrade;
 import com.restaurant.reservation.domain.enumType.MemberRole;

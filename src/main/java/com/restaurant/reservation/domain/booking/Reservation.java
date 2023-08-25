@@ -1,7 +1,7 @@
 package com.restaurant.reservation.domain.booking;
 
 import com.restaurant.reservation.domain.OrderMenu;
-import com.restaurant.reservation.domain.dto.ReservationDto;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
 import com.restaurant.reservation.domain.members.Member;
 import lombok.Getter;
@@ -35,7 +35,6 @@ public class Reservation extends Booking {
     private Member member;
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderMenu> orderMenus = new ArrayList<>();
-
 
 
     public Reservation(LocalTime time) {

@@ -1,6 +1,6 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.repository.dto.MemberDto;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.dto.MemberSearch;

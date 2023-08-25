@@ -1,6 +1,6 @@
 package com.restaurant.reservation.web.form;
 
-import com.restaurant.reservation.domain.dto.MemberDto;
+import com.restaurant.reservation.repository.dto.MemberDto;
 import lombok.Getter;
 import lombok.Setter;
 
