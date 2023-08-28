@@ -16,9 +16,6 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-
-
-
     @Transactional
     public Category saveCategory(CategoryDto categoryDto) {
 
@@ -58,16 +55,51 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteCategory(Long categoryId){
+    public void deleteCategory(String branch ,Long categoryId){
+        log.info("delete - currentCategory ");
+        Category currentCategory = categoryRepository.findByBranchAndId(branch , categoryId).orElseThrow(() -> new RuntimeException("삭제 - 카테고리가 존재하지 않습니다."));
 
-        Category currentCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("카테고리가 존재하지 않습니다."));
-
-        // c
-        if(!currentCategory.getParent().getName().equals("root")){
-            Category parentCategory = categoryRepository.findById(currentCategory.getParent().getId()).orElseThrow(() -> new RuntimeException("카테고리가 존재하지 않습니다."));
-            parentCategory.getChildren().remove(currentCategory);
+        Category parentCategory = null ;
+        if (currentCategory.getParent() == null) {
+            log.info("delete - level 0 root 입니다");
+            //        categoryRepository.delete(currentCategory);
+        }else if(currentCategory.getParent().getName().equals("root")){
+            log.info("delte - level 1 입니다.");
+            parentCategory = categoryRepository.findByBranchAndName(branch, "root").orElseThrow(() -> new RuntimeException("삭제 - 루트 카테고리 존재하지 않습니다."));
+        }else{
+            log.info("delte - level 2 이상 입니다.");
+            parentCategory = categoryRepository.findByBranchAndId(branch , currentCategory.getParent().getId()).orElseThrow(() -> new RuntimeException("카테고리가 존재하지 않습니다."));
+//
+//            parentCategory.getChildren().remove(currentCategory);
         }
-        
+
+        /** 부모 - cur 연관 관계 끊고 , cur 삭제 */
+
+//        categoryRepository.delete(currentCategory);
+    }
+
+
+    @Transactional
+    public void deleteCategory2(String branch ,Long categoryId){
+        log.info("delete - currentCategory 찾기");
+        Category currentCategory = categoryRepository.findByBranchAndId(branch , categoryId).orElseThrow(() -> new RuntimeException("삭제 - 카테고리가 존재하지 않습니다."));
+
+        Category parentCategory = null ;
+
+        if(!currentCategory.getParent().getName().equals("root")){
+            log.info("delte - root가 아닙니다.");
+//            parentCategory = categoryRepository.findById(currentCategory.getParent().getId()).orElseThrow(() -> new RuntimeException("카테고리가 존재하지 않습니다."));
+            parentCategory = categoryRepository.findByBranchAndId(branch , currentCategory.getParent().getId()).orElseThrow(() -> new RuntimeException("카테고리가 존재하지 않습니다."));
+
+            parentCategory.getChildren().remove(currentCategory);
+        }else{
+            log.info("delte - root입니다.");
+            parentCategory = categoryRepository.findByBranchAndName(branch, "root").orElseThrow(() -> new RuntimeException("삭제 - 루트 카테고리 존재하지 않습니다."));
+        }
+
+        /** 부모 - cur 연관 관계 끊고 , cur 삭제 */
+
+        categoryRepository.delete(currentCategory);
     }
 
 /** 오류 있을 시 보류 */

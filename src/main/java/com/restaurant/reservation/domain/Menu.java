@@ -20,7 +20,10 @@ public class Menu {
     private MenuType menuType;
 
     public Menu(){
+    }
 
+    public Menu(String name) {
+        this.name = name;
     }
 
     public Menu(String name, int price, String intro, MenuType menuType) {

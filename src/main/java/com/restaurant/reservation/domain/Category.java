@@ -20,6 +20,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
+
+//    @Column(name = "root_id")
+//    private Long rootId;
     @Column(name = "branch")
     private String branch; // 카테고리 분류 : 음식 , 게시글
 //    private String code;  // 카테고리 분류 코드
@@ -31,8 +34,13 @@ public class Category {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @OneToMany(mappedBy = "parent" , cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parent" , cascade = CascadeType.REMOVE)
     private List<Category> children = new ArrayList<>();
+
+    // 1. cascade = CascadeType.ALL , orphanRemoval = true 써야할까?
+    // 2.
+//    @OneToMany(mappedBy = "reservation")
+//    List<CategoryMenu> categoryMenuList = new ArrayList<>();
 
     @Builder
     public Category( String branch, String name, Integer level) {
