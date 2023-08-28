@@ -37,4 +37,5 @@ public class Menu {
 
         return new Menu(menuDto.getName(), menuDto.getPrice(), menuDto.getIntro(), menuDto.getMenuType());
     }
+
 }

@@ -1,7 +1,11 @@
 package com.restaurant.reservation.domain;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class CategoryMenu {
     @Id
@@ -18,8 +22,6 @@ public class CategoryMenu {
 
 //    @Column(name = "root_id")
 //    private Long rootId;
-    @Column(name ="category_branch")
-    private String branch;          // root : 음식
     @Column(name ="category_name")
     private String categoryName;    // 주류
     @Column(name ="level")
@@ -27,23 +29,60 @@ public class CategoryMenu {
     @Column(name ="menu_name")
     private String menuName;
 
-    public CategoryMenu(Menu menu) {
-        this.menu = menu;
-    }
+
 
     public CategoryMenu(Category category) {
         this.category = category;
-        this.branch = category.getBranch();
         this.categoryName = category.getName();
         this.level = category.getLevel();
-
     }
 
-    public CategoryMenu() {
 
+    public CategoryMenu(Category category, Menu menu) {
+        //카테고리
+        this.category = category;
+        this.menu = menu;
     }
 
-    public static CategoryMenu menuName(Menu menu){
-        return new CategoryMenu(menu);
+    @Builder
+    public CategoryMenu(Long id, Category category, Menu menu, String categoryName, Integer level, String menuName) {
+        this.id = id;
+        this.category = category;
+        this.menu = menu;
+        this.categoryName = categoryName;
+        this.level = level;
+        this.menuName = menuName;
     }
+
+    public static CategoryMenu createCategoryMenu(Menu menu , Category category) {
+
+        return CategoryMenu.builder()
+                .menu(menu)
+                .menuName(menu.getName())
+                .category(category)
+                .categoryName(category.getName())
+                .level(category.getLevel()).build();
+
+//       CategoryMenu categoryMenu = new CategoryMenu(category,menu);
+//       categoryMenu.updateMenuName(menu);
+//       categoryMenu.updateCategoryLevel(category);
+//       categoryMenu.updateCategoryName(category);
+//
+//       return categoryMenu;
+    }
+
+    /** 추가되거나 삭제될 수도있어 메서드로 만듬 */
+    public void updateMenuName(Menu menu){
+        this.menuName = menu.getName();
+    }
+    public void updateCategoryLevel(Category category){
+        this.level=category.getLevel();
+    }
+    public void updateCategoryName(Category category){
+        this.categoryName = category.getName();
+    }
+
+
+
+
 }

@@ -23,8 +23,8 @@ public class Category {
 
 //    @Column(name = "root_id")
 //    private Long rootId;
-    @Column(name = "branch")
-    private String branch; // 카테고리 분류 : 음식 , 게시글
+//    @Column(name = "branch")
+//    private String branch; // 카테고리 분류 : 음식 , 게시글
 //    private String code;  // 카테고리 분류 코드
     @Column(name = "name")
     private String name;  // 카테고리 명
@@ -43,8 +43,7 @@ public class Category {
 //    List<CategoryMenu> categoryMenuList = new ArrayList<>();
 
     @Builder
-    public Category( String branch, String name, Integer level) {
-        this.branch = branch;
+    public Category(String name, Integer level) {
         this.name = name;
         this.level = level;
     }
@@ -59,19 +58,17 @@ public class Category {
     
     // 생성 메서드
     // branch 타입의 최상단 카테고리
-    public static Category root(String branch){
+    public static Category root(String name){
         return Category.builder()
                 .level(0)
-                .branch(branch)
-                .name("root")
+                .name(name)
                 .build();
     }
 
     public static Category createCategory(CategoryDto categoryDto){
         return Category.builder()
-                .branch(categoryDto.getBranch())
                 .name(categoryDto.getName())
-                .level(categoryDto.getLevel())
+//                .level(categoryDto.getLevel())
                 .build();
     }
 }
