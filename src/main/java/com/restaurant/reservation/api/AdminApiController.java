@@ -1,6 +1,6 @@
 package com.restaurant.reservation.api;
 
-import com.restaurant.reservation.api.dto.BookingSearchApi;
+import com.restaurant.reservation.api.dto.searchApi.BookingSearchApi;
 import com.restaurant.reservation.api.dto.MemberApiDto;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;

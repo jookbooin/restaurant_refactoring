@@ -1,22 +1,32 @@
 package com.restaurant.reservation.api.dto;
 
-import com.restaurant.reservation.domain.OrderMenu;
+import com.restaurant.reservation.domain.CategoryMenu;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Setter
 @Getter
-@ToString
-public class  MenuApiDto {
-    private Long menuId;
-    private Integer count;
+public class MenuApiDto {
+    private Long id;
+    private String name;
+    private Integer price;
+    private String description;
 
-    public static MenuApiDto MenuApiDtoFromOrderMenu(OrderMenu orderMenu){
-        MenuApiDto menuApiDto = new MenuApiDto();
-        menuApiDto.setMenuId(orderMenu.getMenu().getId());
-        menuApiDto.setCount(orderMenu.getCount());
-        return menuApiDto;
+    @Builder
+    public MenuApiDto(Long id, String name, Integer price, String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
     }
 
+    public static MenuApiDto of (CategoryMenu categoryMenu){
+        return MenuApiDto.builder()
+                .id(categoryMenu.getMenu().getId())
+                .name(categoryMenu.getMenu().getName())
+                .price(categoryMenu.getMenu().getPrice())
+                .description(categoryMenu.getMenu().getDescription())
+                .build();
+    }
 }

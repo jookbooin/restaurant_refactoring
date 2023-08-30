@@ -14,7 +14,7 @@ public class Menu {
     private Long id;
     private String name;
     private int price;
-    private String intro;
+    private String description;
     @Enumerated(EnumType.STRING)
     @Column(name = "menu_type")
     private MenuType menuType;
@@ -26,16 +26,16 @@ public class Menu {
         this.name = name;
     }
 
-    public Menu(String name, int price, String intro, MenuType menuType) {
+    public Menu(String name, int price, String description, MenuType menuType) {
         this.name = name;
         this.price = price;
-        this.intro = intro;
+        this.description = description;
         this.menuType = menuType;
     }
 
     public static Menu createMenu(MenuDto menuDto){
 
-        return new Menu(menuDto.getName(), menuDto.getPrice(), menuDto.getIntro(), menuDto.getMenuType());
+        return new Menu(menuDto.getName(), menuDto.getPrice(), menuDto.getDescription(), menuDto.getMenuType());
     }
 
 }

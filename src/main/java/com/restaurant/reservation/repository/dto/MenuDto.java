@@ -11,15 +11,15 @@ public class MenuDto {
     private Long id;
     private String name;
     private int price;
-    private String intro;
+    private String description;
     private MenuType menuType;
 
     @Builder
-    public MenuDto(Long id, String name, int price, String intro, MenuType menuType) {
+    public MenuDto(Long id, String name, int price, String description, MenuType menuType) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.intro = intro;
+        this.description = description;
         this.menuType = menuType;
     }
 }

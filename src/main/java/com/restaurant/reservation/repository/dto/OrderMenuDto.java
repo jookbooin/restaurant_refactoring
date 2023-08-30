@@ -1,6 +1,6 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.dto.MenuApiDto;
+import com.restaurant.reservation.api.dto.MenuCountApiDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +30,7 @@ public class OrderMenuDto {
     }
 
 
-    public OrderMenuDto(MenuApiDto apiDto) {
+    public OrderMenuDto(MenuCountApiDto apiDto) {
         this.menuId = apiDto.getMenuId();
         this.count = apiDto.getCount();
     }

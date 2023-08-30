@@ -1,11 +1,12 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import com.restaurant.reservation.repository.MenuRepository;
+import com.restaurant.reservation.repository.dto.MenuDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class MenuService  {
 
     private final MenuRepository menuRepository;
 
+    @Transactional
     public void deleteMenu(Long id) {
 
         Optional<Menu> menuClass = menuRepository.findById(id);
@@ -25,6 +27,12 @@ public class MenuService  {
         } else {
             throw new RuntimeException("request Menu id is not found " + id);
         }
+    }
+
+    @Transactional
+    public Menu save(MenuDto menuDto){
+        Menu menu = Menu.createMenu(menuDto);
+        return menuRepository.save(menu);
     }
 
     // RAW menu usage 사용하면 안되고 DTO를 통해 개선 필요함
@@ -36,10 +44,7 @@ public class MenuService  {
         return menuRepository.findAll();
     }
 
-    public Menu addMenu(MenuDto menuDto){
-        Menu menu = Menu.createMenu(menuDto);
-        return menuRepository.save(menu);
-    }
+
 
     public List<MenuDto> findSpecialMenu(){
         List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
@@ -53,7 +58,7 @@ public class MenuService  {
             MenuDto menuDto = new MenuDto();
             menuDto.setId(o.getId());
             menuDto.setPrice(o.getPrice());
-            menuDto.setIntro(o.getIntro());
+            menuDto.setDescription(o.getDescription());
             menuDto.setName(o.getName());
             menuDto.setMenuType(o.getMenuType());
             specialDtoList.add(menuDto);

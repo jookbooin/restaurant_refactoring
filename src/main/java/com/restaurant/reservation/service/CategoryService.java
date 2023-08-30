@@ -19,6 +19,8 @@ public class CategoryService {
     @Transactional
     public Category saveCategory(CategoryDto categoryDto) {
 
+        StringBuilder sb = new StringBuilder();
+
         Category currentCategory = null;
 //                Category.createCategory(categoryDto);
 
@@ -36,9 +38,13 @@ public class CategoryService {
             Category parentCategory = categoryRepository.findByName(categoryDto.getParent())
                     .orElseThrow(() -> new IllegalArgumentException("부모 카테고리 없음 예외"));
 
+            log.info("parentCategory name : {} code : {}",parentCategory.getName(),parentCategory.getCode());
+            sb.append(parentCategory.getCode()).append(categoryDto.getCode()); // 부모 Category
+
             /** 영속성 전이? */
-            currentCategory = Category.createCategory(categoryDto);
+            currentCategory = Category.createCategory(categoryDto.getName(),sb.toString());
             currentCategory.updateLevel(parentCategory.getLevel()+1);
+            log.info("currentCategory name : {} code : {} level : {}", currentCategory.getName() ,currentCategory.getCode(),currentCategory.getLevel());
             currentCategory.connectParent(parentCategory);
 
         } else { // parent == null
@@ -54,12 +60,16 @@ public class CategoryService {
             }else {
                 log.info(" root 를 생성합니다.");
                 /** root 생성 */
-                currentCategory = Category.root(categoryDto.getName());
+                currentCategory = Category.root(categoryDto.getName(),categoryDto.getCode());
             }
         }
 
         return categoryRepository.save(currentCategory);
     }
+
+
+
+
 //
 //    @Transactional
 //    public void deleteCategory(String branch ,Long categoryId){

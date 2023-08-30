@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto;
+package com.restaurant.reservation.api.dto.searchApi;
 
 import lombok.Getter;
 import lombok.Setter;

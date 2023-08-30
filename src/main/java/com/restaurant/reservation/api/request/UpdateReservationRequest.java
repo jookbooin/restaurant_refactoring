@@ -1,6 +1,6 @@
 package com.restaurant.reservation.api.request;
 
-import com.restaurant.reservation.api.dto.MenuApiDto;
+import com.restaurant.reservation.api.dto.MenuCountApiDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +21,7 @@ public class UpdateReservationRequest {
     private String date;
     @NotBlank
     private String time;
-    List<MenuApiDto> orderMenuList;
+    List<MenuCountApiDto> orderMenuList;
 
     public int MenuCount(){
         return orderMenuList.stream()

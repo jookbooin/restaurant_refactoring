@@ -1,6 +1,5 @@
 package com.restaurant.reservation.domain;
 
-import com.restaurant.reservation.repository.dto.CategoryDto;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +24,7 @@ public class Category {
 //    private Long rootId;
 //    @Column(name = "branch")
 //    private String branch; // 카테고리 분류 : 음식 , 게시글
-//    private String code;  // 카테고리 분류 코드
+    private String code;  // 카테고리 분류 코드
     @Column(name = "name")
     private String name;  // 카테고리 명
     @Column(name = "level")
@@ -43,9 +42,14 @@ public class Category {
 //    List<CategoryMenu> categoryMenuList = new ArrayList<>();
 
     @Builder
-    public Category(String name, Integer level) {
+    public Category(Long id, String code, String name, Integer level, Category parent, List<Category> children) {
+        this.id = id;
+        this.code = code;
         this.name = name;
         this.level = level;
+        this.parent = parent;
+        if(children != null)
+            this.children = children;
     }
 
     public void updateLevel(Integer level){
@@ -58,17 +62,18 @@ public class Category {
     
     // 생성 메서드
     // branch 타입의 최상단 카테고리
-    public static Category root(String name){
+    public static Category root(String name,String code){
         return Category.builder()
                 .level(0)
+                .code(code)
                 .name(name)
                 .build();
     }
 
-    public static Category createCategory(CategoryDto categoryDto){
+    public static Category createCategory(String name,String code){
         return Category.builder()
-                .name(categoryDto.getName())
-//                .level(categoryDto.getLevel())
+                .name(name)
+                .code(code)
                 .build();
     }
 }

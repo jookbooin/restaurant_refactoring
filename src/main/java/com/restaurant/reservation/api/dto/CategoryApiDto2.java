@@ -1,50 +1,45 @@
-package com.restaurant.reservation.repository.dto;
+package com.restaurant.reservation.api.dto;
 
 import com.restaurant.reservation.domain.Category;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Setter
 @Getter
-@NoArgsConstructor
-public class CategoryDto {
+@Setter
+public class CategoryApiDto2 {
+
     private Long id;
     private String name;
     private Integer level;
     private String parent;
-    private String code;
-    private List<CategoryDto> children;
+    private List<CategoryApiDto2> children;
+
 
     @Builder
-    public CategoryDto(Long id, String name, Integer level, String parent, String code, List<CategoryDto> children) {
+    public CategoryApiDto2(Long id, String name, Integer level, String parent, List<CategoryApiDto2> children) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.parent = parent;
-        this.code = code;
         this.children = children;
     }
 
-    @Builder
-
-
     /** Category  -> CategoryDto*/
-    public static CategoryDto of(Category category) {
-        return  CategoryDto.builder()
+    public static CategoryApiDto2 of(Category category) {
+        return  CategoryApiDto2.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .parent(category.getParent() == null ? null: category.getParent().getName())
                 .level(category.getLevel())
-                .code(category.getCode())
-                .children(category.getChildren().stream().map(CategoryDto::of).collect(Collectors.toList()))
+                .children(category.getChildren().stream().map(CategoryApiDto2::of).collect(Collectors.toList()))
                 .build();
 
     }
+
 
 
 }

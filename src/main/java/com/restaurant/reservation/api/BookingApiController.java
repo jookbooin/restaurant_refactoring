@@ -1,6 +1,6 @@
 package com.restaurant.reservation.api;
 
-import com.restaurant.reservation.api.dto.MenuApiDto;
+import com.restaurant.reservation.api.dto.MenuCountApiDto;
 import com.restaurant.reservation.api.dto.OrderMenuApiDto;
 import com.restaurant.reservation.api.dto.ReservationApiDto;
 import com.restaurant.reservation.api.request.UpdateReservationRequest;
@@ -116,8 +116,8 @@ public class BookingApiController {
         List<MenuDto> specialMenuList = menuService.findSpecialMenu();
         List<OrderMenu> orderMenuList = getOrderMenuList(rid);
 
-        List<MenuApiDto> orderMenuDtoList = orderMenuList.stream()
-                .map(o -> MenuApiDto.MenuApiDtoFromOrderMenu(o))
+        List<MenuCountApiDto> orderMenuDtoList = orderMenuList.stream()
+                .map(o -> MenuCountApiDto.MenuApiDtoFromOrderMenu(o))
                 .collect(Collectors.toList());
 
         return new twoListResult(specialMenuList,orderMenuDtoList);

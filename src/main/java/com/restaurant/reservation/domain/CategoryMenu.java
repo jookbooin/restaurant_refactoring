@@ -15,27 +15,21 @@ public class CategoryMenu {
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
-
     @ManyToOne
     @JoinColumn(name = "menu_id")
     Menu menu;
+    @Column(name ="category_code")
+    private String categoryCode;
 
-//    @Column(name = "root_id")
-//    private Long rootId;
-    @Column(name ="category_name")
-    private String categoryName;    // 주류
     @Column(name ="level")
     private Integer level;          // 2
-    @Column(name ="menu_name")
-    private String menuName;
+//    @Column(name ="menu_name")
+//    private String menuName;
+//
+//    @Column(name ="category_name")
+//    private String categoryName;    // 주류
 
 
-
-    public CategoryMenu(Category category) {
-        this.category = category;
-        this.categoryName = category.getName();
-        this.level = category.getLevel();
-    }
 
 
     public CategoryMenu(Category category, Menu menu) {
@@ -45,42 +39,41 @@ public class CategoryMenu {
     }
 
     @Builder
-    public CategoryMenu(Long id, Category category, Menu menu, String categoryName, Integer level, String menuName) {
+    public CategoryMenu(Long id, Category category, Menu menu, String categoryCode, Integer level) {
         this.id = id;
         this.category = category;
         this.menu = menu;
-        this.categoryName = categoryName;
+        this.categoryCode = categoryCode;
         this.level = level;
-        this.menuName = menuName;
     }
+    //    @Builder
+//    public CategoryMenu(Long id, Category category, Menu menu, String categoryCode, String categoryName, Integer level, String menuName) {
+//        this.id = id;
+//        this.category = category;
+//        this.menu = menu;
+//        this.categoryCode = categoryCode;
+//        this.categoryName = categoryName;
+//        this.level = level;
+//        this.menuName = menuName;
+//    }
+
+
+
 
     public static CategoryMenu createCategoryMenu(Menu menu , Category category) {
 
         return CategoryMenu.builder()
                 .menu(menu)
-                .menuName(menu.getName())
                 .category(category)
-                .categoryName(category.getName())
+                .categoryCode(category.getCode())
                 .level(category.getLevel()).build();
-
-//       CategoryMenu categoryMenu = new CategoryMenu(category,menu);
-//       categoryMenu.updateMenuName(menu);
-//       categoryMenu.updateCategoryLevel(category);
-//       categoryMenu.updateCategoryName(category);
-//
-//       return categoryMenu;
     }
 
     /** 추가되거나 삭제될 수도있어 메서드로 만듬 */
-    public void updateMenuName(Menu menu){
-        this.menuName = menu.getName();
-    }
     public void updateCategoryLevel(Category category){
         this.level=category.getLevel();
     }
-    public void updateCategoryName(Category category){
-        this.categoryName = category.getName();
-    }
+
 
 
 

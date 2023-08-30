@@ -1,6 +1,6 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.dto.BookingSearchApi;
+import com.restaurant.reservation.api.dto.searchApi.BookingSearchApi;
 import com.restaurant.reservation.web.webDto.BookingSearchWeb;
 import lombok.Getter;
 import lombok.Setter;
