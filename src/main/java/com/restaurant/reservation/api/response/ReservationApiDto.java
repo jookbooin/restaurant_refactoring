@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto;
+package com.restaurant.reservation.api.response;
 
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.enumType.TimeEnum;

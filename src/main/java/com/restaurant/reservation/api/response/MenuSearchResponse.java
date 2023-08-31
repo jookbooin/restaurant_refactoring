@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto;
+package com.restaurant.reservation.api.response;
 
 import com.restaurant.reservation.domain.CategoryMenu;
 import lombok.Builder;
@@ -11,25 +11,25 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class MenuSearchApiDto {
+public class MenuSearchResponse {
     private String searchName;
     private String searchCode;
 
-    private List<CategoryMenuApiDto> menuList = new ArrayList<>();
+    private List<CategoryMenuResponse> menuList = new ArrayList<>();
 
     @Builder
-    public MenuSearchApiDto(String searchName, String searchCode, List<CategoryMenuApiDto> menuList) {
+    public MenuSearchResponse(String searchName, String searchCode, List<CategoryMenuResponse> menuList) {
         this.searchName = searchName;
         this.searchCode = searchCode;
         if (menuList.size() > 0)
             this.menuList = menuList;
     }
 
-    public static MenuSearchApiDto of(String searchName , String searchCode , List<CategoryMenu> menuList){
-        return MenuSearchApiDto.builder()
+    public static MenuSearchResponse of(String searchName , String searchCode , List<CategoryMenu> menuList){
+        return MenuSearchResponse.builder()
                 .searchName(searchName)
                 .searchCode(searchCode)
-                .menuList(menuList.stream().map(CategoryMenuApiDto::of).collect(Collectors.toList()))
+                .menuList(menuList.stream().map(CategoryMenuResponse::of).collect(Collectors.toList()))
                 .build();
     }
 

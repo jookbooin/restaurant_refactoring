@@ -1,9 +1,9 @@
 package com.restaurant.reservation.api;
 
-import com.restaurant.reservation.api.dto.Form.MenuSaveRequest;
-import com.restaurant.reservation.api.dto.Form.MenuUpdateRequest;
-import com.restaurant.reservation.api.dto.MenuSearchApiDto;
-import com.restaurant.reservation.api.dto.searchApi.MenuSearchApi;
+import com.restaurant.reservation.api.request.form.MenuSaveRequest;
+import com.restaurant.reservation.api.request.form.MenuUpdateRequest;
+import com.restaurant.reservation.api.response.MenuSearchResponse;
+import com.restaurant.reservation.api.request.search.MenuSearchRequest;
 import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
@@ -26,9 +26,9 @@ public class MenuApiController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping("/api/menu/search")
-    public ResponseEntity<?> MenuSearch (@ModelAttribute MenuSearchApi menuSearchApi){
+    public ResponseEntity<?> MenuSearch (@ModelAttribute MenuSearchRequest menuSearchRequest){
 
-        String cateName = menuSearchApi.getSearchName().trim();
+        String cateName = menuSearchRequest.getSearchName().trim();
         log.info(" searchName : [{}]", cateName );
         String cateCode = null;
         if (StringUtils.hasText(cateName)) {
@@ -49,9 +49,9 @@ public class MenuApiController {
         log.info("cateCode : {} ",cateCode);
         List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(cateCode);
 
-        MenuSearchApiDto result = MenuSearchApiDto.of(cateName, cateCode, categoryMenuList);
+        MenuSearchResponse response = MenuSearchResponse.of(cateName, cateCode, categoryMenuList);
 
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PostMapping("/api/menu/save")

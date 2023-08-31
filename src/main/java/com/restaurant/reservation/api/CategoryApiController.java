@@ -1,6 +1,6 @@
 package com.restaurant.reservation.api;
 
-import com.restaurant.reservation.api.dto.CategoryApiDto2;
+import com.restaurant.reservation.api.response.CategoryResponse;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.service.CategoryService;
 import lombok.AllArgsConstructor;
@@ -22,15 +22,15 @@ public class CategoryApiController {
     @GetMapping("/api/category/root/1")
     public OneListResult findRootCategory_페이징불가(){
 
-        List<CategoryApiDto2> apiDtoList = categoryRepository.findByParentIsNullOrderByIdAsc().stream().map(CategoryApiDto2::of).collect(Collectors.toList());
-        return new OneListResult(apiDtoList);
+        List<CategoryResponse> responseList = categoryRepository.findByParentIsNullOrderByIdAsc().stream().map(CategoryResponse::of).collect(Collectors.toList());
+        return new OneListResult(responseList);
     }
 
     @GetMapping("/api/category/root/2")
     public OneListResult findRootCategory_parent패치조인(){
 
-        List<CategoryApiDto2> result = categoryRepository.findParentWithFetchJoin().stream().map(CategoryApiDto2::of).collect(Collectors.toList());
-        return new OneListResult(result);
+        List<CategoryResponse> responseList = categoryRepository.findParentWithFetchJoin().stream().map(CategoryResponse::of).collect(Collectors.toList());
+        return new OneListResult(responseList);
     }
     
     

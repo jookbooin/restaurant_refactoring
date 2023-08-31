@@ -1,6 +1,6 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.dto.Form.MenuUpdateRequest;
+import com.restaurant.reservation.api.request.form.MenuUpdateRequest;
 import com.restaurant.reservation.domain.enumType.MenuType;
 import lombok.AccessLevel;
 import lombok.Builder;

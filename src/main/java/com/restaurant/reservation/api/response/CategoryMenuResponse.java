@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto;
+package com.restaurant.reservation.api.response;
 
 import com.restaurant.reservation.domain.CategoryMenu;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CategoryMenuApiDto {
+public class CategoryMenuResponse {
     private Long id;
     private String categoryName;
     private String categoryCode;
@@ -16,7 +16,7 @@ public class CategoryMenuApiDto {
     private String description;
 
     @Builder
-    public CategoryMenuApiDto(Long id, String categoryName, String categoryCode, String name, Integer price, String description) {
+    public CategoryMenuResponse(Long id, String categoryName, String categoryCode, String name, Integer price, String description) {
         this.id = id;
         this.categoryName = categoryName;
         this.categoryCode = categoryCode;
@@ -25,8 +25,8 @@ public class CategoryMenuApiDto {
         this.description = description;
     }
 
-    public static CategoryMenuApiDto of(CategoryMenu categoryMenu){
-        return CategoryMenuApiDto.builder()
+    public static CategoryMenuResponse of(CategoryMenu categoryMenu){
+        return CategoryMenuResponse.builder()
                 .id(categoryMenu.getMenu().getId())
                 .categoryName(categoryMenu.getCategory().getName())
                 .categoryCode(categoryMenu.getCategory().getCode())

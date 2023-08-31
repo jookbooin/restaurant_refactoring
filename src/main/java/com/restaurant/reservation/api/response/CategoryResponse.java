@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto;
+package com.restaurant.reservation.api.response;
 
 import com.restaurant.reservation.domain.Category;
 import lombok.Builder;
@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-public class CategoryApiDto2 {
+public class CategoryResponse {
 
     private Long id;
     private String name;
     private Integer level;
     private String parent;
-    private List<CategoryApiDto2> children;
+    private List<CategoryResponse> children;
 
 
     @Builder
-    public CategoryApiDto2(Long id, String name, Integer level, String parent, List<CategoryApiDto2> children) {
+    public CategoryResponse(Long id, String name, Integer level, String parent, List<CategoryResponse> children) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -29,13 +29,13 @@ public class CategoryApiDto2 {
     }
 
     /** Category  -> CategoryDto*/
-    public static CategoryApiDto2 of(Category category) {
-        return  CategoryApiDto2.builder()
+    public static CategoryResponse of(Category category) {
+        return  CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .parent(category.getParent() == null ? null: category.getParent().getName())
                 .level(category.getLevel())
-                .children(category.getChildren().stream().map(CategoryApiDto2::of).collect(Collectors.toList()))
+                .children(category.getChildren().stream().map(CategoryResponse::of).collect(Collectors.toList()))
                 .build();
 
     }

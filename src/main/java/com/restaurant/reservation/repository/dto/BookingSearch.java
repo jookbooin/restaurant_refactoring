@@ -1,6 +1,6 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.dto.searchApi.BookingSearchApi;
+import com.restaurant.reservation.api.request.search.BookingSearchRequest;
 import com.restaurant.reservation.web.webDto.BookingSearchWeb;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,16 +29,16 @@ public class BookingSearch {
         bookingSearch.setKeyword(bookingSearchWeb.getKeyword());
         return bookingSearch;
     }
-    public static BookingSearch TransformApi(BookingSearchApi bookingSearchApi){
+    public static BookingSearch TransformApi(BookingSearchRequest bookingSearchRequest){
         BookingSearch bookingSearch = new BookingSearch();
 
-        if(bookingSearchApi.getStartDate() != null)
-            bookingSearch.setStartDate(LocalDate.parse(bookingSearchApi.getStartDate().trim()));
+        if(bookingSearchRequest.getStartDate() != null)
+            bookingSearch.setStartDate(LocalDate.parse(bookingSearchRequest.getStartDate().trim()));
 
-        if(bookingSearchApi.getEndDate()!=null)
-            bookingSearch.setEndDate(LocalDate.parse(bookingSearchApi.getEndDate().trim()));
-        bookingSearch.setSearchType(bookingSearchApi.getSearchType());
-        bookingSearch.setKeyword(bookingSearchApi.getKeyword());
+        if(bookingSearchRequest.getEndDate()!=null)
+            bookingSearch.setEndDate(LocalDate.parse(bookingSearchRequest.getEndDate().trim()));
+        bookingSearch.setSearchType(bookingSearchRequest.getSearchType());
+        bookingSearch.setKeyword(bookingSearchRequest.getKeyword());
 
         return bookingSearch;
     }

@@ -1,7 +1,7 @@
 package com.restaurant.reservation.api;
 
-import com.restaurant.reservation.api.dto.searchApi.BookingSearchApi;
-import com.restaurant.reservation.api.dto.MemberApiDto;
+import com.restaurant.reservation.api.request.search.BookingSearchRequest;
+import com.restaurant.reservation.api.response.MemberApiDto;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
@@ -60,11 +60,11 @@ public class AdminApiController {
 
     /** api는 Jackson 라이브러리 써야한다고 한다. -> 임의로 java로 parsing함.*/
     @GetMapping("/api/admin/advance/list")
-    public Page<BookingSearchDto> advanceList(BookingSearchApi bookingSearchApi, @PageableDefault(page = 0,size = 10)Pageable pageable){
+    public Page<BookingSearchDto> advanceList(BookingSearchRequest bookingSearchRequest, @PageableDefault(page = 0,size = 10)Pageable pageable){
 
-        log.info("bookingSearchApi : {}",bookingSearchApi);
+        log.info("bookingSearchRequest : {}",bookingSearchRequest);
         log.info("pageable : {}",pageable);
-        BookingSearch bookingSearch = BookingSearch.TransformApi(bookingSearchApi);
+        BookingSearch bookingSearch = BookingSearch.TransformApi(bookingSearchRequest);
         log.info("bookingSearch : {}",bookingSearch);
         log.info("=== Before ==");
 

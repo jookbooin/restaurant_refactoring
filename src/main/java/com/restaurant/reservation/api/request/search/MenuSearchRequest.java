@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.dto.searchApi;
+package com.restaurant.reservation.api.request.search;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +7,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class MenuSearchApi {
+public class MenuSearchRequest {
     private String searchName;
 }
