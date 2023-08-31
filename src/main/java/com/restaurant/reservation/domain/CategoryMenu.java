@@ -1,5 +1,6 @@
 package com.restaurant.reservation.domain;
 
+import com.restaurant.reservation.repository.dto.MenuDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,18 +47,6 @@ public class CategoryMenu {
         this.categoryCode = categoryCode;
         this.level = level;
     }
-    //    @Builder
-//    public CategoryMenu(Long id, Category category, Menu menu, String categoryCode, String categoryName, Integer level, String menuName) {
-//        this.id = id;
-//        this.category = category;
-//        this.menu = menu;
-//        this.categoryCode = categoryCode;
-//        this.categoryName = categoryName;
-//        this.level = level;
-//        this.menuName = menuName;
-//    }
-
-
 
 
     public static CategoryMenu createCategoryMenu(Menu menu , Category category) {
@@ -69,9 +58,13 @@ public class CategoryMenu {
                 .level(category.getLevel()).build();
     }
 
-    /** 추가되거나 삭제될 수도있어 메서드로 만듬 */
-    public void updateCategoryLevel(Category category){
-        this.level=category.getLevel();
+    public void updateMenu(Category category , MenuDto menuDto){
+        this.categoryCode = category.getCode();
+        this.level = category.getLevel();
+        this.category =category;
+        this.menu.updateName(menuDto.getName());
+        this.menu.updatePrice(menuDto.getPrice());
+        this.menu.updateDescription(menuDto.getDescription());
     }
 
 

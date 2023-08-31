@@ -15,10 +15,10 @@ public class MenuSearchApiDto {
     private String searchName;
     private String searchCode;
 
-    private List<MenuApiDto> menuList = new ArrayList<>();
+    private List<CategoryMenuApiDto> menuList = new ArrayList<>();
 
     @Builder
-    public MenuSearchApiDto(String searchName, String searchCode, List<MenuApiDto> menuList) {
+    public MenuSearchApiDto(String searchName, String searchCode, List<CategoryMenuApiDto> menuList) {
         this.searchName = searchName;
         this.searchCode = searchCode;
         if (menuList.size() > 0)
@@ -29,7 +29,7 @@ public class MenuSearchApiDto {
         return MenuSearchApiDto.builder()
                 .searchName(searchName)
                 .searchCode(searchCode)
-                .menuList(menuList.stream().map(MenuApiDto::of).collect(Collectors.toList()))
+                .menuList(menuList.stream().map(CategoryMenuApiDto::of).collect(Collectors.toList()))
                 .build();
     }
 

@@ -1,7 +1,6 @@
 package com.restaurant.reservation;
 
 import com.restaurant.reservation.domain.Category;
-import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.booking.Reservation;
@@ -10,6 +9,7 @@ import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.domain.members.MemberInfo;
 import com.restaurant.reservation.repository.*;
 import com.restaurant.reservation.repository.dto.*;
+import com.restaurant.reservation.service.CategoryMenuService;
 import com.restaurant.reservation.service.CategoryService;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;
@@ -54,6 +54,8 @@ public class InitDb {
         private final CategoryService categoryService;
         private final CategoryRepository categoryRepository;
         private final CategoryMenuRepository categoryMenuRepository;
+
+        private final CategoryMenuService categoryMenuService;
 
         @Transactional
         public void Category_Menu(){
@@ -104,61 +106,23 @@ public class InitDb {
             MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("사이드 - A1B2").build();
             MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("사이드 - A1B2").build();
 
-            Menu menu10 = menuRepository.save(Menu.createMenu(menuDto10)); // 처음처럼
-            Menu menu11 = menuRepository.save(Menu.createMenu(menuDto11)); // 새로
-            Menu menu12 = menuRepository.save(Menu.createMenu(menuDto12)); // 콜라
-            Menu menu20 = menuRepository.save(Menu.createMenu(menuDto20)); //
-            Menu menu30 = menuRepository.save(Menu.createMenu(menuDto30)); //
-            Menu menu31 = menuRepository.save(Menu.createMenu(menuDto31)); //
-            Menu menu32 = menuRepository.save(Menu.createMenu(menuDto32)); //
-            Menu menu33 = menuRepository.save(Menu.createMenu(menuDto33)); //
-            Menu menu34 = menuRepository.save(Menu.createMenu(menuDto34)); //
-            Menu menu35 = menuRepository.save(Menu.createMenu(menuDto35)); //
-            Menu menu36 = menuRepository.save(Menu.createMenu(menuDto36)); //
-            Menu menu37 = menuRepository.save(Menu.createMenu(menuDto37)); //
-            Menu menu38 = menuRepository.save(Menu.createMenu(menuDto38)); //
-            Menu menu39 = menuRepository.save(Menu.createMenu(menuDto39)); //
-            Menu menu50 = menuRepository.save(Menu.createMenu(menuDto50)); //
-            Menu menu51 = menuRepository.save(Menu.createMenu(menuDto51)); //
-            Menu menu52 = menuRepository.save(Menu.createMenu(menuDto52)); //
-
-
-            /** 카테고리 메뉴 */
-            CategoryMenu cm10 = CategoryMenu.createCategoryMenu(menu10, A1B3C1);  // 주류
-            CategoryMenu cm11 = CategoryMenu.createCategoryMenu(menu11, A1B3C1);
-            CategoryMenu cm12 = CategoryMenu.createCategoryMenu(menu12, A1B3C2);  // 음료
-            CategoryMenu cm20 = CategoryMenu.createCategoryMenu(menu20, A1B1C4);  // 스테이크
-            CategoryMenu cm30 = CategoryMenu.createCategoryMenu(menu30, A1B1C5);  // 파스타
-            CategoryMenu cm31 = CategoryMenu.createCategoryMenu(menu31, A1B1C5);
-            CategoryMenu cm32 = CategoryMenu.createCategoryMenu(menu32, A1B1C5);
-            CategoryMenu cm33 = CategoryMenu.createCategoryMenu(menu33, A1B1C5);
-            CategoryMenu cm34 = CategoryMenu.createCategoryMenu(menu34, A1B1C5);
-            CategoryMenu cm35 = CategoryMenu.createCategoryMenu(menu35, A1B1C5);
-            CategoryMenu cm36 = CategoryMenu.createCategoryMenu(menu36, A1B1C5);
-            CategoryMenu cm37 = CategoryMenu.createCategoryMenu(menu37, A1B1C5);
-            CategoryMenu cm38 = CategoryMenu.createCategoryMenu(menu38, A1B1C5);
-            CategoryMenu cm39 = CategoryMenu.createCategoryMenu(menu39, A1B1C5);
-            CategoryMenu cm50 = CategoryMenu.createCategoryMenu(menu50, A1B1C5);
-            CategoryMenu cm51 = CategoryMenu.createCategoryMenu(menu51, A1B1C5);
-            CategoryMenu cm52 = CategoryMenu.createCategoryMenu(menu52, A1B1C5);
-//
-            categoryMenuRepository.save(cm10);
-            categoryMenuRepository.save(cm11);
-            categoryMenuRepository.save(cm12);
-            categoryMenuRepository.save(cm20);
-            categoryMenuRepository.save(cm30);
-            categoryMenuRepository.save(cm31);
-            categoryMenuRepository.save(cm32);
-            categoryMenuRepository.save(cm33);
-            categoryMenuRepository.save(cm34);
-            categoryMenuRepository.save(cm35);
-            categoryMenuRepository.save(cm36);
-            categoryMenuRepository.save(cm37);
-            categoryMenuRepository.save(cm38);
-            categoryMenuRepository.save(cm39);
-            categoryMenuRepository.save(cm50);
-            categoryMenuRepository.save(cm51);
-            categoryMenuRepository.save(cm52);
+            categoryMenuService.save( "주류",menuDto10);
+            categoryMenuService.save( "주류",menuDto11);
+            categoryMenuService.save( "음료",menuDto12);
+            categoryMenuService.save( "스테이크",menuDto20);
+            categoryMenuService.save( "파스타",menuDto30);
+            categoryMenuService.save( "파스타",menuDto31);
+            categoryMenuService.save( "파스타",menuDto32);
+            categoryMenuService.save( "파스타",menuDto33);
+            categoryMenuService.save( "파스타",menuDto34);
+            categoryMenuService.save( "파스타",menuDto35);
+            categoryMenuService.save( "파스타",menuDto36);
+            categoryMenuService.save( "파스타",menuDto37);
+            categoryMenuService.save( "파스타",menuDto38);
+            categoryMenuService.save( "파스타",menuDto39);
+            categoryMenuService.save( "사이드",menuDto50);
+            categoryMenuService.save( "사이드",menuDto51);
+            categoryMenuService.save( "사이드",menuDto52);
 
         }
 

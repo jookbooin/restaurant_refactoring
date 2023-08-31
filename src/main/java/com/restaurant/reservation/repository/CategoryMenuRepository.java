@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -21,8 +22,14 @@ public interface CategoryMenuRepository extends JpaRepository<CategoryMenu, Long
 
     @Query("Select cm from CategoryMenu cm" +
             " join fetch cm.menu" +
+            " join fetch cm.category" +
             " where cm.categoryCode like :code%" +
             " order by cm.categoryCode asc")
     List<CategoryMenu> findAllContainCode (@Param("code") String code);
 
+    @Query("Select cm from CategoryMenu cm" +
+            " join fetch cm.menu" +
+            " join fetch cm.category" +
+            " where cm.menu.id = :id")
+    Optional<CategoryMenu> findByMenuId(@Param("id")Long id);
 }
