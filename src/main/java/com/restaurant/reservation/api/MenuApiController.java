@@ -2,9 +2,11 @@ package com.restaurant.reservation.api;
 
 import com.restaurant.reservation.api.request.form.MenuSaveRequest;
 import com.restaurant.reservation.api.request.form.MenuUpdateRequest;
-import com.restaurant.reservation.api.response.MenuSearchResponse;
 import com.restaurant.reservation.api.request.search.MenuSearchRequest;
+import com.restaurant.reservation.api.response.MenuSearchResponse;
+import com.restaurant.reservation.api.response.MessageResponse;
 import com.restaurant.reservation.domain.CategoryMenu;
+import com.restaurant.reservation.exception.CategoryException;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.service.CategoryMenuService;
@@ -28,22 +30,14 @@ public class MenuApiController {
     @GetMapping("/api/menu/search")
     public ResponseEntity<?> MenuSearch (@ModelAttribute MenuSearchRequest menuSearchRequest){
 
-        String cateName = menuSearchRequest.getSearchName().trim();
+        String cateName = menuSearchRequest.getSearchName();
         log.info(" searchName : [{}]", cateName );
         String cateCode = null;
         if (StringUtils.hasText(cateName)) {
-
-            try {
-                cateCode = categoryRepository.findCodeByName(cateName).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리 명입니다"));
-            } catch (IllegalArgumentException e) {
-                log.info("IllegalArgumentException 발생");
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
+                cateCode = categoryRepository.findCodeByName(cateName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
         }else {
-//            throw new IllegalArgumentException("검색 조건이 없습니다.");
-            log.info("검색 조건이 없습니다.");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                throw new CategoryException("카테고리명이 정확한 형식이 아닙니다.");
+
         }
 
         log.info("cateCode : {} ",cateCode);
@@ -65,13 +59,9 @@ public class MenuApiController {
                 .price(menuSaveRequest.getMenuPrice())
                 .description(menuSaveRequest.getDescription()).build();
 
-        try {
-            categoryMenuService.save(menuSaveRequest.getCategoryName(),menuDto );
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        categoryMenuService.save(menuSaveRequest.getCategoryName(),menuDto );
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResponse("메뉴 등록했습니다."),HttpStatus.OK);
     }
 
     @PatchMapping("/api/menu/{id}/update")
@@ -84,23 +74,17 @@ public class MenuApiController {
                 .price(MenuUpdateRequest.getMenuPrice())
                 .description(MenuUpdateRequest.getDescription()).build();
 
-        try {
-            categoryMenuService.update(MenuUpdateRequest.getCategoryName(),menuDto);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        categoryMenuService.update(MenuUpdateRequest.getCategoryName(),menuDto);
+
+        return new ResponseEntity<>(new MessageResponse("메뉴 수정했습니다."),HttpStatus.OK);
     }
 
     @DeleteMapping("/api/menu/{id}/delete")
-    public ResponseEntity<?> menuDelete (@RequestParam("id") Long id){
+    public ResponseEntity<?> menuDelete (@PathVariable("id") Long id){
 
-        try {
-            categoryMenuService.delete(id);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        categoryMenuService.delete(id);
+
+        return new ResponseEntity<>(new MessageResponse("메뉴 삭제했습니다."),HttpStatus.OK);
     }
 
 }

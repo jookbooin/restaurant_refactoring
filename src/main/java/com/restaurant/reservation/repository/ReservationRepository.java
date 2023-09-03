@@ -1,6 +1,7 @@
 package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.domain.booking.Reservation;
+import com.restaurant.reservation.repository.custom.ReservatinoRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation,Long> , ReservatinoRepositoryCustom{
+public interface ReservationRepository extends JpaRepository<Reservation,Long> , ReservatinoRepositoryCustom {
 
     /** 단순 조회 */
     @Query("select r From Reservation r" +

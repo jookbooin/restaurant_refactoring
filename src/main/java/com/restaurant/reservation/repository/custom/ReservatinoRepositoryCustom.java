@@ -1,4 +1,4 @@
-package com.restaurant.reservation.repository;
+package com.restaurant.reservation.repository.custom;
 
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.repository.dto.BookingSearch;

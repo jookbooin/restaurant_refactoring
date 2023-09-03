@@ -1,46 +1,29 @@
-package com.restaurant.reservation.service;
+package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.domain.Category;
-import com.restaurant.reservation.domain.CategoryMenu;
-import com.restaurant.reservation.domain.Menu;
-import com.restaurant.reservation.exception.MenuException;
-import com.restaurant.reservation.repository.CategoryMenuRepository;
-import com.restaurant.reservation.repository.CategoryRepository;
-import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.dto.CategoryDto;
 import com.restaurant.reservation.repository.dto.MenuDto;
+import com.restaurant.reservation.service.CategoryMenuService;
+import com.restaurant.reservation.service.CategoryService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-
-class CategoryMenuServiceTest {
+class CategoryMenuRepositoryTest {
 
     @Autowired
-    MenuRepository menuRepository;
+    CategoryMenuService categoryMenuService;
     @Autowired
-    CategoryRepository categoryRepository;
+    CategoryService categoryService;
+
     @Autowired
     CategoryMenuRepository categoryMenuRepository;
 
-    @Autowired
-    CategoryService categoryService;
-    @Autowired
-    CategoryMenuService categoryMenuService;
 
-    @Autowired
-    EntityManager em;
 
     @Profile("test")
     @BeforeEach
@@ -109,53 +92,24 @@ class CategoryMenuServiceTest {
         categoryMenuService.save( "사이드",menuDto50);
         categoryMenuService.save( "사이드",menuDto51);
         categoryMenuService.save( "사이드",menuDto52);
-
     }
-
-
+    
     @Test
-    @Transactional
-    public void categoryMenu_save() throws Exception {
+    public void existBy_dataJpa_테스트() throws Exception{
 
-        MenuDto menuDto10 = MenuDto.builder().name("처음처럼").price(5000).description("주류 - A1B3C1").build();
-        assertThrows(MenuException.class, () -> {
-            categoryMenuService.save( "주류",menuDto10);
-        });
+        boolean check = categoryMenuRepository.existsByCategory_NameAndMenu_Name("사이드", "감자튀김");
+        Assertions.assertThat(check).isTrue();
+
 
     }
 
     @Test
-    @Transactional
-    public void categoryMenu_Code조회() throws Exception {
-//        String categoryCode = categoryRepository.findCodeByName("주류").orElseThrow(() -> new IllegalArgumentException("잘못된 카테고리 명"));
-//        List<CategoryMenu> result = categoryMenuRepository.findAllContainCode(categoryCode);
-//        assertThat(result.size()).isEqualTo(2);
-    }
-    @Test
-    @Transactional
-    @Rollback(false)
-    public void menu_수정() throws Exception  {
-        String categoryName = "음료";
-        Long id = 1L;
-        MenuDto menuDto10 = MenuDto.builder().id(id).name("파워에이드").price(1000).description("주류 -> 파워에이드 교체").build();
+    public void existByName_querydsl_테스트() throws Exception{
 
-        Menu findMenu = menuRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("테스트 실패"));
-        System.out.println("findMenu = " + findMenu);
+        boolean check = categoryMenuRepository.existsByNames("사이드", "감자튀김");
+        Assertions.assertThat(check).isTrue();
 
-        em.flush();
-        em.clear();
 
-        categoryMenuService.update(categoryName,menuDto10);
-    }
-
-    @Test
-    @Transactional
-    @Rollback(false)
-    public void menu_삭제() throws Exception  {
-        Long id = 1L;
-        categoryMenuService.delete(id);
-        List<CategoryMenu> all = categoryMenuRepository.findAll();
-        Assertions.assertThat(all.size()).isEqualTo(16);
     }
 
 

@@ -1,10 +1,11 @@
-package com.restaurant.reservation.repository;
+package com.restaurant.reservation.repository.custom;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
+import com.restaurant.reservation.repository.custom.ReservatinoRepositoryCustom;
 import com.restaurant.reservation.repository.dto.BookingSearch;
 import com.restaurant.reservation.repository.dto.BookingSearchDto;
 import com.restaurant.reservation.repository.dto.QBookingSearchDto;
@@ -24,7 +25,7 @@ import static com.restaurant.reservation.domain.booking.QReservation.reservation
 import static com.restaurant.reservation.domain.members.QMember.member;
 
 @Slf4j
-public class ReservationRepositoryImpl implements ReservatinoRepositoryCustom{
+public class ReservationRepositoryImpl implements ReservatinoRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     public ReservationRepositoryImpl(EntityManager em) {

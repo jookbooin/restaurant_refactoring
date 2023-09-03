@@ -1,4 +1,4 @@
-package com.restaurant.reservation.repository;
+package com.restaurant.reservation.repository.custom;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -20,7 +20,7 @@ import static com.restaurant.reservation.domain.members.QMember.member;
 
 
 @Slf4j
-public class MemberRepositoryImpl implements MemberRepositoryCustom{
+public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
