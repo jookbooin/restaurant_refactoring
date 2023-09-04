@@ -1,6 +1,7 @@
 package com.restaurant.reservation.repository;
 
 import com.restaurant.reservation.domain.Category;
+import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.repository.dto.CategoryDto;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.service.CategoryMenuService;
@@ -11,7 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 @SpringBootTest
 class CategoryMenuRepositoryTest {
 
@@ -110,6 +112,14 @@ class CategoryMenuRepositoryTest {
         Assertions.assertThat(check).isTrue();
 
 
+    }
+
+    @Test
+    public void findAllContainCode_Test() throws Exception{
+        PageRequest pageable = PageRequest.of(0,20);
+        String code = "A1B1C5";
+        Page<CategoryMenu> result = categoryMenuRepository.findAllContainCode(code, pageable);
+        Assertions.assertThat(result.getContent().size()).isEqualTo(10);
     }
 
 

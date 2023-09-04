@@ -10,6 +10,8 @@ import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,12 @@ public class CategoryMenuService {
         List<CategoryMenu> categoryMenuList = categoryMenuRepository.findAllContainCode(cateCode);
 
         return categoryMenuList;
+
+    }
+    public List<CategoryMenu> findCategoryMenu(String cateCode , Pageable pageable){
+
+        Page<CategoryMenu> result = categoryMenuRepository.findAllContainCode(cateCode, pageable);
+        return result.getContent();
 
     }
 

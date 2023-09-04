@@ -12,6 +12,8 @@ import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.service.CategoryMenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -43,6 +45,30 @@ public class MenuApiController {
         log.info("cateCode : {} ",cateCode);
         List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(cateCode);
 
+        MenuSearchResponse response = MenuSearchResponse.of(cateName, cateCode, categoryMenuList);
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/api/menu/search/page")
+    public ResponseEntity<?> MenuSearchPage (@ModelAttribute MenuSearchRequest menuSearchRequest , @PageableDefault(page = 0, size = 6) Pageable pageable){
+
+        String cateName = menuSearchRequest.getSearchName();
+        log.info(" searchName : [{}]", cateName );
+        log.info(" page : [{}] , size : [{}]",pageable.getPageNumber(),pageable.getPageSize());
+
+        String cateCode = null;
+        if (StringUtils.hasText(cateName)) {
+            cateCode = categoryRepository.findCodeByName(cateName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
+        }else {
+            throw new CategoryException("카테고리명이 정확한 형식이 아닙니다.");
+        }
+
+        log.info("cateCode : {} ",cateCode);
+
+        List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(cateCode, pageable);
+
+        /** 페이징 적용 x */
         MenuSearchResponse response = MenuSearchResponse.of(cateName, cateCode, categoryMenuList);
 
         return new ResponseEntity<>(response,HttpStatus.OK);
