@@ -1,8 +1,6 @@
 package com.restaurant.reservation.repository;
 
-import com.restaurant.reservation.domain.Menu;
 import com.restaurant.reservation.repository.dto.MenuDto;
-import com.restaurant.reservation.domain.enumType.MenuType;
 import com.restaurant.reservation.service.MenuService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,12 +20,12 @@ class MenuRepositoryTest {
     public void 메뉴타입_찾기() throws Exception{
 
         // given
-        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
+//        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
 //        Assertions.assertThat(
 //        )
 
-        Assertions.assertEquals(specialList.size(),3);
-        specialList.forEach(System.out::println);
+//        Assertions.assertEquals(specialList.size(),3);
+//        specialList.forEach(System.out::println);
 
         List<MenuDto> specialDtoList = menuService.findSpecialMenu();
 

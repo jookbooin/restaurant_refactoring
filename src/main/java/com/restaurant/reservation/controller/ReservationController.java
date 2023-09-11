@@ -1,13 +1,16 @@
 package com.restaurant.reservation.controller;
 
-import com.restaurant.reservation.repository.dto.MenuDto;
-import com.restaurant.reservation.repository.dto.ReservationDto;
+import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.repository.ReservationRepository;
+import com.restaurant.reservation.repository.dto.ReservationDto;
+import com.restaurant.reservation.service.CategoryMenuService;
+import com.restaurant.reservation.service.CategoryService;
 import com.restaurant.reservation.service.MenuService;
 import com.restaurant.reservation.service.ReservationService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.AdvancePaymentForm;
 import com.restaurant.reservation.web.form.AdvanceReservationForm;
+import com.restaurant.reservation.web.webDto.CategoryMenuWebDto;
 import com.restaurant.reservation.web.webDto.OrderMenuWebDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -30,15 +34,26 @@ import java.util.Optional;
 public class ReservationController {
     private final MenuService menuService;
 
+    private final CategoryService categoryService;
     private final ReservationService reservationService;
     private final ReservationRepository reservationRepository;
+    private final CategoryMenuService categoryMenuService;
+
+    final String categoryNameSpecial ="스페셜";
 
     @GetMapping("/reservation/advance")
     public String reservationForm(Model model){
         log.info("GET : /reservation/advance");
         model.addAttribute("form",new AdvanceReservationForm());
-        List<MenuDto> specialMenuList = menuService.findSpecialMenu();
-        model.addAttribute("menuList",specialMenuList);
+
+
+
+        String categoryCode = categoryService.findCode(categoryNameSpecial);
+        List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
+
+        List<CategoryMenuWebDto> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWebDto.menuOf(cm))
+                                                                       .collect(Collectors.toList());
+        model.addAttribute("menuList",wehDtoList);
 
         return "basic/booking/advanceReservationForm";
     }
@@ -95,8 +110,13 @@ public class ReservationController {
 
         if(bindingResult.hasErrors()){
             log.info("검증 오류 발생 errors = {}", bindingResult);
-            List<MenuDto> specialMenuList = menuService.findSpecialMenu();
-            model.addAttribute("menuList",specialMenuList);
+
+            String categoryCode = categoryService.findCode(categoryNameSpecial);
+            List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
+
+            List<CategoryMenuWebDto> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWebDto.menuOf(cm))
+                    .collect(Collectors.toList());
+            model.addAttribute("menuList",wehDtoList);
             return "basic/booking/advanceReservationForm";
         }
 

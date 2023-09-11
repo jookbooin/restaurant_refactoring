@@ -1,7 +1,7 @@
 package com.restaurant.reservation;
 
 import com.restaurant.reservation.domain.Category;
-import com.restaurant.reservation.domain.Menu;
+import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.enumType.*;
@@ -35,9 +35,9 @@ public class InitDb {
 
     @PostConstruct // bean에 올라오면 spring이 불러오는 것 : 초기화
     public void init() {
-//        initService.InitDb();
+        initService.InitDb();
 //        initService.plus_Member_Reservation();
-        initService.Category_Menu();
+//        initService.Category_Menu();
     }
 
     @Component
@@ -92,19 +92,19 @@ public class InitDb {
             MenuDto menuDto11 = MenuDto.builder().name("새로").price(4000).description("주류 - A1B3C1").build();
             MenuDto menuDto12 = MenuDto.builder().name("콜라").price(3000).description("음료 - A1B3C2").build();
             MenuDto menuDto20 = MenuDto.builder().name("토마호크").price(30000).description("스테이크 - A1B1C4").build();
-            MenuDto menuDto30 = MenuDto.builder().name("알프레도").price(30000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto31 = MenuDto.builder().name("로제").price(31000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto32 = MenuDto.builder().name("라자냐").price(32000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto33 = MenuDto.builder().name("까르보나라").price(33000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto34 = MenuDto.builder().name("뽀모도로").price(34000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto35 = MenuDto.builder().name("볼로네즈").price(35000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto36 = MenuDto.builder().name("나폴리탄").price(36000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto37 = MenuDto.builder().name("푸타네스카").price(37000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto38 = MenuDto.builder().name("봉골레").price(38000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto39 = MenuDto.builder().name("알리오올리오").price(39000).description("파스타 - A1B1C5").build();
-            MenuDto menuDto50 = MenuDto.builder().name("감자튀김").price(6000).description("사이드 - A1B2").build();
-            MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("사이드 - A1B2").build();
-            MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("사이드 - A1B2").build();
+            MenuDto menuDto30 = MenuDto.builder().name("알프레도").price(30000).description("알프레도 파스타 - A1B1C5").build();
+            MenuDto menuDto31 = MenuDto.builder().name("로제").price(31000).description("로제 파스타 - A1B1C5").build();
+            MenuDto menuDto32 = MenuDto.builder().name("라자냐").price(32000).description("라자냐 파스타 - A1B1C5").build();
+            MenuDto menuDto33 = MenuDto.builder().name("까르보나라").price(33000).description("까르보나라 파스타 - A1B1C5").build();
+            MenuDto menuDto34 = MenuDto.builder().name("뽀모도로").price(34000).description("뽀모도로 파스타 - A1B1C5").build();
+            MenuDto menuDto35 = MenuDto.builder().name("볼로네즈").price(35000).description("볼로네즈파스타 - A1B1C5").build();
+            MenuDto menuDto36 = MenuDto.builder().name("나폴리탄").price(36000).description("나폴리탄 파스타 - A1B1C5").build();
+            MenuDto menuDto37 = MenuDto.builder().name("푸타네스카").price(37000).description("푸타네스카 파스타 - A1B1C5").build();
+            MenuDto menuDto38 = MenuDto.builder().name("봉골레").price(38000).description("봉골레 파스타 - A1B1C5").build();
+            MenuDto menuDto39 = MenuDto.builder().name("알리오올리오").price(39000).description("알리오올리오 파스타 - A1B1C5").build();
+            MenuDto menuDto50 = MenuDto.builder().name("감자튀김").price(6000).description("감자튀김 사이드 - A1B2").build();
+            MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("콘치즈 사이드 - A1B2").build();
+            MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("볶음밥 사이드 - A1B2").build();
 
             categoryMenuService.save( "주류",menuDto10);
             categoryMenuService.save( "주류",menuDto11);
@@ -128,7 +128,7 @@ public class InitDb {
 
         public void InitDb() {
 
-            /** Member */
+            /** 1. Member - 고객 / 관리자 */
             MemberDto memberDto1 =MemberDto.builder()
                     .email("3670lsh@naver.com")
                     .password("dltmdgjs4139!")
@@ -158,77 +158,100 @@ public class InitDb {
             Tables room = tableRepository.save(table3);
             Tables terrace = tableRepository.save(table4);
 
-            /** menu */
-            MenuDto menuDto1 = new MenuDto();
-            menuDto1.setName("코스A");
-            menuDto1.setPrice(80000);
-            menuDto1.setDescription("스테이크2 + 샐러드1 + 사이드 1");
-            menuDto1.setMenuType(MenuType.SPECIAL);
-            Menu special1 = Menu.createMenu(menuDto1);
+            /** root 카테고리 생성 */
+            CategoryDto rootDto1 = CategoryDto.builder().name("음식").code("A1").build();
+            CategoryDto rootDto2 = CategoryDto.builder().name("책").code("A2").build();
+            CategoryDto rootDto3 = CategoryDto.builder().name("영화").code("A3").build();
 
-            MenuDto menuDto2 = new MenuDto();
-            menuDto2.setName("코스B");
-            menuDto2.setPrice(95000);
-            menuDto2.setDescription("해산물2 + 사이드 2");
-            menuDto2.setMenuType(MenuType.SPECIAL);
-            Menu special2 = Menu.createMenu(menuDto2);
+            Category A1 = categoryService.saveCategory(rootDto1);
+            Category A2 = categoryService.saveCategory(rootDto2);
+            Category A3 = categoryService.saveCategory(rootDto3);
 
-            MenuDto menuDto3 = new MenuDto();
-            menuDto3.setName("코스C");
-            menuDto3.setPrice(110000);
-            menuDto3.setDescription("스테이크2 + 버거2 + 사이드 1 + 음료4");
-            menuDto3.setMenuType(MenuType.SPECIAL);
-            Menu special3 = Menu.createMenu(menuDto3);
+            /** 하위 카테고리 생성 */
+            CategoryDto rootDto1l1_1 = CategoryDto.builder().parent("음식").name("메인").code("B1").build();      // 메인
+            CategoryDto rootDto1l1_2 = CategoryDto.builder().parent("음식").name("사이드").code("B2").build();    // 사이드
+            CategoryDto rootDto1l1_3 = CategoryDto.builder().parent("음식").name("주류&음료").code("B3").build(); // 주류&음료
+            CategoryDto rootDto1l2_1 = CategoryDto.builder().parent("주류&음료").name("주류").code("C1").build(); // 주류
+            CategoryDto rootDto1l2_2 = CategoryDto.builder().parent("주류&음료").name("음료").code("C2").build(); // 음료
+            CategoryDto rootDto1l2_3 = CategoryDto.builder().parent("메인").name("스페셜").code("C3").build();    // 스페셜
+            CategoryDto rootDto1l2_4 = CategoryDto.builder().parent("메인").name("스테이크").code("C4").build();  // 스테이크
+            CategoryDto rootDto1l2_5 = CategoryDto.builder().parent("메인").name("파스타").code("C5").build();    // 파스타
 
-            MenuDto menuDto4 = new MenuDto();
-            menuDto4.setName("스테이크");
-            menuDto4.setPrice(25000);
-            menuDto4.setDescription("스테이크 입니다");
-            menuDto4.setMenuType(MenuType.GENERAL);
-            Menu general1 = Menu.createMenu(menuDto4);
+            Category A1B1 = categoryService.saveCategory(rootDto1l1_1);   // 메인
+            Category A1B2 = categoryService.saveCategory(rootDto1l1_2);   // 사이드
+            Category A1B3 = categoryService.saveCategory(rootDto1l1_3);   // 주류&음료
+            Category A1B3C1 = categoryService.saveCategory(rootDto1l2_1);   // 주류
+            Category A1B3C2 = categoryService.saveCategory(rootDto1l2_2);   // 음료
+            Category A1B1C3 = categoryService.saveCategory(rootDto1l2_3);   // 스페셜
+            Category A1B1C4 = categoryService.saveCategory(rootDto1l2_4);   // 스테이크
+            Category A1B1C5 = categoryService.saveCategory(rootDto1l2_5);   // 파스타
 
-            MenuDto menuDto5 = new MenuDto();
-            menuDto5.setName("버거");
-            menuDto5.setPrice(16000);
-            menuDto5.setDescription("수제버거 입니다");
-            menuDto5.setMenuType(MenuType.GENERAL);
-            Menu general2 = Menu.createMenu(menuDto5);
+            /** category menu*/
+            MenuDto menuDto10 = MenuDto.builder().name("처음처럼").price(5000).description("주류 - A1B3C1").build();
+            MenuDto menuDto11 = MenuDto.builder().name("새로").price(4000).description("주류 - A1B3C1").build();
+            MenuDto menuDto12 = MenuDto.builder().name("콜라").price(3000).description("음료 - A1B3C2").build();
+            MenuDto menuDto20 = MenuDto.builder().name("토마호크").price(30000).description("스테이크 - A1B1C4").build();
+            MenuDto menuDto30 = MenuDto.builder().name("알프레도").price(30000).description("알프레도 파스타 - A1B1C5").build();
+            MenuDto menuDto31 = MenuDto.builder().name("로제").price(31000).description("로제 파스타 - A1B1C5").build();
+            MenuDto menuDto32 = MenuDto.builder().name("라자냐").price(32000).description("라자냐 파스타 - A1B1C5").build();
+            MenuDto menuDto33 = MenuDto.builder().name("까르보나라").price(33000).description("까르보나라 파스타 - A1B1C5").build();
+            MenuDto menuDto34 = MenuDto.builder().name("뽀모도로").price(34000).description("뽀모도로 파스타 - A1B1C5").build();
+            MenuDto menuDto35 = MenuDto.builder().name("볼로네즈").price(35000).description("볼로네즈파스타 - A1B1C5").build();
+            MenuDto menuDto36 = MenuDto.builder().name("나폴리탄").price(36000).description("나폴리탄 파스타 - A1B1C5").build();
+            MenuDto menuDto37 = MenuDto.builder().name("푸타네스카").price(37000).description("푸타네스카 파스타 - A1B1C5").build();
+            MenuDto menuDto38 = MenuDto.builder().name("봉골레").price(38000).description("봉골레 파스타 - A1B1C5").build();
+            MenuDto menuDto39 = MenuDto.builder().name("알리오올리오").price(39000).description("알리오올리오 파스타 - A1B1C5").build();
+            MenuDto menuDto50 = MenuDto.builder().name("감자튀김").price(6000).description("감자튀김 사이드 - A1B2").build();
+            MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("콘치즈 사이드 - A1B2").build();
+            MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("볶음밥 사이드 - A1B2").build();
 
-            Menu specialA = menuRepository.save(special1);
-            Menu specialB = menuRepository.save(special2);
-            Menu specialC = menuRepository.save(special3);
-            Menu generalA = menuRepository.save(general1);
-            Menu generalB = menuRepository.save(general2);
+            MenuDto menuDto60 = MenuDto.builder().name("코스 A").price(70000).description("코스 A - A1B1C3").build();
+            MenuDto menuDto61 = MenuDto.builder().name("코스 B").price(80000).description("코스 B - A1B1C3").build();
+            MenuDto menuDto62 = MenuDto.builder().name("코스 C").price(90000).description("코스 C - A1B1C3").build();
 
-            /** OrderMenu */
+            CategoryMenu alcohol1 = categoryMenuService.save("주류", menuDto10);
+            CategoryMenu alcohol2 = categoryMenuService.save("주류", menuDto11);
+            CategoryMenu beverage1 = categoryMenuService.save("음료", menuDto12);
+            CategoryMenu stake1 = categoryMenuService.save("스테이크", menuDto20);
+            CategoryMenu pasta1 = categoryMenuService.save("파스타", menuDto30);
+            CategoryMenu pasta2 = categoryMenuService.save("파스타", menuDto31);
+            CategoryMenu pasta3 = categoryMenuService.save("파스타", menuDto32);
+            CategoryMenu pasta4 = categoryMenuService.save("파스타", menuDto33);
+            CategoryMenu pasta5 = categoryMenuService.save("파스타", menuDto34);
+            CategoryMenu pasta6 = categoryMenuService.save("파스타", menuDto35);
+            CategoryMenu pasta7 = categoryMenuService.save("파스타", menuDto36);
+            CategoryMenu pasta8 = categoryMenuService.save("파스타", menuDto37);
+            CategoryMenu pasta9 = categoryMenuService.save("파스타", menuDto38);
+            CategoryMenu pasta10 = categoryMenuService.save("파스타", menuDto39);
+            CategoryMenu side1 = categoryMenuService.save("사이드", menuDto50);
+            CategoryMenu side2 = categoryMenuService.save("사이드", menuDto51);
+            CategoryMenu side3 = categoryMenuService.save("사이드", menuDto52);
+            CategoryMenu special1 = categoryMenuService.save("스페셜", menuDto60);
+            CategoryMenu special2 = categoryMenuService.save("스페셜", menuDto61);
+            CategoryMenu special3 = categoryMenuService.save("스페셜", menuDto62);
+
+            /** OrderMenu 종류 */
             /** A */
-//            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(specialA.getId()).count(1).build();
-            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(specialA.getId()).count(3).build();
-            OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(specialA.getId()).count(5).build();
-            OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(specialA.getId()).count(6).build();
-
+            OrderMenuDto orderMenuDto1 = OrderMenuDto.builder().menuId(special1.getMenu().getId()).count(3).build();
+            OrderMenuDto orderMenuDto2 = OrderMenuDto.builder().menuId(special1.getMenu().getId()).count(5).build();
+            OrderMenuDto orderMenuDto3 = OrderMenuDto.builder().menuId(special1.getMenu().getId()).count(6).build();
             /** B */
-            OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(specialB.getId()).count(2).build();
-            OrderMenuDto orderMenuDto5 = OrderMenuDto.builder().menuId(specialB.getId()).count(4).build();
-            OrderMenuDto orderMenuDto6 = OrderMenuDto.builder().menuId(specialB.getId()).count(6).build();
-
+            OrderMenuDto orderMenuDto4 = OrderMenuDto.builder().menuId(special2.getMenu().getId()).count(2).build();
+            OrderMenuDto orderMenuDto5 = OrderMenuDto.builder().menuId(special2.getMenu().getId()).count(4).build();
+            OrderMenuDto orderMenuDto6 = OrderMenuDto.builder().menuId(special2.getMenu().getId()).count(6).build();
             /** C */
-            OrderMenuDto orderMenuDto7 = OrderMenuDto.builder().menuId(specialC.getId()).count(3).build();
-            OrderMenuDto orderMenuDto8 = OrderMenuDto.builder().menuId(specialC.getId()).count(4).build();
-            OrderMenuDto orderMenuDto9 = OrderMenuDto.builder().menuId(specialC.getId()).count(5).build();
+            OrderMenuDto orderMenuDto7 = OrderMenuDto.builder().menuId(special3.getMenu().getId()).count(3).build();
+            OrderMenuDto orderMenuDto8 = OrderMenuDto.builder().menuId(special3.getMenu().getId()).count(4).build();
+            OrderMenuDto orderMenuDto9 = OrderMenuDto.builder().menuId(special3.getMenu().getId()).count(5).build();
 
 
-            /** */
-
+            /** 주문 리스트 종류*/
             List<OrderMenuDto> orderMenuDtoList1= new ArrayList<>();
             orderMenuDtoList1.add(orderMenuDto1);
-            orderMenuDtoList1.add(orderMenuDto4);
-            orderMenuDtoList1.add(orderMenuDto8);
 
             List<OrderMenuDto> orderMenuDtoList2= new ArrayList<>();
             orderMenuDtoList2.add(orderMenuDto1);
             orderMenuDtoList2.add(orderMenuDto5);
-
 
             List<OrderMenuDto> orderMenuDtoList3= new ArrayList<>();
             orderMenuDtoList3.add(orderMenuDto6);
@@ -272,29 +295,21 @@ public class InitDb {
 
             /** Reservation */
 
-            ReservationDto reservationDto1 = ReservationDto.builder()
-                    .date(date1).time(time1).number(4).orderMenuList(orderMenuDtoList1).build();
+            ReservationDto reservationDto1 = ReservationDto.builder().date(date1).time(time1).number(4).orderMenuList(orderMenuDtoList1).build();
 
-            ReservationDto reservationDto2 = ReservationDto.builder()
-                    .date(date2).time(time2).number(3).orderMenuList(orderMenuDtoList2).build();
+            ReservationDto reservationDto2 = ReservationDto.builder().date(date2).time(time2).number(3).orderMenuList(orderMenuDtoList2).build();
 
-            ReservationDto reservationDto3 = ReservationDto.builder()
-                    .date(date3).time(time3).number(8).orderMenuList(orderMenuDtoList3).build();
+            ReservationDto reservationDto3 = ReservationDto.builder().date(date3).time(time3).number(8).orderMenuList(orderMenuDtoList3).build();
 
-            ReservationDto reservationDto4 = ReservationDto.builder()
-                    .date(date4).time(time4).number(6).orderMenuList(orderMenuDtoList4).build();
+            ReservationDto reservationDto4 = ReservationDto.builder().date(date4).time(time4).number(6).orderMenuList(orderMenuDtoList4).build();
 
-            ReservationDto reservationDto5 = ReservationDto.builder()
-                    .date(date5).time(time5).number(6).orderMenuList(orderMenuDtoList1).build();
+            ReservationDto reservationDto5 = ReservationDto.builder().date(date5).time(time5).number(6).orderMenuList(orderMenuDtoList5).build();
 
-            ReservationDto reservationDto6 = ReservationDto.builder()
-                    .date(date6).time(time6).number(3).orderMenuList(orderMenuDtoList2).build();
+            ReservationDto reservationDto6 = ReservationDto.builder().date(date6).time(time6).number(3).orderMenuList(orderMenuDtoList1).build();
 
-            ReservationDto reservationDto7 = ReservationDto.builder()
-                    .date(date7).time(time7).number(7).orderMenuList(orderMenuDtoList3).build();
+            ReservationDto reservationDto7 = ReservationDto.builder().date(date7).time(time7).number(7).orderMenuList(orderMenuDtoList2).build();
 
-            ReservationDto reservationDto8 = ReservationDto.builder()
-                    .date(date8).time(time8).number(4).orderMenuList(orderMenuDtoList4).build();
+            ReservationDto reservationDto8 = ReservationDto.builder().date(date8).time(time8).number(4).orderMenuList(orderMenuDtoList3).build();
 
             /** 지난 날짜 */
             Reservation reservation1 = reservationService.addReservation(member1.getId(), reservationDto1);
@@ -302,18 +317,16 @@ public class InitDb {
 
             Reservation reservation2 = reservationService.addReservation(member1.getId(), reservationDto2);
             reservation2.chageBookingStatus(BookingStatus.NOSHOW);
-//
+
             Reservation reservation3 = reservationService.addReservation(member1.getId(), reservationDto3);
             reservation3.chageBookingStatus(BookingStatus.COMPLETE);
-//
+
             Reservation reservation4 = reservationService.addReservation(member1.getId(), reservationDto4);
             reservation4.chageBookingStatus(BookingStatus.NOSHOW);
-//
+
             Reservation reservation5 = reservationService.addReservation(member1.getId(), reservationDto5);
             reservation5.chageBookingStatus(BookingStatus.COMPLETE);
-//
-//
-//            /** pre */
+
             Reservation reservation6 = reservationService.addReservation(member1.getId(), reservationDto6);
             Reservation reservation7 = reservationService.addReservation(member1.getId(), reservationDto7);
             Reservation reservation8 = reservationService.addReservation(member1.getId(), reservationDto8);
@@ -384,7 +397,7 @@ public class InitDb {
 
             /** Member */
             List<String> emailList = Arrays.asList("@naver.com","@gmail.com","@empal.com","@kakao.com");
-            List<String> nameList = Arrays.asList("이승헌","감스트","죽부인","마우스");
+            List<String> nameList = Arrays.asList("외데고르","사카","라이스","하베르츠");
             List<String> phoneList = Arrays.asList("02","010","031","052");
 
 

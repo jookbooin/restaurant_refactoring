@@ -40,7 +40,7 @@
 
                 <div class="row mb-3">
                     <label  class="col-sm-2 col-form-label">시 간</label>
-                    <div class="reservation_date col-sm-10">
+                    <div class="reservation_time col-sm-10">
                         <select class="form-select" id="time" name="time">
 
                         </select>
@@ -53,18 +53,18 @@
         <!-- input 한 값들을 count >0 인 것들만 form 내부로 집어넣는다??? -->
                 <div th:each="menu : ${menuList}" class="reservation_menu_list ">
 
-                    <div th:id="${menu.id}" class="menu_box " >
+                    <div th:id="${menu.menuId}" class="menu_box " >
                         <!-- count 가 0 이상일 때 → id 전달 -->
-                        <input type="hidden" class="menu_id" th:value="${menu.id}" th:attr="data-menu-id=${menu.id}">
-                        <input type="hidden" class="menu_name" th:value="${menu.name}" th:attr="data-menu-name=${menu.name}">
+                        <input type="hidden" class="menu_id" th:value="${menu.menuId}" th:attr="data-menu-id=${menu.menuId}">
+                        <input type="hidden" class="menu_name" th:value="${menu.menuName}" th:attr="data-menu-name=${menu.menuName}">
                         <input type="hidden" class="menu_price" th:value="${menu.price}" th:attr="data-menu-price=${menu.price}">
 
                         <div class="ordermenu_info">
                             <div class="menu_name_price">
-                                <span th:text="|${menu.name} ${menu.price}원|">이름 가격</span>
+                                <span th:text="|${menu.menuName} ${menu.price}원|">이름 가격</span>
 <!--                                <input type="hidden" class="menu_price" th:attr="data-menu-price=${menu.price}">-->
                             </div >
-                            <span th:text="${menu.intro}">intro</span>
+                            <span th:text="${menu.description}">intro</span>
                         </div>
 
                         <div class="ordermenu_count">

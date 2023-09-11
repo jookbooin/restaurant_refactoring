@@ -1,6 +1,7 @@
 package com.restaurant.reservation.service;
 
 import com.restaurant.reservation.domain.Category;
+import com.restaurant.reservation.exception.CategoryException;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +66,10 @@ public class CategoryService {
         }
 
         return categoryRepository.save(currentCategory);
+    }
+
+    public String findCode(String categoryName){
+        return categoryRepository.findCodeByName(categoryName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
     }
 
 

@@ -1,7 +1,8 @@
 package com.restaurant.reservation.service;
 
 import com.restaurant.reservation.domain.Menu;
-import com.restaurant.reservation.domain.enumType.MenuType;
+import com.restaurant.reservation.repository.CategoryMenuRepository;
+import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,10 @@ import java.util.Optional;
 public class MenuService  {
 
     private final MenuRepository menuRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategoryMenuRepository categoryMenuRepository;
+
+    final String categoryName ="스페셜";
 
     @Transactional
     public void deleteMenu(Long id) {
@@ -44,26 +49,26 @@ public class MenuService  {
         return menuRepository.findAll();
     }
 
-
-
     public List<MenuDto> findSpecialMenu(){
-        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
-        List<MenuDto> specialDtoList = MenuToMenuDto(specialList);
-        return specialDtoList;
+//        String cateCode = categoryRepository.findCodeByName(categoryName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
+//        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
+//        List<MenuDto> specialDtoList = MenuToMenuDto(specialList);
+//        return specialDtoList;
+        return null;
     }
 
-    private static List<MenuDto> MenuToMenuDto(List<Menu> specialList) {
-        List<MenuDto> specialDtoList = new ArrayList<>();
-        specialList.forEach(o -> {
-            MenuDto menuDto = new MenuDto();
-            menuDto.setId(o.getId());
-            menuDto.setPrice(o.getPrice());
-            menuDto.setDescription(o.getDescription());
-            menuDto.setName(o.getName());
-            menuDto.setMenuType(o.getMenuType());
-            specialDtoList.add(menuDto);
+    private static List<MenuDto> toDto(List<Menu> menuList) {
+        List<MenuDto> dtoList = new ArrayList<>();
+        menuList.forEach(o -> {
+                                  MenuDto menuDto = MenuDto.builder()
+                                        .id(o.getId())
+                                        .price(o.getPrice())
+                                        .description(o.getDescription())
+                                        .name(o.getName())
+                                        .build();
+            dtoList.add(menuDto);
         });
-        return specialDtoList;
+        return dtoList;
     }
 
 }

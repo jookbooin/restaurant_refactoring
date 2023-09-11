@@ -96,25 +96,32 @@
 
                         <div id="reservation_content">
                             <input id="rid" type="hidden">
-                            <div class="reservation_number">
-                                <label>인원수</label>
-                                <input id="number"  name="number" placeholder="인원수을 입력하세요"
-                                       type="number" min="1">
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">인원수</label>
+                                <div class="reservation_number col-sm-10">
+                                    <input class="form-control" id="number"  name="number" placeholder="인원수을 입력하세요"
+                                           type="number" min="1">
+                                </div>
                             </div>
 
-                            <div class="reservation_date">
-                                <label>날 짜</label>
-                                <input  id="date" name="date"  placeholder="날짜를 입력하세요"
-                                        type="date">
+                            <div class="row mb-3">
+                                <label  class="col-sm-2 col-form-label">날 짜</label>
+                                <div class="reservation_date col-sm-10">
+                                    <input  class="form-control" id="date" name="date"  placeholder="날짜를 입력하세요"
+                                            type="date">
+                                </div>
                             </div>
 
-                            <div class="reservation_time">
-                                <label>시 간</label>
-                                <select id="time" name="time">
-                                    <option value="">예약시간</option>
-                                    <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
-                                            th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
-                                </select>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">시 간</label>
+                                <div class="reservation_time col-sm-10">
+                                    <select class="form-select" id="time" name="time">
+                                        <option value="">예약시간</option>
+                                        <option th:each="selectTime : ${T(com.restaurant.reservation.domain.enumType.TimeEnum).values()}"
+                                                th:text="${selectTime.time}" th:value="${selectTime.time}"></option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="reservation_menu_list">
@@ -252,9 +259,9 @@
                                 tmp += '<div class="menu_name_price">'
                                 tmp += '<span data-menu-name="'+ menu["name"]+'" data-menu-price="'+menu["price"] +'">'+menu["name"]+' '+menu["price"]+'원</span>'
                                 tmp += '</div>'
-                                tmp += '<span>'+menu["intro"]+'</span></div>';
+                                tmp += '<span>'+menu["description"]+'</span></div>';
                                 tmp += '<div class="ordermenu_count">'
-                                tmp += '<input name=""  type="number" class="menu_count" min="0" max="8" value="0" >'
+                                tmp += '<input name=""  type="number" class="menu_count form-control" min="0" max="8" value="0" >'
                                 tmp += '</div>'
                                 tmp += '</div>'
                             });
@@ -453,6 +460,49 @@
                 let maxDate = new Date(now_utc - timeOff + 14 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
                 document.getElementById("date").setAttribute("min", today);
                 document.getElementById("date").setAttribute("max", maxDate);
+            </script>
+
+            <script>
+                $(document).ready(function() {
+
+
+
+                    $('#date').change(function () {
+                        let selectedDate = $(this).val(); // 선택된 날짜 값 가져오기
+
+
+                        // AJAX 요청 보내기
+                        $.ajax({
+                            type: 'GET',
+                            url: '/api/reservation/'+selectedDate+"/time",
+                            success: function (result) {
+                                let resultArray = result.data;
+
+                                $('#time').empty();
+
+                                for(let i = 0; i < resultArray.length; i++) {
+                                    let item = resultArray[i];
+                                    let time = item.time;
+                                    let check = item.check;
+
+                                    let option = $('<option>').val(time);
+                                    if (check === 1) {
+                                        option.attr('disabled', 'disabled').text(time+' - 예약 완료');
+
+                                    }else{
+                                        option.text(time)
+                                    }
+
+                                    $('#time').append(option);
+                                }
+                            },
+                            error: function (result) {
+
+                            }
+
+                        });
+                    });
+                });
             </script>
 
 
