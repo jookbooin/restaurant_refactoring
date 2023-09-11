@@ -45,7 +45,7 @@ public class ReservationService {
         // 2. 리스트로 만들어야 함
         List<OrderMenu> orderMenuList = new ArrayList<>();
 
-        if(reservationDto.getOrderMenuList() != null)
+        if(reservationDto.getOrderMenuList() != null) 
             for (OrderMenuDto orderMenuDto : reservationDto.getOrderMenuList()) {
                 Menu findMenu = menuRepository.findById(orderMenuDto.getMenuId()).orElseThrow(() -> new RuntimeException("can't find Menu"));
                 OrderMenu createOrderMenu = OrderMenu.createOrderMenu(findMenu, orderMenuDto.getCount());

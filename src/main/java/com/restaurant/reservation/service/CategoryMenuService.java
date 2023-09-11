@@ -41,6 +41,12 @@ public class CategoryMenuService {
 
     }
 
+//    public List<CategoryMenu> findSpecialMenu(String categoryName){
+//        String cateCode = categoryRepository.findCodeByName(categoryName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
+//        categoryMenuRepository.find
+//        return null;
+//    }
+
     @Transactional
     public CategoryMenu  save(String categoryName , MenuDto menuDto){
         /** category 존재하는지 체크*/

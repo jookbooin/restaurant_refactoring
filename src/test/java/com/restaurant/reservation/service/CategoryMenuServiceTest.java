@@ -9,7 +9,6 @@ import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.dto.CategoryDto;
 import com.restaurant.reservation.repository.dto.MenuDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -73,42 +73,49 @@ class CategoryMenuServiceTest {
         Category A1B1C4 = categoryService.saveCategory(rootDto1l2_4);   // 스테이크
         Category A1B1C5 = categoryService.saveCategory(rootDto1l2_5);   // 파스타
 
-        /** 메뉴 생성 */
+        /** category menu*/
         MenuDto menuDto10 = MenuDto.builder().name("처음처럼").price(5000).description("주류 - A1B3C1").build();
         MenuDto menuDto11 = MenuDto.builder().name("새로").price(4000).description("주류 - A1B3C1").build();
         MenuDto menuDto12 = MenuDto.builder().name("콜라").price(3000).description("음료 - A1B3C2").build();
         MenuDto menuDto20 = MenuDto.builder().name("토마호크").price(30000).description("스테이크 - A1B1C4").build();
-        MenuDto menuDto30 = MenuDto.builder().name("알프레도").price(30000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto31 = MenuDto.builder().name("로제").price(31000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto32 = MenuDto.builder().name("라자냐").price(32000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto33 = MenuDto.builder().name("까르보나라").price(33000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto34 = MenuDto.builder().name("뽀모도로").price(34000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto35 = MenuDto.builder().name("볼로네즈").price(35000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto36 = MenuDto.builder().name("나폴리탄").price(36000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto37 = MenuDto.builder().name("푸타네스카").price(37000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto38 = MenuDto.builder().name("봉골레").price(38000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto39 = MenuDto.builder().name("알리오올리오").price(39000).description("파스타 - A1B1C5").build();
-        MenuDto menuDto50 = MenuDto.builder().name("감자튀김").price(6000).description("사이드 - A1B2").build();
-        MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("사이드 - A1B2").build();
-        MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("사이드 - A1B2").build();
+        MenuDto menuDto30 = MenuDto.builder().name("알프레도").price(30000).description("알프레도 파스타 - A1B1C5").build();
+        MenuDto menuDto31 = MenuDto.builder().name("로제").price(31000).description("로제 파스타 - A1B1C5").build();
+        MenuDto menuDto32 = MenuDto.builder().name("라자냐").price(32000).description("라자냐 파스타 - A1B1C5").build();
+        MenuDto menuDto33 = MenuDto.builder().name("까르보나라").price(33000).description("까르보나라 파스타 - A1B1C5").build();
+        MenuDto menuDto34 = MenuDto.builder().name("뽀모도로").price(34000).description("뽀모도로 파스타 - A1B1C5").build();
+        MenuDto menuDto35 = MenuDto.builder().name("볼로네즈").price(35000).description("볼로네즈파스타 - A1B1C5").build();
+        MenuDto menuDto36 = MenuDto.builder().name("나폴리탄").price(36000).description("나폴리탄 파스타 - A1B1C5").build();
+        MenuDto menuDto37 = MenuDto.builder().name("푸타네스카").price(37000).description("푸타네스카 파스타 - A1B1C5").build();
+        MenuDto menuDto38 = MenuDto.builder().name("봉골레").price(38000).description("봉골레 파스타 - A1B1C5").build();
+        MenuDto menuDto39 = MenuDto.builder().name("알리오올리오").price(39000).description("알리오올리오 파스타 - A1B1C5").build();
+        MenuDto menuDto50 = MenuDto.builder().name("감자튀김").price(6000).description("감자튀김 사이드 - A1B2").build();
+        MenuDto menuDto51 = MenuDto.builder().name("콘치즈").price(4000).description("콘치즈 사이드 - A1B2").build();
+        MenuDto menuDto52 = MenuDto.builder().name("볶음밥").price(7000).description("볶음밥 사이드 - A1B2").build();
 
-        categoryMenuService.save( "주류",menuDto10);
-        categoryMenuService.save( "주류",menuDto11);
-        categoryMenuService.save( "음료",menuDto12);
-        categoryMenuService.save( "스테이크",menuDto20);
-        categoryMenuService.save( "파스타",menuDto30);
-        categoryMenuService.save( "파스타",menuDto31);
-        categoryMenuService.save( "파스타",menuDto32);
-        categoryMenuService.save( "파스타",menuDto33);
-        categoryMenuService.save( "파스타",menuDto34);
-        categoryMenuService.save( "파스타",menuDto35);
-        categoryMenuService.save( "파스타",menuDto36);
-        categoryMenuService.save( "파스타",menuDto37);
-        categoryMenuService.save( "파스타",menuDto38);
-        categoryMenuService.save( "파스타",menuDto39);
-        categoryMenuService.save( "사이드",menuDto50);
-        categoryMenuService.save( "사이드",menuDto51);
-        categoryMenuService.save( "사이드",menuDto52);
+        MenuDto menuDto60 = MenuDto.builder().name("코스 A").price(70000).description("코스 A - A1B1C3").build();
+        MenuDto menuDto61 = MenuDto.builder().name("코스 B").price(80000).description("코스 B - A1B1C3").build();
+        MenuDto menuDto62 = MenuDto.builder().name("코스 C").price(90000).description("코스 C - A1B1C3").build();
+
+        CategoryMenu alcohol1 = categoryMenuService.save("주류", menuDto10);
+        CategoryMenu alcohol2 = categoryMenuService.save("주류", menuDto11);
+        CategoryMenu beverage1 = categoryMenuService.save("음료", menuDto12);
+        CategoryMenu stake1 = categoryMenuService.save("스테이크", menuDto20);
+        CategoryMenu pasta1 = categoryMenuService.save("파스타", menuDto30);
+        CategoryMenu pasta2 = categoryMenuService.save("파스타", menuDto31);
+        CategoryMenu pasta3 = categoryMenuService.save("파스타", menuDto32);
+        CategoryMenu pasta4 = categoryMenuService.save("파스타", menuDto33);
+        CategoryMenu pasta5 = categoryMenuService.save("파스타", menuDto34);
+        CategoryMenu pasta6 = categoryMenuService.save("파스타", menuDto35);
+        CategoryMenu pasta7 = categoryMenuService.save("파스타", menuDto36);
+        CategoryMenu pasta8 = categoryMenuService.save("파스타", menuDto37);
+        CategoryMenu pasta9 = categoryMenuService.save("파스타", menuDto38);
+        CategoryMenu pasta10 = categoryMenuService.save("파스타", menuDto39);
+        CategoryMenu side1 = categoryMenuService.save("사이드", menuDto50);
+        CategoryMenu side2 = categoryMenuService.save("사이드", menuDto51);
+        CategoryMenu side3 = categoryMenuService.save("사이드", menuDto52);
+        CategoryMenu special1 = categoryMenuService.save("스페셜", menuDto60);
+        CategoryMenu special2 = categoryMenuService.save("스페셜", menuDto61);
+        CategoryMenu special3 = categoryMenuService.save("스페셜", menuDto62);
 
     }
 
@@ -127,9 +134,11 @@ class CategoryMenuServiceTest {
     @Test
     @Transactional
     public void categoryMenu_Code조회() throws Exception {
-//        String categoryCode = categoryRepository.findCodeByName("주류").orElseThrow(() -> new IllegalArgumentException("잘못된 카테고리 명"));
-//        List<CategoryMenu> result = categoryMenuRepository.findAllContainCode(categoryCode);
-//        assertThat(result.size()).isEqualTo(2);
+        final String categoryName = "스페셜";
+        String categoryCode = categoryService.findCode(categoryName);
+        List<CategoryMenu> result = categoryMenuService.findCategoryMenu(categoryCode);
+
+        assertThat(result.size()).isEqualTo(3);
     }
     @Test
     @Transactional
@@ -155,7 +164,7 @@ class CategoryMenuServiceTest {
         Long id = 1L;
         categoryMenuService.delete(id);
         List<CategoryMenu> all = categoryMenuRepository.findAll();
-        Assertions.assertThat(all.size()).isEqualTo(16);
+        assertThat(all.size()).isEqualTo(16);
     }
 
 

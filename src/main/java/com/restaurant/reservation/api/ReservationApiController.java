@@ -24,10 +24,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReservationApiController {
 
+
     private final ReservationService reservationService;
     @GetMapping("/api/reservation/{date}/time")
     public ResponseEntity<OneListResult> findPossibleTime(@PathVariable("date") String date){
-        log.info("date : {}",date);
+        log.info("/api/reservation/{} ",date);
         List<LocalTime> possibleTimeList = null;
         LocalDate localDate = LocalDate.parse(date);
 

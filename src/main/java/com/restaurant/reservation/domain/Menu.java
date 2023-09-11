@@ -1,7 +1,6 @@
 package com.restaurant.reservation.domain;
 
 import com.restaurant.reservation.repository.dto.MenuDto;
-import com.restaurant.reservation.domain.enumType.MenuType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -18,9 +17,9 @@ public class Menu {
     private String name;
     private int price;
     private String description;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "menu_type")
-    private MenuType menuType;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "menu_type")
+//    private MenuType menuType;
 
     public Menu(){
     }
@@ -28,14 +27,16 @@ public class Menu {
     public Menu(String name) {
         this.name = name;
     }
-
     @Builder
-    public Menu(String name, int price, String description, MenuType menuType) {
+    public Menu(Long id, String name, int price, String description) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.description = description;
-        this.menuType = menuType;
     }
+
+
+
 
     public void updateName(String name){
         this.name = name;
@@ -53,7 +54,6 @@ public class Menu {
                 .name(menuDto.getName())
                 .price(menuDto.getPrice())
                 .description(menuDto.getDescription())
-                .menuType(menuDto.getMenuType())
                 .build();
 //        return new Menu(menuDto.getName(), menuDto.getPrice(), menuDto.getDescription(), menuDto.getMenuType());
     }

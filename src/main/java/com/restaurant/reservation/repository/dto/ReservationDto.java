@@ -2,9 +2,7 @@ package com.restaurant.reservation.repository.dto;
 
 import com.restaurant.reservation.api.request.UpdateReservationRequest;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,14 +11,23 @@ import java.util.stream.Collectors;
 
 @ToString
 @Getter
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReservationDto {
     private Long rid;
     private int number;
     private LocalDate date;
     private LocalTime time;
-
     private List<OrderMenuDto> orderMenuList ;
+
+
+    @Builder
+    public ReservationDto(Long rid, int number, LocalDate date, LocalTime time, List<OrderMenuDto> orderMenuList) {
+        this.rid = rid;
+        this.number = number;
+        this.date = date;
+        this.time = time;
+        this.orderMenuList = orderMenuList;
+    }
 
     public static ReservationDto requestToDto(UpdateReservationRequest request){
 
