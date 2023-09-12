@@ -135,36 +135,19 @@ class ReservationRepositoryTest {
     @Test
     public void 주문_조회() throws Exception {
 
-//        List<Reservation> allReservation = reservationRepository.findAll();
-//
-//        allReservation.forEach(o->{
-//            System.out.println("o.getId() = " + o.getId());
-//            System.out.println("o.getNumber() = " + o.getNumber());
-//            System.out.println("o.getDate() = " + o.getDate());
-//            System.out.println("o.getTime() = " + o.getTime());
-//            System.out.println("o.getMember() = " + o.getMember());
-//            System.out.println();
-//        });
 
         Member member = memberRepository.findById(1L).get();
 
         System.out.println("== @query ==");
         List<Reservation> queryList = reservationRepository.findReservationAdvance(member.getId());
-        queryList.forEach(o->{
-            System.out.println(o.getId());
-            System.out.println(o.getDate());
-            System.out.println(o.getTime());
-            System.out.println(o.getMember().getMemberInfo().getName());
-
-            System.out.println();
-        });
-
-//        List<Reservation> reservationList = reservationRepository.findByMemberIdOrderByDateAscTimeAsc(member.getId());
-//        reservationList.forEach(o -> {
+//        queryList.forEach(o->{
 //            System.out.println(o.getId());
 //            System.out.println(o.getDate());
 //            System.out.println(o.getTime());
+//            System.out.println(o.getMember().getMemberInfo().getName());
+//            System.out.println();
 //        });
+
     }
 
     @Test

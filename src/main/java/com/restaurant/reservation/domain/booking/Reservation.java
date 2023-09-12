@@ -1,16 +1,18 @@
 package com.restaurant.reservation.domain.booking;
 
 import com.restaurant.reservation.domain.OrderMenu;
-import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
 import com.restaurant.reservation.domain.members.Member;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,7 +23,6 @@ import java.util.List;
 @Getter
 @Entity
 @DiscriminatorValue("예약")
-@EntityListeners(AuditingEntityListener.class)
 public class Reservation extends Booking {
     private LocalDate date; //방문 예정 날짜 2023-09-11
     private LocalTime time; //방문 예정 시간 11:00 , 12:00
@@ -29,10 +30,6 @@ public class Reservation extends Booking {
     @LastModifiedDate
     private LocalDate modifiedDate;  /** 예약 시점 + 예약 변경 시점 날짜  <-> 위약금 비교하기위해서 필요*/
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
@@ -45,7 +42,7 @@ public class Reservation extends Booking {
 
     public Reservation( Member member,LocalTime time) {
         this.time = time;
-        this.member = member;
+        super.setMember(member);
     }
 
     public static Reservation createReservation(Member member, ReservationDto reservationDto, List<OrderMenu> orderMenuList){

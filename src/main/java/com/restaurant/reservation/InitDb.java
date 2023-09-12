@@ -339,16 +339,16 @@ public class InitDb {
 
         public void plus_Member_Reservation() {
             /** date */
-            LocalDate date9 = LocalDate.of(2023, 9, 11);
+            LocalDate date9 = LocalDate.of(2023, 10, 11);
             LocalTime time9 = LocalTime.of(13, 0, 0);
 
-            LocalDate date10 = LocalDate.of(2023, 9, 11);
+            LocalDate date10 = LocalDate.of(2023, 10, 11);
             LocalTime time10 = LocalTime.of(16, 0, 0);
 
-            LocalDate date11 = LocalDate.of(2023, 9, 11);
+            LocalDate date11 = LocalDate.of(2023, 10, 11);
             LocalTime time11 = LocalTime.of(19, 0, 0);
 
-            LocalDate date12 = LocalDate.of(2023, 10, 14);
+            LocalDate date12 = LocalDate.of(2023, 10, 12);
             LocalTime time12 = LocalTime.of(19, 0, 0);
 
             LocalDate date13 = LocalDate.of(2023, 10, 13);
@@ -399,15 +399,15 @@ public class InitDb {
 
             /** Member */
             List<String> emailList = Arrays.asList("@naver.com","@gmail.com","@empal.com","@kakao.com");
-            List<String> nameList = Arrays.asList("외데고르","사카","라이스","하베르츠");
+            List<String> nameList = Arrays.asList("외데고르","사카","라이스","하베르츠","라야","화이트","제주스");
             List<String> phoneList = Arrays.asList("02","010","031","052");
 
 
 
-            for (int i = 3; i < 103; i++) {
+            for (int i = 0; i < 100; i++) {
                 int four = i % 4 ;
 
-                MemberInfo info = new MemberInfo(nameList.get(four),"010"+i);
+                MemberInfo info = new MemberInfo(nameList.get(four) + i,"011-"+i);
                 Member member = null;
 
                 if (i%4==1){
