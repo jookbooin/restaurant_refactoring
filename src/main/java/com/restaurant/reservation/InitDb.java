@@ -162,10 +162,12 @@ public class InitDb {
             CategoryDto rootDto1 = CategoryDto.builder().name("음식").code("A1").build();
             CategoryDto rootDto2 = CategoryDto.builder().name("책").code("A2").build();
             CategoryDto rootDto3 = CategoryDto.builder().name("영화").code("A3").build();
+            CategoryDto rootDto4 = CategoryDto.builder().name("게시판").code("A4").build();
 
             Category A1 = categoryService.saveCategory(rootDto1);
             Category A2 = categoryService.saveCategory(rootDto2);
             Category A3 = categoryService.saveCategory(rootDto3);
+            Category A4 = categoryService.saveCategory(rootDto4);
 
             /** 하위 카테고리 생성 */
             CategoryDto rootDto1l1_1 = CategoryDto.builder().parent("음식").name("메인").code("B1").build();      // 메인

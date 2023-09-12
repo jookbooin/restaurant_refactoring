@@ -1,8 +1,6 @@
 package com.restaurant.reservation.service;
 
 import com.restaurant.reservation.domain.Menu;
-import com.restaurant.reservation.repository.CategoryMenuRepository;
-import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.MenuRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +16,6 @@ import java.util.Optional;
 public class MenuService  {
 
     private final MenuRepository menuRepository;
-    private final CategoryRepository categoryRepository;
-    private final CategoryMenuRepository categoryMenuRepository;
 
     final String categoryName ="스페셜";
 
@@ -49,13 +45,6 @@ public class MenuService  {
         return menuRepository.findAll();
     }
 
-    public List<MenuDto> findSpecialMenu(){
-//        String cateCode = categoryRepository.findCodeByName(categoryName).orElseThrow(() -> new CategoryException("존재하지 않는 카테고리 명입니다"));
-//        List<Menu> specialList = menuRepository.findByMenuType(MenuType.SPECIAL);
-//        List<MenuDto> specialDtoList = MenuToMenuDto(specialList);
-//        return specialDtoList;
-        return null;
-    }
 
     private static List<MenuDto> toDto(List<Menu> menuList) {
         List<MenuDto> dtoList = new ArrayList<>();
