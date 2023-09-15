@@ -26,13 +26,14 @@ public class Member extends TimeEntity {
     @Embedded
     private MemberInfo memberInfo;
 
-
-    @Column(name="member_grade")
+    @Column(name="grade")
     @Enumerated(EnumType.STRING)
     private MemberGrade memberGrade;
-    @Column(name="member_type")
+    @Column(name="role")
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
+
+    // ReviewList를 굳이 가지고 있어야 할까?
 
     public Member() {
     }
