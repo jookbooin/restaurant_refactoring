@@ -64,4 +64,12 @@ public class Review extends TimeEntity {
 
         return review;
     }
+
+    public void updateReview(ReviewDto reviewDto) {
+        this.content = reviewDto.getContent();
+        if(this.grade != reviewDto.getGrade()){
+            this.grade = reviewDto.getGrade();
+            this.restaurant.updateAverageGrade();
+        }
+    }
 }

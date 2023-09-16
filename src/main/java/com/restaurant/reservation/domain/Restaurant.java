@@ -36,11 +36,20 @@ public class Restaurant {
                 .name(restaurantDto.getName())
                 .build();
     }
-
     public void addReview(Review review){
         reviewList.add(review);
         review.setRestaurant(this);
+        updateAverageGrade();
+    }
+
+    public void updateAverageGrade() {
         double average = reviewList.stream().mapToDouble(Review::getGrade).average().orElse(0.0);
         this.averageGrade =  Math.round(average * 10) / 10.0;
     }
+
+    public void deleteReview(Review review){
+        reviewList.remove(review);
+        updateAverageGrade();
+    }
+
 }

@@ -8,11 +8,11 @@ import lombok.*;
 public class ReviewDto {
     private Long id;
     private String content; // 후기
-    private Integer grade;   // 평점
-    private Integer viewCount;
+    private int grade;   // 평점
+    private int viewCount;
 
     @Builder
-    public ReviewDto(Long id, String content, Integer grade, Integer viewCount) {
+    public ReviewDto(Long id, String content, int grade, int viewCount) {
         this.id = id;
         this.content = content;
         this.grade = grade;
