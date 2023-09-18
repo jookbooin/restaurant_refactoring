@@ -21,6 +21,7 @@ public class Review extends TimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Long id;
+//    private String title;
     private String content; // 후기 
     private int grade;   // 평점
     private int viewCount;  // 조회수 - 생략 가능
@@ -46,6 +47,8 @@ public class Review extends TimeEntity {
         this.restaurant = restaurant;
         this.fileList = fileList;
     }
+
+
 
 
     public void setRestaurant(Restaurant restaurant) {

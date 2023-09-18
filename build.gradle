@@ -43,7 +43,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// db
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly ("com.mysql:mysql-connector-j")
 
 	//querydsl 추가
 	// 3. querydsl dependencies 추가

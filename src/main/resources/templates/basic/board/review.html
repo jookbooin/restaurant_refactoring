@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base/basicPage :: layout(~{::title},~{::link},~{::nav})}">
+<head>
+    <meta charset="UTF-8">
+    <title>review Page</title>
+    <link rel="stylesheet" th:href="@{/css/size.css}">
+</head>
+
+<body>
+
+    <nav id="layoutSidenav_content" class="w-80 mx-auto">
+        <main>
+
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">리뷰 페이지입니다</h1>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <p class="mb-0">
+                            ReivewController :
+                            <code>/review</code>
+                        <div></div>
+
+                        </p>
+                    </div>
+                </div>
+<!---->
+                <br>
+
+                <div class="input-group w-60 mx-auto">
+                    <input type="text" class="form-control " placeholder="제목을 입력해주세요.">
+                    <button type="submit" class="btn btn-secondary">검색</button>
+                </div>
+                <br>
+
+                <form class="w-80 mx-auto">
+                    <table class="table table-hover table-striped mt-4">
+
+                        <thead>
+                        <tr>
+                            <th>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" id="allCheckBox" class="chk">
+                                </label>
+                            </th>
+                            <th>번호</th>
+                            <th>평점</th>
+                            <th>작성자</th>
+                            <th>날짜</th>
+                            <th>조회수</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-danger">글삭제</a>
+                        <a th:href="@{/review/write}" class="btn btn-primary">글쓰기</a>
+                    </div>
+
+                </form>
+<!---->
+                <div style="height: 100vh">
+                        <!-- 빈칸 높이 100-->
+                </div>
+
+<!--end-->
+                <div class="card mb-4">
+                    <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div>
+                </div>
+
+            </div>
+        </main>
+
+    </nav>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api;
+package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.response.CategoryResponse;
 import com.restaurant.reservation.repository.CategoryRepository;

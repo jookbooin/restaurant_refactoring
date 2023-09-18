@@ -25,9 +25,9 @@ public class ReviewService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long save(Long rid ,Long mid , ReviewDto reviewDto){
-        Restaurant restaurant = restaurantRepository.findById(rid).orElseThrow(() -> new RestaurantException("레스토랑이 존재하지 않습니다"));
-        Member member = memberRepository.findById(mid).orElseThrow(() -> new MemberException("해당 회원이 존재하지않습니다"));
+    public Long save(ReviewDto reviewDto){
+        Restaurant restaurant = restaurantRepository.findById(reviewDto.getRestaurantId()).orElseThrow(() -> new RestaurantException("레스토랑이 존재하지 않습니다"));
+        Member member = memberRepository.findById(reviewDto.getMemberId()).orElseThrow(() -> new MemberException("해당 회원이 존재하지않습니다"));
         Review review = Review.saveOf(restaurant, member, reviewDto);
         Review saveReview = reviewRepository.save(review);
         return saveReview.getId();

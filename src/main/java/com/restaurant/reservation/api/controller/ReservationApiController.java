@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api;
+package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.domain.enumType.TimeEnum;
 import com.restaurant.reservation.service.ReservationService;

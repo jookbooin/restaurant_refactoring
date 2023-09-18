@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api;
+package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.form.MenuSaveRequest;
 import com.restaurant.reservation.api.request.form.MenuUpdateRequest;

@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api;
+package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.UpdateReservationRequest;
 import com.restaurant.reservation.api.response.MenuCountResponse;

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -51,15 +50,18 @@ class ReviewServiceTest {
                 .phoneNumber("01071974139")
                 .build();
 
-        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5).build();
-        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3).build();
-        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우").grade(3).build();
+        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우")
+                .grade(3).restaurantId(1L).memberId(1L).build();
 
         Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));
         Member member = memberRepository.save(Member.createCustomer(memberDto1));
-        reviewService.save(1L, 1L, reviewDto1);
-        reviewService.save(1L, 1L, reviewDto2);
-        reviewService.save(1L, 1L, reviewDto3);
+        reviewService.save(reviewDto1);
+        reviewService.save(reviewDto2);
+        reviewService.save(reviewDto3);
     }
 
 
@@ -85,12 +87,15 @@ class ReviewServiceTest {
 
         em.flush();
         em.clear();
-        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5).build();
-        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3).build();
-        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우").grade(3).build();
-        reviewService.save(restaurant.getId(), member.getId(), reviewDto1);
-        reviewService.save(restaurant.getId(), member.getId(), reviewDto2);
-        reviewService.save(restaurant.getId(), member.getId(), reviewDto3);
+        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우")
+                .grade(3).restaurantId(1L).memberId(1L).build();
+        reviewService.save(reviewDto1);
+        reviewService.save(reviewDto2);
+        reviewService.save(reviewDto3);
 
         em.flush();
         em.clear();
@@ -101,7 +106,6 @@ class ReviewServiceTest {
     }
 
     @Test
-    @Rollback(false)
     public void delete() throws Exception{
 
         // given
@@ -121,13 +125,14 @@ class ReviewServiceTest {
     }
 
     @Test
-    @Rollback(false)
     public void update() throws Exception{
         Restaurant restaurant = null;
 
         // given
-        ReviewDto onlyContent = ReviewDto.builder().id(1L).grade(5).content("내용 change").build();
-        ReviewDto withGrade = ReviewDto.builder().id(2L).content("내용 change2").grade(1).build();
+        ReviewDto onlyContent = ReviewDto.builder().id(1L).grade(5).content("내용 change")
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto withGrade = ReviewDto.builder().id(2L).content("내용 change2").grade(1)
+                .restaurantId(1L).memberId(1L).build();
 
         /** onlyContent */
         // when
