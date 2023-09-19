@@ -3,7 +3,7 @@ package com.restaurant.reservation.service;
 import com.restaurant.reservation.domain.Category;
 import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.domain.Menu;
-import com.restaurant.reservation.exception.MenuException;
+import com.restaurant.reservation.exception.domain.MenuException;
 import com.restaurant.reservation.repository.CategoryMenuRepository;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.MenuRepository;

@@ -1,6 +1,6 @@
-package com.restaurant.reservation.exception;
+package com.restaurant.reservation.exception.domain;
 
-public class MenuException extends EntityException {
+public class MenuException extends DomainException {
     public MenuException() {
         super();
     }

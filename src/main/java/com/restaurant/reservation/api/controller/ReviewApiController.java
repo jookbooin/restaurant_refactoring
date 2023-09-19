@@ -31,4 +31,8 @@ public class ReviewApiController {
 
         return new ResponseEntity<>(new MessageResponse("리뷰 등록했습니다."),HttpStatus.OK);
     }
+
+
+
+
 }
