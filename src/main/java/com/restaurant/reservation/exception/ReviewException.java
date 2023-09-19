@@ -1,6 +1,6 @@
 package com.restaurant.reservation.exception;
 
-public class ReviewException extends BadRequestException {
+public class ReviewException extends EntityException {
     public ReviewException() {
         super();
     }

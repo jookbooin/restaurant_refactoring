@@ -1,8 +1,8 @@
 package com.restaurant.reservation.exception.advice;
 
 
-import com.restaurant.reservation.exception.BadRequestException;
 import com.restaurant.reservation.exception.CategoryException;
+import com.restaurant.reservation.exception.EntityException;
 import com.restaurant.reservation.exception.MenuException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,9 +40,10 @@ public class apiControllerAdvice {
         return new ResponseEntity(errorResult, HttpStatus.BAD_REQUEST);
     }
 
+
     /** 400 에러 */
     @ExceptionHandler
-    public ResponseEntity<ErrorResult> BadRequestExceptionHandler(BadRequestException e) {
+    public ResponseEntity<ErrorResult> BadRequestExceptionHandler(EntityException e) {
         log.error("[exceptionHandler] ex", e);
         ErrorResult errorResult = new ErrorResult("400", e.getMessage());
         return new ResponseEntity(errorResult, HttpStatus.BAD_REQUEST);

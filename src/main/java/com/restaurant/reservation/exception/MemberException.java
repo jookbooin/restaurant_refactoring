@@ -1,6 +1,6 @@
 package com.restaurant.reservation.exception;
 
-public class MemberException extends RuntimeException {
+public class MemberException extends EntityException {
     public MemberException() {
         super();
     }

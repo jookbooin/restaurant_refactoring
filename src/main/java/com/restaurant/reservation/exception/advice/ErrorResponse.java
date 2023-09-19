@@ -11,12 +11,10 @@ import java.util.stream.Collectors;
 @Getter
 public class ErrorResponse {
 
-    private String objectName;
     private List<FieldErrorDetail> errors;
 
     @Builder
-    public ErrorResponse(String objectName, List<FieldErrorDetail> errors) {
-        this.objectName = objectName;
+    public ErrorResponse( List<FieldErrorDetail> errors) {
         this.errors = errors;
     }
 
@@ -28,7 +26,6 @@ public class ErrorResponse {
                         .collect(Collectors.toList());
 
         return ErrorResponse.builder()
-                .objectName(errors.getObjectName())
                 .errors(details).build();
 
     }
