@@ -1,7 +1,5 @@
 package com.restaurant.reservation.api.controller;
 
-import com.restaurant.reservation.api.request.form.MenuSaveRequest;
-import com.restaurant.reservation.api.request.form.MenuUpdateRequest;
 import com.restaurant.reservation.api.request.search.MenuSearchRequest;
 import com.restaurant.reservation.api.response.MenuSearchResponse;
 import com.restaurant.reservation.api.response.MessageResponse;
@@ -10,6 +8,8 @@ import com.restaurant.reservation.exception.domain.CategoryException;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.service.CategoryMenuService;
+import com.restaurant.reservation.web.form.MenuSaveForm;
+import com.restaurant.reservation.web.form.MenuUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class MenuApiController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping("/api/menu/search")
-    public ResponseEntity<?> MenuSearch (@ModelAttribute MenuSearchRequest menuSearchRequest){
+    public ResponseEntity<?> MenuSearch (@ModelAttribute MenuSearchRequest condition){
 
-        String cateName = menuSearchRequest.getSearchName();
+        String cateName = condition.getSearchName();
         log.info(" searchName : [{}]", cateName );
         String cateCode = null;
         if (StringUtils.hasText(cateName)) {
@@ -51,9 +52,9 @@ public class MenuApiController {
     }
 
     @GetMapping("/api/menu/search/page")
-    public ResponseEntity<?> MenuSearchPage (@ModelAttribute MenuSearchRequest menuSearchRequest , @PageableDefault(page = 0, size = 6) Pageable pageable){
+    public ResponseEntity<?> MenuSearchPage (@ModelAttribute MenuSearchRequest condition , @PageableDefault(page = 0, size = 6) Pageable pageable){
 
-        String cateName = menuSearchRequest.getSearchName();
+        String cateName = condition.getSearchName();
         log.info(" searchName : [{}]", cateName );
         log.info(" page : [{}] , size : [{}]",pageable.getPageNumber(),pageable.getPageSize());
 
@@ -75,32 +76,32 @@ public class MenuApiController {
     }
 
     @PostMapping("/api/menu/save")
-    public ResponseEntity<?> menuSave(@RequestBody MenuSaveRequest menuSaveRequest){
+    public ResponseEntity<?> menuSave(@Validated @RequestBody MenuSaveForm request){
 
-        log.info("menuSaveRequest : {}",menuSaveRequest);
+        log.info("menuSaveRequest : {}",request);
         /** 에러가 있다면
          *  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
          * */
-        MenuDto menuDto = MenuDto.builder().name(menuSaveRequest.getMenuName())
-                .price(menuSaveRequest.getMenuPrice())
-                .description(menuSaveRequest.getDescription()).build();
+        MenuDto menuDto = MenuDto.builder().name(request.getMenuName())
+                .price(request.getMenuPrice())
+                .description(request.getDescription()).build();
 
-        categoryMenuService.save(menuSaveRequest.getCategoryName(),menuDto );
+        categoryMenuService.save(request.getCategoryName(),menuDto );
 
         return new ResponseEntity<>(new MessageResponse("메뉴 등록했습니다."),HttpStatus.OK);
     }
 
     @PatchMapping("/api/menu/{id}/update")
-    public ResponseEntity<?> menuUpdate (@PathVariable("id") Long id ,@RequestBody MenuUpdateRequest MenuUpdateRequest){
+    public ResponseEntity<?> menuUpdate (@PathVariable("id") Long id ,@Validated @RequestBody MenuUpdateForm request){
 
-        log.info("id : {} ,  MenuUpdateRequest : {}",id,MenuUpdateRequest);
+        log.info("id : {} ,  MenuUpdateRequest : {}",id,request);
 
         MenuDto menuDto = MenuDto.builder().id(id)
-                .name(MenuUpdateRequest.getMenuName())
-                .price(MenuUpdateRequest.getMenuPrice())
-                .description(MenuUpdateRequest.getDescription()).build();
+                .name(request.getMenuName())
+                .price(request.getMenuPrice())
+                .description(request.getDescription()).build();
 
-        categoryMenuService.update(MenuUpdateRequest.getCategoryName(),menuDto);
+        categoryMenuService.update(request.getCategoryName(),menuDto);
 
         return new ResponseEntity<>(new MessageResponse("메뉴 수정했습니다."),HttpStatus.OK);
     }

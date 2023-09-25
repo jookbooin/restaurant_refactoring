@@ -17,14 +17,11 @@ public class BookingSearchDto {
     private String name;
     private String phoneNumber;
     private Integer number;
-
-
     private LocalDate modifiedDate ;
 
     public BookingSearchDto() { }
 
     @QueryProjection
-
     public BookingSearchDto(Long id, LocalDate date, LocalTime time, Long memberId, String name, String phoneNumber, Integer number, LocalDate modifiedDate) {
         this.id = id;
         this.date = date;
