@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @ToString
 @Getter
 @Setter
-public class ReservationApiDto {
+public class ReservationResponse {
 
     private Long id;
     private int number;
@@ -20,8 +20,8 @@ public class ReservationApiDto {
     private String modifiedDate; // hidden
     private String status; // 상태 사전예약
 
-    public static ReservationApiDto createApiDto(Reservation reservation){
-        ReservationApiDto apiDto = new ReservationApiDto();
+    public static ReservationResponse createApiDto(Reservation reservation){
+        ReservationResponse apiDto = new ReservationResponse();
         apiDto.setId(reservation.getId());
         apiDto.setNumber(reservation.getNumber());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

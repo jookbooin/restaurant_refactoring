@@ -1,27 +1,30 @@
 package com.restaurant.reservation.repository.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewSearchDto {
     private Long id;
     private String content; // 후기
-    private Long memberId;
-    private Long restaurantId;
-    private double grade;   // 평점
-    private LocalDate createdDate;
 
-    @Builder
-    public ReviewSearchDto(Long id, String content, Long memberId, Long restaurantId, double grade, LocalDate createdDate) {
+    private int grade;   // 평점
+    private LocalDateTime createdDate;
+    private Long memberId; // Member
+    private String name;  // Member
+
+    @QueryProjection
+    public ReviewSearchDto(Long id, String content, int grade, LocalDateTime createdDate, Long memberId, String name) {
         this.id = id;
         this.content = content;
-        this.memberId = memberId;
-        this.restaurantId = restaurantId;
         this.grade = grade;
         this.createdDate = createdDate;
+        this.memberId = memberId;
+        this.name = name;
     }
 }

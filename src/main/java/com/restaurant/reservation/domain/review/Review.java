@@ -34,6 +34,8 @@ public class Review extends TimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    /** 비상 1:N 존재 !!!!*/
     @OneToMany(mappedBy ="review" , cascade = CascadeType.ALL )
     private List<File> fileList = new ArrayList<>();
 

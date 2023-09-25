@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ReviewRepositoryCustom {
 
-    Page<ReviewSearchDto> findAllReview(ReviewSearch reviewSearch, Pageable pageable);
+    Page<ReviewSearchDto> findAllRestaurantReview(Long rid,ReviewSearch reviewSearch, Pageable pageable);
 }

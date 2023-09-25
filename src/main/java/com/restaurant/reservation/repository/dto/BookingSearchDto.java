@@ -13,9 +13,9 @@ public class BookingSearchDto {
     private Long id;
     private LocalDate date;
     private LocalTime time;
-    private Long memberId;
-    private String name;
-    private String phoneNumber;
+    private Long memberId; // Member
+    private String name; // Member
+    private String phoneNumber; // Member
     private Integer number;
     private LocalDate modifiedDate ;
 

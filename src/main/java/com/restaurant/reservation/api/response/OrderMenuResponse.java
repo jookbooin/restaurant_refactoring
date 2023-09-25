@@ -7,22 +7,22 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderMenuApiDto {
+public class OrderMenuResponse {
     private Long menuId;
     private String name;
     private Integer orderPrice;
     private Integer count;
 
     @Builder
-    public OrderMenuApiDto(Long menuId, String name, Integer orderPrice, Integer count) {
+    public OrderMenuResponse(Long menuId, String name, Integer orderPrice, Integer count) {
         this.menuId = menuId;
         this.name = name;
         this.orderPrice = orderPrice;
         this.count = count;
     }
 
-    public static OrderMenuApiDto createWebDto(OrderMenu orderMenu){
-        return OrderMenuApiDto.builder()
+    public static OrderMenuResponse createWebDto(OrderMenu orderMenu){
+        return OrderMenuResponse.builder()
                 .menuId(orderMenu.getId())
                 .name(orderMenu.getMenu().getName())
                 .count(orderMenu.getCount())

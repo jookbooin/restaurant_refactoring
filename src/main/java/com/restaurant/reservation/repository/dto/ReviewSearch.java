@@ -3,6 +3,7 @@ package com.restaurant.reservation.repository.dto;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import lombok.*;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,5 +1,6 @@
 package com.restaurant.reservation.api.controller;
 
+import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
 import com.restaurant.reservation.repository.ReviewRepository;
@@ -7,7 +8,6 @@ import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
-import com.restaurant.reservation.web.form.ReviewSaveForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,10 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -29,23 +26,28 @@ public class ReviewApiController {
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
 
-    @GetMapping("/api/review")
-    public ResponseEntity<?> reivew(ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+    @GetMapping("/api/{restaurantId}/review")
+    public ResponseEntity<?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
 
-        log.info("condition : {}",condition);
+        log.info("restaurantId : {} condition : {}",rid,condition);
 
         ReviewSearch reviewSearch = ReviewSearch.requestFrom(condition);
-        Page<ReviewSearchDto> allReview = reviewRepository.findAllReview(reviewSearch, pageable);
+        Page<ReviewSearchDto> allReview = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/api/review/write")
-    public ResponseEntity<?> reviewSave(@Validated @RequestBody ReviewSaveForm request){
+/**
+ * token 방식후 memberId 정해볼 것
+ * /api/{restaurantId}/{memberId}/review/write
+ * /api/{restaurantId}/review/write   + session OR Token
+ * */
+    @PostMapping("/api/{restaurantId}/review/write")
+    public ResponseEntity<?> reviewSave(@PathVariable("restaurantId") Long rid,@Validated @RequestBody ReviewSaveRequest request){
         log.info("POST - /api/review/write");
-        log.info("request : {}",request);
+        log.info("rid : {} request : {}",rid,request);
 
-        ReviewDto reviewDto = ReviewDto.of(request);
+        ReviewDto reviewDto = ReviewDto.of(rid,request);
 
         reviewService.save(reviewDto);
 

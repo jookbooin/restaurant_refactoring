@@ -1,7 +1,7 @@
 package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.search.BookingSearchRequest;
-import com.restaurant.reservation.api.response.MemberApiDto;
+import com.restaurant.reservation.api.response.MemberResponse;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
@@ -25,7 +25,7 @@ public class AdminApiController {
     private final MemberRepository memberRepository;
     private final ReservationRepository reservationRepository;
     @GetMapping("/api/admin/member/list")
-    public Page<MemberApiDto> memberManageList(@PageableDefault(page = 0,sort = "id") Pageable pageable){
+    public Page<MemberResponse> memberManageList(@PageableDefault(page = 0,sort = "id") Pageable pageable){
 
         /**
          * api/admin/member/manage?size=10&page=1 처럼 전달해 줄 수 있는 듯
@@ -33,14 +33,14 @@ public class AdminApiController {
         System.out.println("pageable.toString() = " + pageable.toString());
         Page<Member> memberPage = memberRepository.findAllByMemberRole(MemberRole.CUSTOMER, pageable);
 
-        Page<MemberApiDto> apiDtoPage = memberPage.map(o -> MemberApiDto.createDto(o));
+        Page<MemberResponse> apiDtoPage = memberPage.map(o -> MemberResponse.createDto(o));
 
 
         return apiDtoPage;
     }
 
     @GetMapping("/api/admin/member/search")
-    public Page<MemberApiDto> memberSearchList(MemberSearch condition , @PageableDefault(page = 0,size = 5) Pageable pageable){
+    public Page<MemberResponse> memberSearchList(MemberSearch condition , @PageableDefault(page = 0,size = 5) Pageable pageable){
         log.info("condition : {}",condition.getSearchType());
         log.info("condition : {}",condition.getKeyword());
 
@@ -52,7 +52,7 @@ public class AdminApiController {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
-        Page<MemberApiDto> apiDtoPage = result.map(o -> MemberApiDto.createDto(o));
+        Page<MemberResponse> apiDtoPage = result.map(o -> MemberResponse.createDto(o));
 
         return apiDtoPage;
     }
