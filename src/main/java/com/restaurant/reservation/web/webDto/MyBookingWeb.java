@@ -3,6 +3,7 @@ package com.restaurant.reservation.web.webDto;
 import com.restaurant.reservation.domain.OrderMenu;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /** 사용자 MyPage에 예약 목록을 전달하는 Dto */
 @Setter
 @Getter
-public class MyBookingWebDto {
+public class MyBookingWeb {
 
     /** 0729
      * Pre 조회때 reservation - waiting 문제점
@@ -34,12 +35,22 @@ public class MyBookingWebDto {
     private String date;
     private String time;
     private int totalPrice;
-    private List<OrderMenuWebDto> orderMenuList = new ArrayList<>();
+    private List<OrderMenuWeb> orderMenuList = new ArrayList<>();
 
+    private MyBookingWeb(){}
+    @Builder
+    public MyBookingWeb(Long id, int number, String date, String time, int totalPrice, List<OrderMenuWeb> orderMenuList) {
+        this.id = id;
+        this.number = number;
+        this.date = date;
+        this.time = time;
+        this.totalPrice = totalPrice;
+        this.orderMenuList = orderMenuList;
+    }
 
-    public static MyBookingWebDto createDto(Reservation reservation){
+    public static MyBookingWeb reservationFrom(Reservation reservation){
 
-        MyBookingWebDto webDto = new MyBookingWebDto();
+        MyBookingWeb webDto = new MyBookingWeb();
         webDto.setId(reservation.getId());
         webDto.setNumber(reservation.getNumber());
 
@@ -51,9 +62,9 @@ public class MyBookingWebDto {
         if(reservation.getOrderMenus().size() >0){
             int totalPrice = 0;
             for (OrderMenu orderMenu : reservation.getOrderMenus()) {
-                OrderMenuWebDto orderMenuWebDto = OrderMenuWebDto.createWebDto(orderMenu);
-                totalPrice+=orderMenuWebDto.getOrderPrice();
-                webDto.getOrderMenuList().add(orderMenuWebDto);
+                OrderMenuWeb orderMenuWeb = OrderMenuWeb.orderMenuFrom(orderMenu);
+                totalPrice+=orderMenuWeb.getOrderPrice();
+                webDto.getOrderMenuList().add(orderMenuWeb);
             }
         webDto.setTotalPrice(totalPrice);
         }

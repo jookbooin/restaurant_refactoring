@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class AdminBookingWebDto {
+public class AdminBookingWeb {
     private Long id;
     private LocalDate date;
     private LocalTime time;

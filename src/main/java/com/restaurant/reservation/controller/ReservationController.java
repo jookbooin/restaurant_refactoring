@@ -10,8 +10,8 @@ import com.restaurant.reservation.service.ReservationService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.AdvancePaymentForm;
 import com.restaurant.reservation.web.form.AdvanceReservationForm;
-import com.restaurant.reservation.web.webDto.CategoryMenuWebDto;
-import com.restaurant.reservation.web.webDto.OrderMenuWebDto;
+import com.restaurant.reservation.web.webDto.CategoryMenuWeb;
+import com.restaurant.reservation.web.webDto.OrderMenuWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -51,7 +51,7 @@ public class ReservationController {
         String categoryCode = categoryService.findCode(categoryNameSpecial);
         List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
 
-        List<CategoryMenuWebDto> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWebDto.menuOf(cm))
+        List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.categoryMenuFrom(cm))
                                                                        .collect(Collectors.toList());
         model.addAttribute("menuList",wehDtoList);
 
@@ -67,7 +67,7 @@ public class ReservationController {
         log.info("GET : /reservation/advance/payment");
         log.info("advanceReservation toString :{} ",advanceReservation);
 
-        List<OrderMenuWebDto> orderMenuList = advanceReservation.getOrderMenuList();
+        List<OrderMenuWeb> orderMenuList = advanceReservation.getOrderMenuList();
 
         int totalPrice = Optional.ofNullable(orderMenuList)
                 .map(list -> list.stream().mapToInt(o -> o.getOrderPrice()*o.getCount())
@@ -114,7 +114,7 @@ public class ReservationController {
             String categoryCode = categoryService.findCode(categoryNameSpecial);
             List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
 
-            List<CategoryMenuWebDto> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWebDto.menuOf(cm))
+            List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.categoryMenuFrom(cm))
                     .collect(Collectors.toList());
             model.addAttribute("menuList",wehDtoList);
             return "basic/booking/advanceReservationForm";

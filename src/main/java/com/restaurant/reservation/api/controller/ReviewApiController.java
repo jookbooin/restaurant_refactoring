@@ -3,6 +3,7 @@ package com.restaurant.reservation.api.controller;
 import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
+import com.restaurant.reservation.api.response.list.OneListResponse;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -27,14 +30,15 @@ public class ReviewApiController {
     private final ReviewService reviewService;
 
     @GetMapping("/api/{restaurantId}/review")
-    public ResponseEntity<?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+    public OneListResponse reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
 
         log.info("restaurantId : {} condition : {}",rid,condition);
 
         ReviewSearch reviewSearch = ReviewSearch.requestFrom(condition);
-        Page<ReviewSearchDto> allReview = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
+        Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<ReviewSearchDto> content = reviewSearchPage.getContent();
+        return new OneListResponse(content);
     }
 
 /**

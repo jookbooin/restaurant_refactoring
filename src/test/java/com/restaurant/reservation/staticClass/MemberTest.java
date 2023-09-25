@@ -3,7 +3,7 @@ package com.restaurant.reservation.staticClass;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
-import com.restaurant.reservation.web.webDto.MemberWebDto;
+import com.restaurant.reservation.web.webDto.MemberWeb;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,8 +38,8 @@ public class MemberTest {
         assertThat(page.isFirst()).isTrue(); //첫번째 항목인가?
         assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
 
-        Page<MemberWebDto> dtoPage = page.map(o-> MemberWebDto.createDto(o));
-        for (MemberWebDto webDto : dtoPage) {
+        Page<MemberWeb> dtoPage = page.map(Member-> MemberWeb.memberFrom(Member));
+        for (MemberWeb webDto : dtoPage) {
             System.out.println("webDto = " + webDto);
         }
 

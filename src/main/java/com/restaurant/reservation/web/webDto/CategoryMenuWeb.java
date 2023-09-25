@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CategoryMenuWebDto {
+public class CategoryMenuWeb {
     private Long categoryId;
     private String categoryName;
     private String categoryCode;
@@ -16,7 +16,7 @@ public class CategoryMenuWebDto {
     private String description;
 
     @Builder
-    public CategoryMenuWebDto(Long categoryId, String categoryName, String categoryCode, Long menuId, String menuName, int price, String description) {
+    public CategoryMenuWeb(Long categoryId, String categoryName, String categoryCode, Long menuId, String menuName, int price, String description) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.categoryCode = categoryCode;
@@ -26,8 +26,8 @@ public class CategoryMenuWebDto {
         this.description = description;
     }
 
-    public static CategoryMenuWebDto menuOf(CategoryMenu categoryMenu){
-        CategoryMenuWebDto web = CategoryMenuWebDto.builder()
+    public static CategoryMenuWeb categoryMenuFrom(CategoryMenu categoryMenu){
+        CategoryMenuWeb web = CategoryMenuWeb.builder()
                 .menuId(categoryMenu.getMenu().getId())
                 .menuName(categoryMenu.getMenu().getName())
                 .price(categoryMenu.getMenu().getPrice())

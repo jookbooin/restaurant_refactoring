@@ -1,13 +1,15 @@
 package com.restaurant.reservation.repository.dto;
 
+import com.restaurant.reservation.api.request.search.MemberSearchRequest;
 import com.restaurant.reservation.domain.enumType.MemberGrade;
-import com.restaurant.reservation.web.webDto.MemberSearchWeb;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -21,19 +23,23 @@ public class MemberSearch {
     public MemberSearch() {
     }
 
+    @Builder
     public MemberSearch(String searchType, String keyword, List<MemberGrade> grades) {
         this.searchType = searchType;
         this.keyword = keyword;
         this.grades = grades;
     }
 
-    public static MemberSearch createSearchCondition(MemberSearchWeb apiCondition){
-        MemberSearch condition = new MemberSearch();
-        condition.setSearchType(apiCondition.getSearchType());
-        condition.setKeyword(apiCondition.getKeyword());
-        for (String gradeString : apiCondition.getGrades()) {
-            condition.getGrades().add(MemberGrade.valueOf(gradeString));
-        }
-        return condition;
+    public static MemberSearch createSearchCondition(MemberSearchRequest request){
+
+        List<MemberGrade> gradeList = request.getGrades().stream()
+                .map(MemberGrade::valueOf)
+                .collect(Collectors.toList());
+
+        return MemberSearch.builder()
+                .searchType(request.getSearchType())
+                .keyword(request.getKeyword())
+                .grades(gradeList)
+                .build();
     }
 }

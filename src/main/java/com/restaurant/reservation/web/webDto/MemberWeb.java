@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 @ToString
 @Setter
 @Getter
-public class MemberWebDto {
+public class MemberWeb {
     private Long id ;
     private String name;
     private String number;
@@ -19,8 +19,8 @@ public class MemberWebDto {
     private String createdDateTime;
     private String modifiedDateTime;
 
-    public static MemberWebDto createDto(Member member){
-        MemberWebDto webDto = new MemberWebDto();
+    public static MemberWeb memberFrom(Member member){
+        MemberWeb webDto = new MemberWeb();
         webDto.setId(member.getId());
         webDto.setName(member.getMemberInfo().getName());
         webDto.setNumber(member.getMemberInfo().getPhoneNumber());
