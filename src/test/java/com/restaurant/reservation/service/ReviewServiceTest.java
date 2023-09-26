@@ -6,9 +6,8 @@ import com.restaurant.reservation.domain.review.Review;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.RestaurantRepository;
 import com.restaurant.reservation.repository.ReviewRepository;
-import com.restaurant.reservation.repository.dto.MemberDto;
-import com.restaurant.reservation.repository.dto.RestaurantDto;
 import com.restaurant.reservation.repository.dto.ReviewDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,47 +37,26 @@ class ReviewServiceTest {
     @PersistenceContext
     EntityManager em;
 
-//    @BeforeEach
-//    public void ReviewInit(){
-//        RestaurantDto restaurantDto = RestaurantDto.builder().name("서초").build();
-//
-//        MemberDto memberDto1 =MemberDto.builder()
-//                .email("3670lsh@naver.com")
-//                .password("dltmdgjs4139!")
-//                .name("고객3670")
-//                .phoneNumber("01071974139")
-//                .build();
-//
-//        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5)
-//                .restaurantId(1L).memberId(1L).build();
-//        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3)
-//                .restaurantId(1L).memberId(1L).build();
-//        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우")
-//                .grade(3).restaurantId(1L).memberId(1L).build();
-//
-//        Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));
-//        Member member = memberRepository.save(Member.createCustomer(memberDto1));
-//        reviewService.save(reviewDto1);
-//        reviewService.save(reviewDto2);
-//        reviewService.save(reviewDto3);
-//
-//    }
+    @BeforeEach
+    public void ReviewInit(){
 
+        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3)
+                .restaurantId(1L).memberId(1L).build();
+        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우")
+                .grade(3).restaurantId(1L).memberId(1L).build();
+
+
+        reviewService.save(reviewDto1);
+        reviewService.save(reviewDto2);
+        reviewService.save(reviewDto3);
+
+    }
 
 
     @Test
     void save_1개() {
-        RestaurantDto restaurantDto = RestaurantDto.builder().name("서초").build();
-
-        MemberDto memberDto1 =MemberDto.builder()
-                .email("3670lsh@naver.com")
-                .password("dltmdgjs4139!")
-                .name("고객3670")
-                .phoneNumber("01071974139")
-                .build();
-
-        Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));
-        Member member = memberRepository.save(Member.createCustomer(memberDto1));
 
         List<Restaurant> restaurantList = restaurantRepository.findAll();
         List<Member> memberList = memberRepository.findAll();
@@ -86,17 +64,6 @@ class ReviewServiceTest {
         assertThat(restaurantList.size()).isEqualTo(1);
         assertThat(memberList.size()).isEqualTo(1);
 
-        em.flush();
-        em.clear();
-        ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스").grade(5)
-                .restaurantId(1L).memberId(1L).build();
-        ReviewDto reviewDto2 = ReviewDto.builder().content("무탠다드").grade(3)
-                .restaurantId(1L).memberId(1L).build();
-        ReviewDto reviewDto3 = ReviewDto.builder().content("비슬로우")
-                .grade(3).restaurantId(1L).memberId(1L).build();
-        reviewService.save(reviewDto1);
-        reviewService.save(reviewDto2);
-        reviewService.save(reviewDto3);
 
         em.flush();
         em.clear();

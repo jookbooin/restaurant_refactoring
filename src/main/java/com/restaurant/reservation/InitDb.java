@@ -40,7 +40,7 @@ public class InitDb {
 
     @PostConstruct // bean에 올라오면 spring이 불러오는 것 : 초기화
     public void init() {
-        initService.Review();
+//        initService.Review();
 //        initService.InitDb();
 //        initService.plus_Member_Reservation();
 
@@ -88,7 +88,7 @@ public class InitDb {
             Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));
 
             Random rand = new Random();
-            for(int i = 0; i<1000; i++) {
+            for(int i = 0; i<10000; i++) {
 
                 ReviewDto reviewDto = ReviewDto.builder()
                         .grade((rand.nextInt(5) + 1))
