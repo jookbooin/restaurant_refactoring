@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>review Page</title>
-    <link rel="stylesheet" th:href="@{/css/size.css}">
-    <link rel="stylesheet" th:href="@{/css/star.css}">
+    <link rel="stylesheet" th:href="@{/css/common/size.css}">
+    <link rel="stylesheet" th:href="@{/css/common/star.css}">
     <link rel="stylesheet" th:href="@{/css/error/error.css}">
 </head>
 
@@ -28,12 +28,11 @@
                 </div>
 <!---->
                 <br>
+                <br>
 
-                <form th:action="@{/review/write}" th:object="${form}" method="post">
+                <form th:action="@{'/'+${restaurantId}+'/review/write'}" th:object="${form}" method="post">
                     <article>
                         <div class="container" role="main">
-                            <input type="text" hidden th:field="*{restaurantId}" />
-                            <input type="text" hidden th:field="*{memberId}" />
                             <div class="mb-3">
                                 <div>
                                 <label >평점</label>
@@ -66,7 +65,7 @@
                             <br>
                             <div>
                                 <button type="submit" class="btn btn-sm btn-primary" id="btnSave">저장</button>
-                                <a th:href="@{/review}" class="btn btn-sm btn-primary" id="btnList">목록</a>
+                                <a th:href="@{'/'+${restaurantId}+'/review'}" class="btn btn-sm btn-primary" id="btnList">목록</a>
                             </div>
                         </div>
                     </article>

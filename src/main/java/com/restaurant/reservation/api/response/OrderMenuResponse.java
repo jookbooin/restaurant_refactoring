@@ -21,7 +21,7 @@ public class OrderMenuResponse {
         this.count = count;
     }
 
-    public static OrderMenuResponse createWebDto(OrderMenu orderMenu){
+    public static OrderMenuResponse responseFrom(OrderMenu orderMenu){
         return OrderMenuResponse.builder()
                 .menuId(orderMenu.getId())
                 .name(orderMenu.getMenu().getName())

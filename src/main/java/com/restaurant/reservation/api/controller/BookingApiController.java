@@ -96,7 +96,7 @@ public class BookingApiController {
         try {
             List<OrderMenu> orderMenuList = getOrderMenuList(rid);
             List<OrderMenuResponse> orderList = orderMenuList.stream()
-                    .map(o -> OrderMenuResponse.createWebDto(o))
+                    .map(orderMenu -> OrderMenuResponse.responseFrom(orderMenu))
                     .collect(Collectors.toList());
 
             orderList.forEach(order -> log.info(order.toString()));

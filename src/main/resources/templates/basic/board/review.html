@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>review Page</title>
-    <link rel="stylesheet" th:href="@{/css/size.css}">
+    <link rel="stylesheet" th:href="@{/css/common/size.css}">
 </head>
 
 <body>
@@ -33,35 +33,67 @@
                 </div>
                 <br>
 
-                <form class="w-80 mx-auto">
-                    <table class="table table-hover table-striped mt-4">
+            <!-- 리뷰 리스트 넣는곳 -->
+                <div class="w-90 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-2">
+                                    <select class="form-select" aria-label="Default select example">
+                                        <option selected>등록일 순</option>
+                                        <option value="1">좋아요 순</option>
+                                        <option value="2">평점 높은 순</option>
+                                        <option value="3">평점 낮은 순</option>
+                                        <option value="4">댓글 순</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                <!-- 밖에 body -->
+                        <div class="card-body">
 
-                        <thead>
-                        <tr>
-                            <th>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="allCheckBox" class="chk">
-                                </label>
-                            </th>
-                            <th>번호</th>
-                            <th>평점</th>
-                            <th>작성자</th>
-                            <th>날짜</th>
-                            <th>조회수</th>
-                        </tr>
-                        </thead>
+                <!-- 내부 card   -->
 
-                        <tbody>
-                        </tbody>
-                    </table>
+                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 d-flex flex-column position-static">
+                                    <div  class="mb-3">
+                                        <h3 class="card-title">이름 + 사진</h3>
+                                    </div>
 
+                                    <div class="mb-2">
+                                        <h6 class="card-subtitle ">별점 / 날짜 </h6>
+                                    </div>
+
+                                    <p class="card-text mb-4">
+                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
+                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
+                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
+                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
+                                    </p>
+
+                                    <div class="mb-2">
+                                        img 넣는곳
+                                    </div>
+
+                                    <div class="mb-1 text-muted" style="padding-top: 15px;">
+                                        <button type="button" class="btn btn-primary">좋아요</button>
+                                        <button type="button" class="btn btn-secondary">댓글</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+
+<!-- 버튼 삭제 예정-->
                     <div class="d-flex justify-content-end">
                         <a class="btn btn-danger">글삭제</a>
-                        <a th:href="@{/review/write}" class="btn btn-primary">글쓰기</a>
+                        <a th:href="@{'/'+${restaurantId}+ '/review/write'}" class="btn btn-primary">글쓰기</a>
                     </div>
 
-                </form>
-<!---->
+                </div>
+<!-- 빈칸 -->
                 <div style="height: 100vh">
                         <!-- 빈칸 높이 100-->
                 </div>
@@ -70,7 +102,6 @@
                 <div class="card mb-4">
                     <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div>
                 </div>
-
             </div>
         </main>
 

@@ -25,11 +25,11 @@ public class ReviewDto {
         this.viewCount = viewCount;
     }
 
-    public static ReviewDto of(Long rid,ReviewSaveForm form){
+    public static ReviewDto of(Long rid,Long mid,ReviewSaveForm form){
         return ReviewDto.builder()
                 .grade(form.getGrade())
                 .content(form.getContent())
-                .memberId(form.getMemberId())
+                .memberId(mid)
                 .restaurantId(rid)
                 .build();
     }
@@ -43,12 +43,4 @@ public class ReviewDto {
                 .build();
     }
 
-    public static ReviewDto of(Long rid,Long mid, ReviewSaveRequest form){
-        return ReviewDto.builder()
-                .grade(form.getGrade())
-                .content(form.getContent())
-                .memberId(mid)
-                .restaurantId(rid)
-                .build();
-    }
 }

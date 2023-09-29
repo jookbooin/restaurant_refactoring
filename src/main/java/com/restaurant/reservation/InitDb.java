@@ -40,8 +40,9 @@ public class InitDb {
 
     @PostConstruct // bean에 올라오면 spring이 불러오는 것 : 초기화
     public void init() {
-//        initService.Review();
+
 //        initService.InitDb();
+//        initService.Review();
 //        initService.plus_Member_Reservation();
 
     }
@@ -66,23 +67,23 @@ public class InitDb {
 
         public void Review() {
             /** 1. Member - 고객 / 관리자 */
-            MemberDto memberDto =MemberDto.builder()
-                    .email("3670lsh@naver.com")
-                    .password("dltmdgjs4139!")
-                    .name("고객3670")
-                    .phoneNumber("01071974139")
-                    .build();
-            Member member= Member.createCustomer(memberDto);
-            memberRepository.save(member);
-
-            MemberDto adminDto=MemberDto.builder()
-                    .email("3670lsh@gmail.com")
-                    .password("dltmdgjs4139!")
-                    .name("관리자")
-                    .phoneNumber("01041397197")
-                    .build();
-            Member admin= Member.createAdmin(adminDto);
-            memberRepository.save(admin);
+//            MemberDto memberDto =MemberDto.builder()
+//                    .email("3670lsh@naver.com")
+//                    .password("dltmdgjs4139!")
+//                    .name("고객3670")
+//                    .phoneNumber("01071974139")
+//                    .build();
+//            Member member= Member.createCustomer(memberDto);
+//            memberRepository.save(member);
+//
+//            MemberDto adminDto=MemberDto.builder()
+//                    .email("3670lsh@gmail.com")
+//                    .password("dltmdgjs4139!")
+//                    .name("관리자")
+//                    .phoneNumber("01041397197")
+//                    .build();
+//            Member admin= Member.createAdmin(adminDto);
+//            memberRepository.save(admin);
 
             RestaurantDto restaurantDto = RestaurantDto.builder().name("식당").build();
             Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));

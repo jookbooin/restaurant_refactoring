@@ -3,6 +3,7 @@ package com.restaurant.reservation.api.controller;
 import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
+import com.restaurant.reservation.api.response.ReviewSearchResponse;
 import com.restaurant.reservation.api.response.list.OneListResponse;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
@@ -20,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -37,7 +39,10 @@ public class ReviewApiController {
         ReviewSearch reviewSearch = ReviewSearch.requestFrom(condition);
         Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
-        List<ReviewSearchDto> content = reviewSearchPage.getContent();
+        List<ReviewSearchResponse> content = reviewSearchPage.getContent()
+                .stream().map(dto -> ReviewSearchResponse.responseFrom(dto))
+                .collect(Collectors.toList());
+
         return new OneListResponse(content);
     }
 
