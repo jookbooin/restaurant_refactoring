@@ -26,7 +26,7 @@ public class CategoryMenuWeb {
         this.description = description;
     }
 
-    public static CategoryMenuWeb categoryMenuFrom(CategoryMenu categoryMenu){
+    public static CategoryMenuWeb webFrom(CategoryMenu categoryMenu){
         CategoryMenuWeb web = CategoryMenuWeb.builder()
                 .menuId(categoryMenu.getMenu().getId())
                 .menuName(categoryMenu.getMenu().getName())

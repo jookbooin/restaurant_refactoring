@@ -24,7 +24,7 @@
                         </p>
                     </div>
                 </div>
-<!---->
+
                 <br>
 
                 <div class="input-group w-60 mx-auto">
@@ -40,11 +40,11 @@
                             <div class="row">
                                 <div class="col-2">
                                     <select class="form-select" aria-label="Default select example">
-                                        <option selected>등록일 순</option>
-                                        <option value="1">좋아요 순</option>
-                                        <option value="2">평점 높은 순</option>
-                                        <option value="3">평점 낮은 순</option>
-                                        <option value="4">댓글 순</option>
+                                        <option selected value="createdDate">등록일 순</option>
+                                        <option value="like">좋아요 순</option>
+                                        <option value="grade">평점 높은 순</option>
+                                        <option value="grade">평점 낮은 순</option>
+                                        <option value="comment">댓글 순</option>
                                     </select>
                                 </div>
                             </div>
@@ -84,6 +84,37 @@
                             </div>
 
                     </div>
+
+            <!-- 페이징 nav 넣는 곳 -->
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+<!--                                th:with="maxSize=10,-->
+<!--                           totalPages=${dtoPage.totalPages},-->
+<!--                           start=${(dtoPage.number/maxSize)*maxSize + 1},-->
+<!--                           end=${(dtoPage.totalPages == 0) ? 1 : (start + (maxSize - 1) < totalPages ? start + (maxSize - 1) : totalPages)}-->
+<!--                           ">-->
+
+<!--                                <li th:if="${start > 1}" class='on page-item'>-->
+<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=0,searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" th:text="'<<'"></a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${start > 1}" class='on page-item'>-->
+<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${start - 2})}" th:text="'<'"></a>-->
+<!--                                </li>-->
+
+<!--                                <li th:each="pos: ${#numbers.sequence(start, end)}" class='on page-item'>-->
+<!--                                    <a class='page-link' th:text="${pos}" th:href="@{/admin/advance/list(page=${pos - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" ></a>-->
+<!--                                </li>-->
+
+<!--                                <li th:if="${end < totalPages}" class='on page-item'>-->
+<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${start + maxSize - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"   th:text="'>'"></a>-->
+<!--                                </li>-->
+<!--                                <li th:if="${end < totalPages}" class='on page-item'>-->
+<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${totalPages -1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"  th:text="'>>'"></a>-->
+<!--                                </li>-->
+
+                            </ul>
+                        </nav>
+
                 </div>
 
 <!-- 버튼 삭제 예정-->

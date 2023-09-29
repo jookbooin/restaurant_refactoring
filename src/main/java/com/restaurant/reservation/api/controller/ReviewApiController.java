@@ -4,12 +4,13 @@ import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
 import com.restaurant.reservation.api.response.ReviewSearchResponse;
-import com.restaurant.reservation.api.response.list.OneListResponse;
+import com.restaurant.reservation.api.response.data.TwoDataResponse;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
+import com.restaurant.reservation.common.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,18 +33,20 @@ public class ReviewApiController {
     private final ReviewService reviewService;
 
     @GetMapping("/api/{restaurantId}/review")
-    public OneListResponse reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+    public TwoDataResponse<?, ?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
 
         log.info("restaurantId : {} condition : {}",rid,condition);
 
-        ReviewSearch reviewSearch = ReviewSearch.requestFrom(condition);
+        ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
         Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
         List<ReviewSearchResponse> content = reviewSearchPage.getContent()
                 .stream().map(dto -> ReviewSearchResponse.responseFrom(dto))
                 .collect(Collectors.toList());
 
-        return new OneListResponse(content);
+        Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
+
+        return new TwoDataResponse<>(content,pagination);
     }
 
 /**

@@ -30,13 +30,12 @@ public class AdminApiController {
         /**
          * api/admin/member/manage?size=10&page=1 처럼 전달해 줄 수 있는 듯
          * */
-        System.out.println("pageable.toString() = " + pageable.toString());
+        log.info("pageable : {}",pageable.toString());
         Page<Member> memberPage = memberRepository.findAllByMemberRole(MemberRole.CUSTOMER, pageable);
 
-        Page<MemberResponse> apiDtoPage = memberPage.map(o -> MemberResponse.createDto(o));
+        Page<MemberResponse> responsePage = memberPage.map(member -> MemberResponse.responseFrom(member));
 
-
-        return apiDtoPage;
+        return responsePage;
     }
 
     @GetMapping("/api/admin/member/search")
@@ -52,9 +51,9 @@ public class AdminApiController {
         for (Member member : result) {
             System.out.println("member = " + member);
         }
-        Page<MemberResponse> apiDtoPage = result.map(o -> MemberResponse.createDto(o));
+        Page<MemberResponse> responsePage = result.map(member -> MemberResponse.responseFrom(member));
 
-        return apiDtoPage;
+        return responsePage;
     }
 
 

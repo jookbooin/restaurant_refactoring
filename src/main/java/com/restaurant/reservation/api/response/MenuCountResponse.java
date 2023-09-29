@@ -17,7 +17,7 @@ public class MenuCountResponse {
         this.count = count;
     }
 
-    public static MenuCountResponse of(OrderMenu orderMenu){
+    public static MenuCountResponse responseFrom(OrderMenu orderMenu){
         return MenuCountResponse.builder().menuId(orderMenu.getMenu().getId()).count(orderMenu.getCount()).build();
 
     }

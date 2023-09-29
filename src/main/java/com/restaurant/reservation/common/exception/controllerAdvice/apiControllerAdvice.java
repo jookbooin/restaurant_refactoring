@@ -1,11 +1,11 @@
-package com.restaurant.reservation.exception.controllerAdvice;
+package com.restaurant.reservation.common.exception.controllerAdvice;
 
 
-import com.restaurant.reservation.exception.domain.DomainException;
-import com.restaurant.reservation.exception.errorCode.CommonErrorCode;
-import com.restaurant.reservation.exception.errorCode.DomainErrorCode;
-import com.restaurant.reservation.exception.errorCode.ErrorCode;
-import com.restaurant.reservation.exception.response.ErrorResponse;
+import com.restaurant.reservation.common.exception.domain.DomainException;
+import com.restaurant.reservation.common.exception.errorCode.CommonErrorCode;
+import com.restaurant.reservation.common.exception.errorCode.DomainErrorCode;
+import com.restaurant.reservation.common.exception.errorCode.ErrorCode;
+import com.restaurant.reservation.common.exception.errorResponse.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

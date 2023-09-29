@@ -1,6 +1,6 @@
-package com.restaurant.reservation.exception;
+package com.restaurant.reservation.common.exception;
 
-import com.restaurant.reservation.exception.errorCode.ErrorCode;
+import com.restaurant.reservation.common.exception.errorCode.ErrorCode;
 import lombok.Getter;
 
 @Getter

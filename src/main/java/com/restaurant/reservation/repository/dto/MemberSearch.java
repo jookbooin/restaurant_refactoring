@@ -31,10 +31,14 @@ public class MemberSearch {
     }
 
     public static MemberSearch createSearchCondition(MemberSearchRequest request){
-
-        List<MemberGrade> gradeList = request.getGrades().stream()
-                .map(MemberGrade::valueOf)
-                .collect(Collectors.toList());
+        List<MemberGrade> gradeList = null;
+        if (request.getGrades().size() != 0) {
+            gradeList = request.getGrades().stream()
+                    .map(MemberGrade::valueOf)
+                    .collect(Collectors.toList());
+        }else{
+            gradeList = new ArrayList<>();
+        }
 
         return MemberSearch.builder()
                 .searchType(request.getSearchType())

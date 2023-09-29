@@ -1,4 +1,4 @@
-package com.restaurant.reservation.exception.response;
+package com.restaurant.reservation.common.exception.errorResponse;
 
 import lombok.Builder;
 import lombok.Getter;

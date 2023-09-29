@@ -1,8 +1,8 @@
 package com.restaurant.reservation.api.controller;
 
-import com.restaurant.reservation.exception.domain.CategoryException;
-import com.restaurant.reservation.exception.domain.DomainException;
-import com.restaurant.reservation.exception.domain.MenuException;
+import com.restaurant.reservation.common.exception.domain.CategoryException;
+import com.restaurant.reservation.common.exception.domain.DomainException;
+import com.restaurant.reservation.common.exception.domain.MenuException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

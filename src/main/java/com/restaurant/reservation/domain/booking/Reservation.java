@@ -14,6 +14,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Reservation extends Booking {
     private LocalTime time; //방문 예정 시간 11:00 , 12:00
 
     @LastModifiedDate
-    private LocalDate modifiedDate;  /** 예약 시점 + 예약 변경 시점 날짜  <-> 위약금 비교하기위해서 필요*/
+    private LocalDateTime modifiedDate;  /** 예약 시점 + 예약 변경 시점 날짜  <-> 위약금 비교하기위해서 필요*/
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<OrderMenu> orderMenus = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.restaurant.reservation.exception.domain;
+package com.restaurant.reservation.common.exception.domain;
 
 public class DomainException extends RuntimeException{
     public DomainException() {

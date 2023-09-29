@@ -1,4 +1,4 @@
-package com.restaurant.reservation.exception.response;
+package com.restaurant.reservation.common.exception.errorResponse;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

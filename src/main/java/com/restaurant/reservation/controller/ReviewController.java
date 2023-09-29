@@ -1,12 +1,18 @@
 package com.restaurant.reservation.controller;
 
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
+import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
+import com.restaurant.reservation.repository.dto.ReviewSearch;
+import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
+import com.restaurant.reservation.common.Pagination;
+import com.restaurant.reservation.web.webDto.ReviewSearchWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -19,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -26,6 +34,8 @@ import javax.servlet.http.HttpSession;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final ReviewRepository reviewRepository;
+
     public final Long restaurantId = 1L;
 
     @GetMapping("/{restaurantId}/review")
@@ -33,8 +43,20 @@ public class ReviewController {
                        @PageableDefault(page = 0,size = 10) Pageable pageable, Model model){
 
         log.info("GET - /{}/review",rid);
+        log.info("condition : {}",condition);
+
+        ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
+
+
+        Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
+
+        List<ReviewSearchWeb> content = reviewSearchPage.getContent().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
+                .collect(Collectors.toList());
+        Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
+
         model.addAttribute("restaurantId",rid);
-//        Page<ReviewSearchDto> findAllRestaurantReview(Long rid , ReviewSearch reviewSearch, Pageable pageable)
+        model.addAttribute("content",content);
+        model.addAttribute("pagination",pagination);
 
         return "basic/board/review";
     }

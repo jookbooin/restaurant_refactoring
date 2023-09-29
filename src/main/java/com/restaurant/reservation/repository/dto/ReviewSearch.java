@@ -15,7 +15,7 @@ public class ReviewSearch {
         this.sortCondition = sortCondition;
     }
 
-    public static ReviewSearch requestFrom(ReviewSearchRequest request){
+    public static ReviewSearch searchFrom(ReviewSearchRequest request){
         return ReviewSearch.builder()
                 .sortCondition(request.getSortCondition())
                 .build();

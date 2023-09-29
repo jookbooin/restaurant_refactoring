@@ -38,7 +38,7 @@ public class MemberTest {
         assertThat(page.isFirst()).isTrue(); //첫번째 항목인가?
         assertThat(page.hasNext()).isTrue(); //다음 페이지가 있는가?
 
-        Page<MemberWeb> dtoPage = page.map(Member-> MemberWeb.memberFrom(Member));
+        Page<MemberWeb> dtoPage = page.map(member-> MemberWeb.webFrom(member));
         for (MemberWeb webDto : dtoPage) {
             System.out.println("webDto = " + webDto);
         }

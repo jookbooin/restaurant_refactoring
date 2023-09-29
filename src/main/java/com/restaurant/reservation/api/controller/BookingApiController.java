@@ -2,7 +2,7 @@ package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.UpdateReservationRequest;
 import com.restaurant.reservation.api.response.*;
-import com.restaurant.reservation.api.response.list.TwoListResponse;
+import com.restaurant.reservation.api.response.data.TwoDataResponse;
 import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.domain.OrderMenu;
 import com.restaurant.reservation.domain.booking.Reservation;
@@ -43,12 +43,12 @@ public class BookingApiController {
         log.info("/api/booking/advance/list");
         log.info("api 검색?");
 
-        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
-//        Long sessionId = 1L;
+//        Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
+        Long sessionId = 1L;
         List<Reservation> reservationAdvanceList = reservationRepository.findReservationAdvance(sessionId);
 
         List<ReservationResponse> apiDtoList = reservationAdvanceList.stream()
-                .map(o -> ReservationResponse.createApiDto(o))
+                .map(o -> ReservationResponse.responseFrom(o))
                 .collect(Collectors.toList());
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
@@ -65,7 +65,7 @@ public class BookingApiController {
         List<Reservation> reservationCompleteList = reservationRepository.findReservationComplete(sessionId);
 
         List<ReservationResponse> apiDtoList = reservationCompleteList.stream()
-                .map(o -> ReservationResponse.createApiDto(o))
+                .map(o -> ReservationResponse.responseFrom(o))
                 .collect(Collectors.toList());
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
@@ -82,7 +82,7 @@ public class BookingApiController {
         List<Reservation> reservationNoShowList = reservationRepository.findReservationNoShow(sessionId);
 
         List<ReservationResponse> apiDtoList = reservationNoShowList.stream()
-                .map(o -> ReservationResponse.createApiDto(o))
+                .map(o -> ReservationResponse.responseFrom(o))
                 .collect(Collectors.toList());
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
@@ -123,22 +123,23 @@ public class BookingApiController {
         }
     }
     @GetMapping("/api/booking/{rid}/orderMenuList/specialMenu")
-    public TwoListResponse getMenuOrderMenuList(@PathVariable("rid") Long rid){
+    public TwoDataResponse getMenuOrderMenuList(@PathVariable("rid") Long rid){
         log.info("/api/booking/{}/orderMenuList/specialMenu",rid);
         final String categoryNameSpecial = "스페셜";
 
         String categoryCode = categoryService.findCode(categoryNameSpecial);
         List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
-        List<MenuResponse> menuList = categoryMenuList.stream().map(cm -> MenuResponse.of(cm))
+        List<MenuResponse> menuList = categoryMenuList.stream()
+                .map(cm -> MenuResponse.responseFrom(cm))
                 .collect(Collectors.toList());
 
 
         List<OrderMenu> orderMenuList = getOrderMenuList(rid);
         List<MenuCountResponse> orderMenuDtoList = orderMenuList.stream()
-                .map(o -> MenuCountResponse.of(o))
+                .map(MenuCountResponse::responseFrom)
                 .collect(Collectors.toList());
 
-        return new TwoListResponse(menuList,orderMenuDtoList);
+        return new TwoDataResponse(menuList,orderMenuDtoList);
     }
 
     @PatchMapping("/api/booking/{rid}/modify")

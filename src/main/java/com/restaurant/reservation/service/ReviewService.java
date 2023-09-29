@@ -3,15 +3,19 @@ package com.restaurant.reservation.service;
 import com.restaurant.reservation.domain.Restaurant;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.domain.review.Review;
-import com.restaurant.reservation.exception.domain.MemberException;
-import com.restaurant.reservation.exception.domain.RestaurantException;
-import com.restaurant.reservation.exception.domain.ReviewException;
+import com.restaurant.reservation.common.exception.domain.MemberException;
+import com.restaurant.reservation.common.exception.domain.RestaurantException;
+import com.restaurant.reservation.common.exception.domain.ReviewException;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.RestaurantRepository;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
+import com.restaurant.reservation.repository.dto.ReviewSearch;
+import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,4 +65,10 @@ public class ReviewService {
         }
     }
 
+    public void reviewSearch(Long rid, ReviewSearch reviewSearch , Pageable pageable){
+        Page<ReviewSearchDto> dtoPage = reviewRepository.findAllRestaurantReview(rid, reviewSearch, pageable);
+
+
+
+    }
 }

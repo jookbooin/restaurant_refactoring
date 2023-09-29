@@ -19,7 +19,7 @@ public class MemberWeb {
     private String createdDateTime;
     private String modifiedDateTime;
 
-    public static MemberWeb memberFrom(Member member){
+    public static MemberWeb webFrom(Member member){
         MemberWeb webDto = new MemberWeb();
         webDto.setId(member.getId());
         webDto.setName(member.getMemberInfo().getName());

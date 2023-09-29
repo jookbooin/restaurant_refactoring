@@ -37,7 +37,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .from(review)
                 .leftJoin(review.member, member)
                 .where(findRestaurant(rid))
-                .orderBy(review.createdDate.desc())
+                .orderBy(review.createdDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

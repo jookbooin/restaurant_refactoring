@@ -121,7 +121,7 @@ public class MemberController {
 
         Long sessionId = (Long) request.getAttribute(SessionID.LOGIN_MEMBER);
         MemberDto memberDto = memberService.findOneById(sessionId);
-        MemberUpdateForm form = MemberUpdateForm.makeForm(memberDto);
+        MemberUpdateForm form = MemberUpdateForm.formFrom(memberDto);
         model.addAttribute("form",form);
         return "basic/members/memberUpdateProfile";
     }

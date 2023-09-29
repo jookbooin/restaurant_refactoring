@@ -62,7 +62,7 @@ public class MyBookingWeb {
         if(reservation.getOrderMenus().size() >0){
             int totalPrice = 0;
             for (OrderMenu orderMenu : reservation.getOrderMenus()) {
-                OrderMenuWeb orderMenuWeb = OrderMenuWeb.orderMenuFrom(orderMenu);
+                OrderMenuWeb orderMenuWeb = OrderMenuWeb.webFrom(orderMenu);
                 totalPrice+=orderMenuWeb.getOrderPrice();
                 webDto.getOrderMenuList().add(orderMenuWeb);
             }

@@ -123,8 +123,8 @@
                             th:with="maxSize=10,
                            totalPages=${dtoPage.totalPages},
                            start=${(dtoPage.number/maxSize)*maxSize + 1},
-                           end=${(dtoPage.totalPages == 0) ? 1 : (start + (maxSize - 1) < totalPages ? start + (maxSize - 1) : totalPages)}
-                           ">
+                           end=${(dtoPage.totalPages == 0) ? 1 : (start + (maxSize - 1) < totalPages ? start + (maxSize - 1) : totalPages)}">
+
 
                             <li th:if="${start > 1}" class='on page-item'>
                                 <a class='page-link' th:href="@{/admin/advance/list(page=0,searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" th:text="'<<'"></a>

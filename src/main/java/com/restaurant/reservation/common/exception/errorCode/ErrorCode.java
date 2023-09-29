@@ -1,4 +1,4 @@
-package com.restaurant.reservation.exception.errorCode;
+package com.restaurant.reservation.common.exception.errorCode;
 
 import org.springframework.http.HttpStatus;
 

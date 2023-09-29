@@ -1,6 +1,6 @@
 package com.restaurant.reservation.api.controller;
 
-import com.restaurant.reservation.api.response.list.OneListResponse;
+import com.restaurant.reservation.api.response.data.OneDataResponse;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
 import com.restaurant.reservation.service.ReservationService;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class ReservationApiController {
 
     private final ReservationService reservationService;
     @GetMapping("/api/reservation/{date}/time")
-    public ResponseEntity<OneListResponse> findPossibleTime(@PathVariable("date") String date){
+    public ResponseEntity<OneDataResponse> findPossibleTime(@PathVariable("date") String date){
         log.info("/api/reservation/{} ",date);
         List<LocalTime> possibleTimeList = null;
         LocalDate localDate = LocalDate.parse(date);
@@ -37,7 +37,7 @@ public class ReservationApiController {
             possibleTimeList = reservationService.findPossibleTime(localDate);
         } catch (Exception e) {
             List<String> original = Arrays.stream(TimeEnum.values()).map(o -> o.getTime()).collect(Collectors.toList());
-            return new ResponseEntity<>(new OneListResponse(original),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new OneDataResponse(original),HttpStatus.BAD_REQUEST);
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("a h:mm");
@@ -52,7 +52,7 @@ public class ReservationApiController {
                 })
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(new OneListResponse<>(result), HttpStatus.OK);
+        return new ResponseEntity<>(new OneDataResponse<>(result), HttpStatus.OK);
     }
     @Data
     @AllArgsConstructor

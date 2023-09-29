@@ -41,7 +41,7 @@ public class AdminController {
 
         MemberSearch searchCondition = MemberSearch.createSearchCondition(condition);
         Page<Member> memberPage = memberService.findMemberAll(searchCondition, pageable);
-        Page<MemberWeb> dtoPage = memberPage.map(member -> MemberWeb.memberFrom(member));
+        Page<MemberWeb> dtoPage = memberPage.map(member -> MemberWeb.webFrom(member));
 
         List<MemberWeb> dtoList = dtoPage.getContent();
 

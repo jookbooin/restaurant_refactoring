@@ -23,14 +23,4 @@ public class AdvanceReservationForm {
     private String time;
     List<OrderMenuWeb> orderMenuList;
 
-
-//    @Data
-//    public static class advanceFormDto{
-//        private Long menuId;
-//        private String name;
-//        private Integer price;
-//
-//        private Integer count;
-//    }
-
 }

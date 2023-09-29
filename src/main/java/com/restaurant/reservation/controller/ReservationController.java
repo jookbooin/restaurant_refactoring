@@ -51,7 +51,7 @@ public class ReservationController {
         String categoryCode = categoryService.findCode(categoryNameSpecial);
         List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
 
-        List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.categoryMenuFrom(cm))
+        List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.webFrom(cm))
                                                                        .collect(Collectors.toList());
         model.addAttribute("menuList",wehDtoList);
 
@@ -114,7 +114,7 @@ public class ReservationController {
             String categoryCode = categoryService.findCode(categoryNameSpecial);
             List<CategoryMenu> categoryMenuList = categoryMenuService.findCategoryMenu(categoryCode);
 
-            List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.categoryMenuFrom(cm))
+            List<CategoryMenuWeb> wehDtoList = categoryMenuList.stream().map(cm -> CategoryMenuWeb.webFrom(cm))
                     .collect(Collectors.toList());
             model.addAttribute("menuList",wehDtoList);
             return "basic/booking/advanceReservationForm";

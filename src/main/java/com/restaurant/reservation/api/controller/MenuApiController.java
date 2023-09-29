@@ -4,7 +4,7 @@ import com.restaurant.reservation.api.request.search.MenuSearchRequest;
 import com.restaurant.reservation.api.response.MenuSearchResponse;
 import com.restaurant.reservation.api.response.MessageResponse;
 import com.restaurant.reservation.domain.CategoryMenu;
-import com.restaurant.reservation.exception.domain.CategoryException;
+import com.restaurant.reservation.common.exception.domain.CategoryException;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.repository.dto.MenuDto;
 import com.restaurant.reservation.service.CategoryMenuService;
