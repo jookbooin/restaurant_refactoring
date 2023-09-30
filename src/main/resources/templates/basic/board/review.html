@@ -12,7 +12,7 @@
         <main>
 
             <div class="container-fluid px-4">
-                <h1 class="mt-4">리뷰 페이지입니다</h1>
+                <h1 class="mt-4" th:text="${restaurantId } + '번 레스토랑 리뷰'">리뷰 페이지입니다</h1>
 
                 <div class="card mb-4">
                     <div class="card-body">
@@ -34,8 +34,9 @@
                 <br>
 
             <!-- 리뷰 리스트 넣는곳 -->
-                <div class="w-90 mx-auto">
-                    <div class="card">
+
+<!--                <div class="w-90 mx-auto mb-2"> &lt;!&ndash; 너비 정하는 곳&ndash;&gt; -->
+                    <div class="card mb-2">
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-2">
@@ -53,22 +54,18 @@
                         <div class="card-body">
 
                 <!-- 내부 card   -->
-
-                            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div th:each="review : ${reviewList}"  class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <div  class="mb-3">
-                                        <h3 class="card-title">이름 + 사진</h3>
+                                        <h3 class="card-title" th:text="${review.name}">이름 + 사진</h3>
                                     </div>
 
                                     <div class="mb-2">
-                                        <h6 class="card-subtitle ">별점 / 날짜 </h6>
+                                        <h6 class="card-subtitle" th:text="'평점 : '+${review.grade}+' / 날짜 : '+${review.createdDate}" >별점 / 날짜 </h6>
                                     </div>
 
-                                    <p class="card-text mb-4">
-                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
-                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
-                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
-                                        리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳 리뷰 넣는곳
+                                    <p class="card-text mb-4" th:text="${review.content}" >
+                                        리뷰 넣는곳
                                     </p>
 
                                     <div class="mb-2">
@@ -77,45 +74,49 @@
 
                                     <div class="mb-1 text-muted" style="padding-top: 15px;">
                                         <button type="button" class="btn btn-primary">좋아요</button>
-                                        <button type="button" class="btn btn-secondary">댓글</button>
+                                        <button type="button" class="btn btn-secondary" >댓글</button>
 
                                     </div>
                                 </div>
                             </div>
 
-                    </div>
+
+                        </div>
+
+
 
             <!-- 페이징 nav 넣는 곳 -->
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center">
-<!--                                th:with="maxSize=10,-->
-<!--                           totalPages=${dtoPage.totalPages},-->
-<!--                           start=${(dtoPage.number/maxSize)*maxSize + 1},-->
-<!--                           end=${(dtoPage.totalPages == 0) ? 1 : (start + (maxSize - 1) < totalPages ? start + (maxSize - 1) : totalPages)}-->
-<!--                           ">-->
+                            <ul class="pagination justify-content-center"
+                                th:with="start=${pagination.startPage},
+                                            end=${pagination.endPage},
+                                            naviSize=${pagination.naviSize},
+                                            totalPages=${pagination.totalPages},
+                                            page =${pagination.page}">
 
-<!--                                <li th:if="${start > 1}" class='on page-item'>-->
-<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=0,searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" th:text="'<<'"></a>-->
-<!--                                </li>-->
-<!--                                <li th:if="${start > 1}" class='on page-item'>-->
-<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${start - 2})}" th:text="'<'"></a>-->
-<!--                                </li>-->
+                                <li th:if="${pagination.first}" class='on page-item'>
+                                        <a class='page-link' th:href="@{'/'+${restaurantId}+'/review?page=0'}" th:text="'<<'"></a>
+                                </li>
+                                <li th:if="${pagination.first}" class='on page-item'>
+                                    <a class='page-link' th:href="@{'/'+${restaurantId}+'/review?page='+${start - 2}}" th:text="'<'"></a>
+                                </li>
 
-<!--                                <li th:each="pos: ${#numbers.sequence(start, end)}" class='on page-item'>-->
-<!--                                    <a class='page-link' th:text="${pos}" th:href="@{/admin/advance/list(page=${pos - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}" ></a>-->
-<!--                                </li>-->
+                                <li th:each="pos : ${#numbers.sequence(start, end)}"
+                                     class='on page-item'>
+                                    <a class='page-link'th:classappend="${pos - 1 == page}? 'active' : ''" th:text="${pos}" th:href="@{'/'+${restaurantId}+'/review?page='+${pos - 1}}" ></a>
+                                </li>
 
-<!--                                <li th:if="${end < totalPages}" class='on page-item'>-->
-<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${start + maxSize - 1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"   th:text="'>'"></a>-->
-<!--                                </li>-->
-<!--                                <li th:if="${end < totalPages}" class='on page-item'>-->
-<!--                                    <a class='page-link' th:href="@{/admin/advance/list(page=${totalPages -1},searchType=${bookingSearch.searchType}, keyword=${bookingSearch.keyword}, startDate=${bookingSearch.startDate},endDate=${bookingSearch.endDate})}"  th:text="'>>'"></a>-->
-<!--                                </li>-->
-
+                                <li th:if="${pagination.last}" class='on page-item'>
+                                    <a class='page-link' th:href="@{'/'+${restaurantId}+'/review?page='+${start + naviSize - 1}}"   th:text="'>'"></a>
+                                </li>
+                                <li th:if="${pagination.last}" class='on page-item'>
+                                    <a class='page-link' th:href="@{'/'+${restaurantId}+'/review?page='+${totalPages -1}}"  th:text="'>>'"></a>
+                                </li>
                             </ul>
                         </nav>
 
-                </div>
+                    </div>
+<!--                </div>-->
 
 <!-- 버튼 삭제 예정-->
                     <div class="d-flex justify-content-end">

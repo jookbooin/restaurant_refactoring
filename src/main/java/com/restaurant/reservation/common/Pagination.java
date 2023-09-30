@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
+
+/** 일반적인 Pagination 객체 offset , pageSize 기반 */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,11 +40,10 @@ public class Pagination<T> {
         this.totalElements = (int) page.getTotalElements();
         this.totalPages = page.getTotalPages();
         this.pageSize = page.getSize();
-        this.naviSize = naviSize;
         this.page = page.getNumber();
         this.startPage = (this.page/naviSize) * naviSize +1;
         this.endPage = Math.min(startPage +naviSize -1,totalPages);
-        this.first = page.isFirst(); // startPage != 1
-        this.last = page.isLast(); // endPage != totalPages
+        this.first =  startPage != 1;
+        this.last = endPage != totalPages;
     }
 }

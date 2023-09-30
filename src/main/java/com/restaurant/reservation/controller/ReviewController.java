@@ -50,12 +50,15 @@ public class ReviewController {
 
         Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
-        List<ReviewSearchWeb> content = reviewSearchPage.getContent().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
+        List<ReviewSearchWeb> reviewList = reviewSearchPage.getContent().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
                 .collect(Collectors.toList());
+
+        log.info("size : {}",reviewList.size());
+
         Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
 
         model.addAttribute("restaurantId",rid);
-        model.addAttribute("content",content);
+        model.addAttribute("reviewList",reviewList);
         model.addAttribute("pagination",pagination);
 
         return "basic/board/review";
