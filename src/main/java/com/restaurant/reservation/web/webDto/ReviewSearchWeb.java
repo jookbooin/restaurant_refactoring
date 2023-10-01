@@ -2,9 +2,10 @@ package com.restaurant.reservation.web.webDto;
 
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+
+/** Controller -> View*/
 @ToString
 @Getter
 @Setter
@@ -15,7 +16,6 @@ public class ReviewSearchWeb {
     private String content; // 후기
 
     private int grade;   // 평점
-    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDateTime createdDate;
     private Long memberId; // Member
     private String name;  // Member
@@ -39,6 +39,10 @@ public class ReviewSearchWeb {
                 .memberId(dto.getMemberId())
                 .name(dto.getName())
                 .build();
+    }
+
+    public String getFormattedCreatedDate() {
+        return createdDate.toLocalDate().toString();
     }
 
 }

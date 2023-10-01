@@ -1,7 +1,7 @@
 package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.response.CategoryResponse;
-import com.restaurant.reservation.api.response.data.OneDataResponse;
+import com.restaurant.reservation.common.OneTypeData;
 import com.restaurant.reservation.repository.CategoryRepository;
 import com.restaurant.reservation.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +19,17 @@ public class CategoryApiController {
 
 
     @GetMapping("/api/category/root/1")
-    public OneDataResponse findRootCategory_페이징불가(){
+    public OneTypeData findRootCategory_페이징불가(){
 
         List<CategoryResponse> responseList = categoryRepository.findByParentIsNullOrderByIdAsc().stream().map(CategoryResponse::responseFrom).collect(Collectors.toList());
-        return new OneDataResponse(responseList);
+        return new OneTypeData(responseList);
     }
 
     @GetMapping("/api/category/root/2")
-    public OneDataResponse findRootCategory_parent패치조인(){
+    public OneTypeData findRootCategory_parent패치조인(){
 
         List<CategoryResponse> responseList = categoryRepository.findParentWithFetchJoin().stream().map(CategoryResponse::responseFrom).collect(Collectors.toList());
-        return new OneDataResponse(responseList);
+        return new OneTypeData(responseList);
     }
 
 }

@@ -4,7 +4,7 @@ import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
 import com.restaurant.reservation.api.response.ReviewSearchResponse;
-import com.restaurant.reservation.api.response.data.TwoDataResponse;
+import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
@@ -33,7 +33,7 @@ public class ReviewApiController {
     private final ReviewService reviewService;
 
     @GetMapping("/api/{restaurantId}/review")
-    public TwoDataResponse<?, ?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+    public TwoTypeData<?, ?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
 
         log.info("restaurantId : {} condition : {}",rid,condition);
 
@@ -46,7 +46,7 @@ public class ReviewApiController {
 
         Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
 
-        return new TwoDataResponse<>(content,pagination);
+        return new TwoTypeData<>(content,pagination);
     }
 
 /**

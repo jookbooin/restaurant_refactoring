@@ -1,11 +1,11 @@
-package com.restaurant.reservation.api.response.data;
+package com.restaurant.reservation.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OneDataResponse<T> {
+public class OneTypeData<T> {
     private T data;
 
 

@@ -1,6 +1,8 @@
 package com.restaurant.reservation.controller;
 
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
+import com.restaurant.reservation.common.TwoTypeData;
+import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
@@ -8,11 +10,9 @@ import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
-import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.web.webDto.ReviewSearchWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -47,15 +47,12 @@ public class ReviewController {
 
         ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
 
+        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> dataResponse = reviewService.reviewSearch(rid, reviewSearch, pageable);
 
-        Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
-
-        List<ReviewSearchWeb> reviewList = reviewSearchPage.getContent().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
+        List<ReviewSearchWeb> reviewList = dataResponse.getData1().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
                 .collect(Collectors.toList());
-
-        log.info("size : {}",reviewList.size());
-
-        Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
+        log.info("review size : {}",reviewList.size());
+        Pagination<ReviewSearchDto> pagination = dataResponse.getData2();
 
         model.addAttribute("restaurantId",rid);
         model.addAttribute("reviewList",reviewList);

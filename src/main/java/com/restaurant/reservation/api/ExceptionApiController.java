@@ -1,4 +1,4 @@
-package com.restaurant.reservation.api.controller.test;
+package com.restaurant.reservation.api;
 
 import com.restaurant.reservation.common.exception.domain.CategoryException;
 import com.restaurant.reservation.common.exception.domain.DomainException;

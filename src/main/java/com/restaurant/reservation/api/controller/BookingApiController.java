@@ -1,8 +1,12 @@
 package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.UpdateReservationRequest;
-import com.restaurant.reservation.api.response.*;
-import com.restaurant.reservation.api.response.data.TwoDataResponse;
+import com.restaurant.reservation.api.response.MenuCountResponse;
+import com.restaurant.reservation.api.response.MenuResponse;
+import com.restaurant.reservation.api.response.OrderMenuResponse;
+import com.restaurant.reservation.api.response.ReservationResponse;
+import com.restaurant.reservation.common.OneTypeData;
+import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.domain.CategoryMenu;
 import com.restaurant.reservation.domain.OrderMenu;
 import com.restaurant.reservation.domain.booking.Reservation;
@@ -39,7 +43,7 @@ public class BookingApiController {
 
 
     @GetMapping("/api/booking/advance/list")
-    public oneListResult bookingAdvanceList(HttpSession session){
+    public OneTypeData bookingAdvanceList(HttpSession session){
         log.info("/api/booking/advance/list");
         log.info("api 검색?");
 
@@ -53,11 +57,11 @@ public class BookingApiController {
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
 
-        return new oneListResult(apiDtoList);
+        return new OneTypeData(apiDtoList);
     }
 
     @GetMapping("/api/booking/complete/list")
-    public oneListResult bookingCompleteList(HttpSession session){
+    public OneTypeData bookingCompleteList(HttpSession session){
 
         log.info("/api/booking/complete/list");
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
@@ -70,11 +74,11 @@ public class BookingApiController {
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
 
-        return new oneListResult(apiDtoList);
+        return new OneTypeData(apiDtoList);
     }
 
     @GetMapping("/api/booking/noshow/list")
-    public oneListResult bookingNoShowList(HttpSession session){
+    public OneTypeData bookingNoShowList(HttpSession session){
 
         log.info("/api/booking/noshow/list");
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
@@ -87,7 +91,7 @@ public class BookingApiController {
 
         apiDtoList.forEach(dto -> log.info(dto.toString()));
 
-        return new oneListResult(apiDtoList);
+        return new OneTypeData(apiDtoList);
     }
 
     @GetMapping("/api/booking/{rid}/orderMenuList")
@@ -123,7 +127,7 @@ public class BookingApiController {
         }
     }
     @GetMapping("/api/booking/{rid}/orderMenuList/specialMenu")
-    public TwoDataResponse getMenuOrderMenuList(@PathVariable("rid") Long rid){
+    public TwoTypeData getMenuOrderMenuList(@PathVariable("rid") Long rid){
         log.info("/api/booking/{}/orderMenuList/specialMenu",rid);
         final String categoryNameSpecial = "스페셜";
 
@@ -139,7 +143,7 @@ public class BookingApiController {
                 .map(MenuCountResponse::responseFrom)
                 .collect(Collectors.toList());
 
-        return new TwoDataResponse(menuList,orderMenuDtoList);
+        return new TwoTypeData(menuList,orderMenuDtoList);
     }
 
     @PatchMapping("/api/booking/{rid}/modify")
@@ -164,11 +168,6 @@ public class BookingApiController {
     }
 
 
-    @Data
-    @AllArgsConstructor
-    static class oneListResult<T> {
-        private T data;
-    }
 
 
     private List<OrderMenu> getOrderMenuList(Long id) {

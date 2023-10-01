@@ -58,7 +58,7 @@
 
                                     <div class="mb-3 d-flex justify-content-between">
                                         <h6 class="card-subtitle" th:text="'평점 : '+${review.grade}"></h6>
-                                        <h6 class="card-subtitle" th:text="${review.createdDate}"></h6>
+                                        <h6 class="card-subtitle" th:text="${review.formattedCreatedDate}"></h6>
                                     </div>
 
                                     <p class="card-text mb-4" th:text="${review.content}" >

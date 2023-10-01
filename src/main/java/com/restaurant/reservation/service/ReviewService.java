@@ -1,11 +1,13 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.domain.Restaurant;
-import com.restaurant.reservation.domain.members.Member;
-import com.restaurant.reservation.domain.review.Review;
+import com.restaurant.reservation.common.TwoTypeData;
+import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.common.exception.domain.MemberException;
 import com.restaurant.reservation.common.exception.domain.RestaurantException;
 import com.restaurant.reservation.common.exception.domain.ReviewException;
+import com.restaurant.reservation.domain.Restaurant;
+import com.restaurant.reservation.domain.members.Member;
+import com.restaurant.reservation.domain.review.Review;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.RestaurantRepository;
 import com.restaurant.reservation.repository.ReviewRepository;
@@ -19,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,20 @@ public class ReviewService {
     private final RestaurantRepository restaurantRepository;
     private final MemberRepository memberRepository;
 
+
+    /**
+     * 23_10_02
+     * 1. jpa의 Page객체를 Service쪽에 숨기는게 더 나을지도 모르겠다고 생각이들었다.
+     * 2. content 와 Pagination을 감싸 Controller로 반환한다.
+     * */
+    public TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> reviewSearch(Long rid, ReviewSearch reviewSearch , Pageable pageable){
+
+        Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
+
+        Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
+
+        return new TwoTypeData<>(reviewSearchPage.getContent(),pagination);
+    }
     @Transactional
     public Long save(ReviewDto reviewDto){
         Restaurant restaurant = restaurantRepository.findById(reviewDto.getRestaurantId()).orElseThrow(() -> new RestaurantException("레스토랑이 존재하지 않습니다"));
@@ -65,10 +83,5 @@ public class ReviewService {
         }
     }
 
-    public void reviewSearch(Long rid, ReviewSearch reviewSearch , Pageable pageable){
-        Page<ReviewSearchDto> dtoPage = reviewRepository.findAllRestaurantReview(rid, reviewSearch, pageable);
 
-
-
-    }
 }
