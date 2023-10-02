@@ -87,7 +87,7 @@ public class ReviewController {
 
         Long sessionId = (Long) session.getAttribute(SessionID.LOGIN_MEMBER);
 
-        ReviewDto reviewDto = ReviewDto.of(rid, sessionId, form);
+        ReviewDto reviewDto = ReviewDto.saveOf(rid, sessionId, form);
 
         reviewService.save(reviewDto);
         return "redirect:/"+rid+"/review";

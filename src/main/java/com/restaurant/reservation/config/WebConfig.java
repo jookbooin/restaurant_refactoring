@@ -13,8 +13,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("classpath:/static/img/");
-//        registry.addResourceHandler("/resources/**")
-//                .addResourceLocations("classpath:/static/");
     }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

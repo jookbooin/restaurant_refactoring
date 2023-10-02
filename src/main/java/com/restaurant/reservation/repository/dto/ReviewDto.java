@@ -1,7 +1,7 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
+import com.restaurant.reservation.web.form.ReviewUpdateForm;
 import lombok.*;
 
 @Getter
@@ -25,22 +25,32 @@ public class ReviewDto {
         this.viewCount = viewCount;
     }
 
-    public static ReviewDto of(Long rid,Long mid,ReviewSaveForm form){
+    public static ReviewDto saveOf(Long rtid, Long mid, ReviewSaveForm form){
         return ReviewDto.builder()
                 .grade(form.getGrade())
                 .content(form.getContent())
                 .memberId(mid)
-                .restaurantId(rid)
+                .restaurantId(rtid)
                 .build();
     }
 
-    public static ReviewDto of(Long rid, ReviewSaveRequest form){
+    public static ReviewDto updateOf(Long rtid, Long mid,Long rwid, ReviewUpdateForm form){
         return ReviewDto.builder()
+                .id(rwid)
                 .grade(form.getGrade())
                 .content(form.getContent())
-                .memberId(form.getMemberId())
-                .restaurantId(rid)
+                .memberId(mid)
+                .restaurantId(rtid)
                 .build();
     }
+
+//    public static ReviewDto of(Long rid, ReviewSaveRequest form){
+//        return ReviewDto.builder()
+//                .grade(form.getGrade())
+//                .content(form.getContent())
+//                .memberId(form.getMemberId())
+//                .restaurantId(rid)
+//                .build();
+//    }
 
 }

@@ -48,6 +48,7 @@ public class ReviewService {
     }
     @Transactional
     public Long save(ReviewDto reviewDto){
+        log.info("리뷰 등록");
         Restaurant restaurant = restaurantRepository.findById(reviewDto.getRestaurantId()).orElseThrow(() -> new RestaurantException("레스토랑이 존재하지 않습니다"));
         Member member = memberRepository.findById(reviewDto.getMemberId()).orElseThrow(() -> new MemberException("해당 회원이 존재하지않습니다"));
         Review review = Review.saveOf(restaurant, member, reviewDto);
@@ -56,15 +57,22 @@ public class ReviewService {
     }
 
     @Transactional
-    public void delete(Long mid ,Long rid){
+    public void delete(Long mid ,Long rtid,Long rwid){
 
-//        Review findReview = reviewRepository.findFech(rid).orElseThrow(() -> new ReviewException("해당 id의 리뷰가 존재하지 않습니다"));
-        Review findReview = reviewRepository.findFech(rid).orElseThrow(() -> new ReviewException("해당 id의 리뷰가 존재하지 않습니다"));
+        Review findReview = reviewRepository.findFechMember_Restaurant(rwid).orElseThrow(() -> new ReviewException("해당 id의 리뷰가 존재하지 않습니다"));
+
+        /** 1. review - 작성자 확인 */
         if(findReview.getMember().getId().equals(mid)){
-            log.info("해당 리뷰 작성자가 맞음");
+            log.info("해당 리뷰 - 작성자가 맞음");
 
-            findReview.getRestaurant().deleteReview(findReview);
-            reviewRepository.delete(findReview);
+            /** 2. review(N) - restaurant(1) 확인 */
+            if(findReview.getRestaurant().getId().equals(rtid)){
+                log.info("해당 리뷰 - 레스토랑 맞음");
+                findReview.getRestaurant().deleteReview(findReview);
+                reviewRepository.delete(findReview);
+            }else{
+                throw new RestaurantException("해당 레스토랑의 리뷰가 아닙니다.");
+            }
 
         }else{
             throw new ReviewException("해당 작성자가 쓴 리뷰가 아닙니다");
@@ -72,16 +80,21 @@ public class ReviewService {
     }
 
     @Transactional
-    public void update(Long mid , ReviewDto reviewDto){
+    public void update(ReviewDto reviewDto){
 
-        Review findReview = reviewRepository.findFech(reviewDto.getId()).orElseThrow(() -> new ReviewException("해당 id의 리뷰가 존재하지 않습니다"));
-        if(findReview.getMember().getId().equals(mid)) {
-            log.info("해당 리뷰 작성자가 맞음");
-            findReview.updateReview(reviewDto);
+        Review findReview = reviewRepository.findFechMember_Restaurant(reviewDto.getId()).orElseThrow(() -> new ReviewException("해당 id의 리뷰가 존재하지 않습니다"));
+
+        if(findReview.getMember().getId().equals(reviewDto.getMemberId())) {
+            log.info("해당 리뷰 - 작성자가 맞음");
+            if(findReview.getRestaurant().getId().equals(reviewDto.getRestaurantId())){
+                log.info("해당 리뷰 - 레스토랑 맞음");
+                findReview.updateReview(reviewDto);
+            }else{
+                throw new RestaurantException("해당 레스토랑의 리뷰가 아닙니다.");
+            }
         }else{
             throw new ReviewException("해당 작성자가 쓴 리뷰가 아닙니다");
         }
     }
-
 
 }

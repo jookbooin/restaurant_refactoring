@@ -1,19 +1,19 @@
 package com.restaurant.reservation.api.controller;
 
-import com.restaurant.reservation.api.request.ReviewSaveRequest;
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
-import com.restaurant.reservation.api.response.ReviewSearchResponse;
+import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
-import com.restaurant.reservation.common.Pagination;
+import com.restaurant.reservation.web.form.ReviewSaveForm;
+import com.restaurant.reservation.web.form.ReviewUpdateForm;
+import com.restaurant.reservation.web.webDto.ReviewSearchWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -32,19 +32,22 @@ public class ReviewApiController {
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
 
-    @GetMapping("/api/{restaurantId}/review")
-    public TwoTypeData<?, ?> reivew(@PathVariable("restaurantId")Long rid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+    /** 추후에 삭제할 것*/
+    private final Long memberId = 1L;
 
-        log.info("restaurantId : {} condition : {}",rid,condition);
+    @GetMapping("/api/{restaurantId}/review")
+    public TwoTypeData<?, ?> reivew(@PathVariable("restaurantId")Long rtid, ReviewSearchRequest condition , @PageableDefault(page = 0,size = 10) Pageable pageable){
+
+        log.info("restaurantId : {} condition : {}",rtid,condition);
 
         ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
-        Page<ReviewSearchDto> reviewSearchPage = reviewRepository.findAllRestaurantReview(rid,reviewSearch, pageable);
 
-        List<ReviewSearchResponse> content = reviewSearchPage.getContent()
-                .stream().map(dto -> ReviewSearchResponse.responseFrom(dto))
+        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> dataResponse = reviewService.reviewSearch(rtid, reviewSearch, pageable);
+
+        List<ReviewSearchWeb> content = dataResponse.getData1().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
                 .collect(Collectors.toList());
+        Pagination<ReviewSearchDto> pagination = dataResponse.getData2();
 
-        Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
 
         return new TwoTypeData<>(content,pagination);
     }
@@ -55,16 +58,36 @@ public class ReviewApiController {
  * /api/{restaurantId}/review/write   + session OR Token
  * */
     @PostMapping("/api/{restaurantId}/review/write")
-    public ResponseEntity<?> reviewSave(@PathVariable("restaurantId") Long rid,@Validated @RequestBody ReviewSaveRequest request){
+    public ResponseEntity<?> reviewSave(@PathVariable("restaurantId") Long rtid,@Validated @RequestBody ReviewSaveForm request){
         log.info("POST - /api/review/write");
-        log.info("rid : {} request : {}",rid,request);
+        log.info("restaurantId : {} request : {}",rtid,request);
 
-        ReviewDto reviewDto = ReviewDto.of(rid,request);
+        ReviewDto reviewDto = ReviewDto.saveOf(rtid,memberId,request);
 
         reviewService.save(reviewDto);
 
         return new ResponseEntity<>(new MessageResponse("리뷰 등록했습니다."),HttpStatus.OK);
     }
+
+    @DeleteMapping("/api/{restaurantId}/review/{reviewId}/delete")
+    public ResponseEntity<?> reviewDelete(@PathVariable("restaurantId") Long rtid,@PathVariable("reviewId") Long rwid){
+        log.info("Delete - /api/{}/review/{}/delete",rtid,rwid);
+
+        reviewService.delete(memberId,rtid,rwid);
+        return new ResponseEntity<>(new MessageResponse("리뷰 삭제했습니다."),HttpStatus.OK);
+    }
+
+    @PatchMapping("/api/{restaurantId}/review/{reviewId}/update")
+    public ResponseEntity<?> reviewUpdate(@PathVariable("restaurantId") Long rtid, @PathVariable("reviewId") Long rwid,
+                                          @Validated @RequestBody ReviewUpdateForm request){
+        log.info("Patch - /api/{}/review/{}/update",rtid,rwid);
+        log.info("ReviewUpdateForm : {}",request);
+
+        ReviewDto reviewDto = ReviewDto.updateOf(rtid,memberId,rwid,request);
+        reviewService.update(reviewDto);
+        return new ResponseEntity<>(new MessageResponse("리뷰 수정했습니다."),HttpStatus.OK);
+    }
+
 
 //    @PostMapping("/api/review/write2")
 //    public ResponseEntity<?> reviewSave(@Validated @RequestBody ReviewSaveForm request, BindingResult bindingResult) throws BindException {

@@ -29,7 +29,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 @Profile("local")
 @Component
@@ -42,7 +41,7 @@ public class InitDb {
     public void init() {
 
 //        initService.InitDb();
-//        initService.Review();
+        initService.Review();
 //        initService.plus_Member_Reservation();
 
     }
@@ -67,38 +66,38 @@ public class InitDb {
 
         public void Review() {
             /** 1. Member - 고객 / 관리자 */
-//            MemberDto memberDto =MemberDto.builder()
-//                    .email("3670lsh@naver.com")
-//                    .password("dltmdgjs4139!")
-//                    .name("고객3670")
-//                    .phoneNumber("01071974139")
-//                    .build();
-//            Member member= Member.createCustomer(memberDto);
-//            memberRepository.save(member);
-//
-//            MemberDto adminDto=MemberDto.builder()
-//                    .email("3670lsh@gmail.com")
-//                    .password("dltmdgjs4139!")
-//                    .name("관리자")
-//                    .phoneNumber("01041397197")
-//                    .build();
-//            Member admin= Member.createAdmin(adminDto);
-//            memberRepository.save(admin);
+            MemberDto memberDto =MemberDto.builder()
+                    .email("3670lsh@naver.com")
+                    .password("dltmdgjs4139!")
+                    .name("고객3670")
+                    .phoneNumber("01071974139")
+                    .build();
+            Member member= Member.createCustomer(memberDto);
+            memberRepository.save(member);
+
+            MemberDto adminDto=MemberDto.builder()
+                    .email("3670lsh@gmail.com")
+                    .password("dltmdgjs4139!")
+                    .name("관리자")
+                    .phoneNumber("01041397197")
+                    .build();
+            Member admin= Member.createAdmin(adminDto);
+            memberRepository.save(admin);
 
             RestaurantDto restaurantDto = RestaurantDto.builder().name("식당").build();
             Restaurant restaurant = restaurantRepository.save(Restaurant.saveOf(restaurantDto));
 
-            Random rand = new Random();
-            for(int i = 0; i<10000; i++) {
-
-                ReviewDto reviewDto = ReviewDto.builder()
-                        .grade((rand.nextInt(5) + 1))
-                        .content("20자 테스트중입니다 "+i)
-                        .restaurantId(1L)
-                        .memberId(1L)
-                        .build();
-                reviewService.save(reviewDto);
-            }
+//            Random rand = new Random();
+//            for(int i = 0; i<10000; i++) {
+//
+//                ReviewDto reviewDto = ReviewDto.builder()
+//                        .grade((rand.nextInt(5) + 1))
+//                        .content("20자 테스트중입니다 "+i)
+//                        .restaurantId(1L)
+//                        .memberId(1L)
+//                        .build();
+//                reviewService.save(reviewDto);
+//            }
         }
 
 

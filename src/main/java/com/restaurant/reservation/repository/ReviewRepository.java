@@ -17,7 +17,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> , ReviewRep
             "Join Fetch r.member " +
             "Join fetch r.restaurant " +
             "where r.id = :rid")
-    Optional<Review> findFech(@Param("rid") Long rid);
+    Optional<Review> findFechMember_Restaurant(@Param("rid") Long rid);
 
 
 }
