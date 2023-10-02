@@ -28,7 +28,7 @@ public class Pagination<T> {
         this.totalElements = totalElements;
         this.page = page;
         this.pageSize = pageSize;
-        this.totalPages = (int)Math.ceil(totalElements/(double)pageSize);
+        this.totalPages = totalElements != 0 ?(int)Math.ceil(totalElements/(double)pageSize) : 1;
         this.startPage = (page/naviSize) * naviSize +1;
         this.endPage = Math.min(startPage +naviSize -1,totalPages);
         this.first = startPage != 1;
@@ -38,7 +38,7 @@ public class Pagination<T> {
     public Pagination(Page<T> page){
         this.naviSize=10;
         this.totalElements = (int) page.getTotalElements();
-        this.totalPages = page.getTotalPages();
+        this.totalPages = totalElements != 0 ? page.getTotalPages(): 1;
         this.pageSize = page.getSize();
         this.page = page.getNumber();
         this.startPage = (this.page/naviSize) * naviSize +1;
