@@ -3,6 +3,10 @@ package com.restaurant.reservation.repository.dto;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
 import com.restaurant.reservation.web.form.ReviewUpdateForm;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,15 +18,23 @@ public class ReviewDto {
     private Long restaurantId;
     private int grade;   // 평점
     private int viewCount;
+    private List<MultipartFile> multipartFileList = new ArrayList<>();
+
 
     @Builder
-    public ReviewDto(Long id, String content, Long memberId, Long restaurantId, int grade, int viewCount) {
+    public ReviewDto(Long id, String content, Long memberId, Long restaurantId, int grade, int viewCount, List<MultipartFile> multipartFileList) {
         this.id = id;
         this.content = content;
         this.memberId = memberId;
         this.restaurantId = restaurantId;
         this.grade = grade;
         this.viewCount = viewCount;
+        this.multipartFileList = multipartFileList;
+    }
+
+
+    public void setMultipartFileList(List<MultipartFile> multipartFileList) {
+        this.multipartFileList = multipartFileList;
     }
 
     public static ReviewDto saveOf(Long rtid, Long mid, ReviewSaveForm form){
@@ -31,7 +43,9 @@ public class ReviewDto {
                 .content(form.getContent())
                 .memberId(mid)
                 .restaurantId(rtid)
+                .multipartFileList(form.getMultipartFileList())
                 .build();
+
     }
 
     public static ReviewDto updateOf(Long rtid, Long mid,Long rwid, ReviewUpdateForm form){
@@ -44,13 +58,6 @@ public class ReviewDto {
                 .build();
     }
 
-//    public static ReviewDto of(Long rid, ReviewSaveRequest form){
-//        return ReviewDto.builder()
-//                .grade(form.getGrade())
-//                .content(form.getContent())
-//                .memberId(form.getMemberId())
-//                .restaurantId(rid)
-//                .build();
-//    }
+
 
 }

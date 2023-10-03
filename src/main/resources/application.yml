@@ -34,3 +34,5 @@ server:
     session:
       tracking-modes: cookie
 
+upload:
+  path: D:/coding/file/restaurant/

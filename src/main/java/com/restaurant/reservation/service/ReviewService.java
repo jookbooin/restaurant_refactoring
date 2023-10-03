@@ -1,16 +1,18 @@
 package com.restaurant.reservation.service;
 
-import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.common.Pagination;
+import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.common.exception.domain.MemberException;
 import com.restaurant.reservation.common.exception.domain.RestaurantException;
 import com.restaurant.reservation.common.exception.domain.ReviewException;
 import com.restaurant.reservation.domain.Restaurant;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.domain.review.Review;
+import com.restaurant.reservation.domain.review.UploadFile;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.RestaurantRepository;
 import com.restaurant.reservation.repository.ReviewRepository;
+import com.restaurant.reservation.repository.UploadFileRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -31,6 +34,9 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final RestaurantRepository restaurantRepository;
     private final MemberRepository memberRepository;
+
+    private final UploadFileRepository uploadFileRepository;
+    private final FileHandler fileHandler;
 
 
     /**
@@ -47,12 +53,22 @@ public class ReviewService {
         return new TwoTypeData<>(reviewSearchPage.getContent(),pagination);
     }
     @Transactional
-    public Long save(ReviewDto reviewDto){
+    public Long save(ReviewDto reviewDto) throws IOException {
         log.info("리뷰 등록");
         Restaurant restaurant = restaurantRepository.findById(reviewDto.getRestaurantId()).orElseThrow(() -> new RestaurantException("레스토랑이 존재하지 않습니다"));
         Member member = memberRepository.findById(reviewDto.getMemberId()).orElseThrow(() -> new MemberException("해당 회원이 존재하지않습니다"));
+
         Review review = Review.saveOf(restaurant, member, reviewDto);
+
+        /** multipart -> UploadFile (image) 로 변환
+         *  review.fileList 에 저장
+         * */
+        List<UploadFile> uploadFileList = fileHandler.storeFiles(reviewDto.getMultipartFileList());
+        review.storeFiles(uploadFileList);
+
         Review saveReview = reviewRepository.save(review);
+//        uploadFileList.forEach(uploadFileRepository::save);  // cascade
+
         return saveReview.getId();
     }
 

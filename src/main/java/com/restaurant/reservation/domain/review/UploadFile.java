@@ -1,47 +1,60 @@
 package com.restaurant.reservation.domain.review;
 
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.restaurant.reservation.repository.dto.UploadFileDto;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@ToString
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class File {
+public class UploadFile {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "file_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
-    private String originFileName;      //원본 파일명
+    private String originalFilename;      //원본 파일명
     private String storeFileName;       //member가 업로드하는 파일명
     private String uploadDir;           //경로명
     private String extension;           //확장자
     private Long size;                  //파일 사이즈
     private String contentType;         //ContentType
     @CreatedDate
-    private LocalDateTime regDate;
+    private LocalDateTime uploadDate;      //등록 날짜
 
     @Builder
-    public File(Long id, Review review, String originFileName, String storeFileName, String uploadDir, String extension, Long size, String contentType, LocalDateTime regDate) {
+    public UploadFile(Long id, Review review, String originalFilename, String storeFileName, String uploadDir, String extension, Long size, String contentType, LocalDateTime uploadDate) {
         this.id = id;
         this.review = review;
-        this.originFileName = originFileName;
+        this.originalFilename = originalFilename;
         this.storeFileName = storeFileName;
         this.uploadDir = uploadDir;
         this.extension = extension;
         this.size = size;
         this.contentType = contentType;
-        this.regDate = regDate;
+        this.uploadDate = uploadDate;
     }
 
+    public static UploadFile fileFrom(UploadFileDto uploadFileDto){
+        return UploadFile.builder()
+                .originalFilename(uploadFileDto.getOriginalFilename())
+                .storeFileName(uploadFileDto.getStoreFileName())
+                .uploadDir(uploadFileDto.getUploadDir())
+                .extension(uploadFileDto.getExtension())
+                .size(uploadFileDto.getSize())
+                .contentType(uploadFileDto.getContentType())
+                .build();
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
 }

@@ -1,9 +1,13 @@
 package com.restaurant.reservation.web.form;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /** 1. 우선 reviewController에 사용 */
 @Getter
@@ -17,6 +21,7 @@ public class ReviewSaveForm {
     @Size(min = 20,  message ="20자 이상 작성해야합니다")
     private String content;
 
+    private List<MultipartFile> multipartFileList ;
 
     public ReviewSaveForm() {
     }

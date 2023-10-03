@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,7 @@ public class ReviewApiController {
  * /api/{restaurantId}/review/write   + session OR Token
  * */
     @PostMapping("/api/{restaurantId}/review/write")
-    public ResponseEntity<?> reviewSave(@PathVariable("restaurantId") Long rtid,@Validated @RequestBody ReviewSaveForm request){
+    public ResponseEntity<?> reviewSave(@PathVariable("restaurantId") Long rtid,@Validated @RequestBody ReviewSaveForm request) throws IOException {
         log.info("POST - /api/review/write");
         log.info("restaurantId : {} request : {}",rtid,request);
 

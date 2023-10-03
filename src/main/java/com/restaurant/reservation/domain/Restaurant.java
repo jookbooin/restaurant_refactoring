@@ -28,9 +28,12 @@ public class Restaurant {
     private List<Review> reviewList = new ArrayList<>();
 
     @Builder
-    public Restaurant(Long id, String name) {
+    public Restaurant(Long id, String name, double averageGrade, List<Review> reviewList) {
         this.id = id;
         this.name = name;
+        this.averageGrade = averageGrade;
+        if(reviewList!= null && !reviewList.isEmpty())
+        this.reviewList = reviewList;
     }
 
     public static Restaurant saveOf(RestaurantDto restaurantDto){

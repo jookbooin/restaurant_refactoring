@@ -26,18 +26,18 @@
                         </p>
                     </div>
                 </div>
-<!---->
+
                 <br>
                 <br>
 
-                <form th:action="@{'/'+${restaurantId}+'/review/write'}" th:object="${form}" method="post">
+                <form th:action="@{'/'+${restaurantId}+'/review/write'}" th:object="${form}" method="post" enctype="multipart/form-data">
                     <article>
                         <div class="container" role="main">
                             <div class="mb-3">
                                 <div>
-                                <label >평점</label>
+                                <label class="form-label">평점</label>
                                 </div>
-                                <div class="rate" >
+                                <div class="rate">
                                     <input type="radio" id="rating50" th:field="*{grade}" th:errorclass="field-error" value="5"><label for="rating50" title="5점"></label>
                                     <input type="radio" id="rating40" th:field="*{grade}" th:errorclass="field-error" value="4"><label for="rating40" title="4점"></label>
                                     <input type="radio" id="rating30" th:field="*{grade}" th:errorclass="field-error" value="3"><label for="rating30" title="3점"></label>
@@ -48,19 +48,24 @@
                                     평점 오류
                                 </div>
                             </div>
-<!--                            <div class="mb-3">-->
-<!--                                <label >제목</label>-->
-<!--                                <input type="text" class="form-control"  placeholder="제목을 입력해 주세요">-->
-<!--                            </div>-->
+
                             <br>
 
                             <div class="mb-3">
-                                <label >내용</label>
+                                <label class="form-label">내용</label>
                                 <textarea class="form-control" rows="5" th:field="*{content}" th:errorclass="field-error" placeholder="글자수는 20자가 넘어야합니다"></textarea>
                                 <div class="field-error" th:errors="*{content}">
                                     내용 오류
                                 </div>
                             </div>
+
+                            <br>
+
+                            <div class="mb-3">
+                                <label  class="form-label">파일업로드</label>
+                                <input class="form-control" type="file" th:field="*{multipartFileList}" multiple>
+                            </div>
+
                             <br>
                             <br>
                             <div>

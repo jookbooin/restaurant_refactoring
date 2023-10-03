@@ -4,15 +4,15 @@ import com.restaurant.reservation.domain.Restaurant;
 import com.restaurant.reservation.domain.TimeEntity;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.dto.ReviewDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Slf4j
 @Entity
 @Getter
 @Table(name = "review")
@@ -37,21 +37,19 @@ public class Review extends TimeEntity {
 
     /** 비상 1:N 존재 !!!!*/
     @OneToMany(mappedBy ="review" , cascade = CascadeType.ALL )
-    private List<File> fileList = new ArrayList<>();
+    private List<UploadFile> uploadFileList = new ArrayList<>();
 
     @Builder
-    public Review(Long id, String content, int grade, int viewCount, Member member, Restaurant restaurant, List<File> fileList) {
+    public Review(Long id, String content, int grade, int viewCount, Member member, Restaurant restaurant, List<UploadFile> uploadFileList) {
         this.id = id;
         this.content = content;
         this.grade = grade;
         this.viewCount = viewCount;
         this.member = member;
         this.restaurant = restaurant;
-        this.fileList = fileList;
+        if(uploadFileList != null && !uploadFileList.isEmpty())
+            this.uploadFileList = uploadFileList;
     }
-
-
-
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
@@ -76,5 +74,21 @@ public class Review extends TimeEntity {
             this.grade = reviewDto.getGrade();
             this.restaurant.updateAverageGrade();
         }
+    }
+
+    public void storeFiles(List<UploadFile> uploadFileList){
+
+        if(uploadFileList.isEmpty())
+            return;
+        log.info("List<UploadFile> uploadFileList : {}",uploadFileList);
+        log.info("this.uploadFileList : {}",this.uploadFileList);
+
+        uploadFileList.forEach(uploadFile -> {
+            uploadFile.setReview(this);
+            this.uploadFileList.add(uploadFile);
+        });
+
+        log.info("this.uploadFileList : {}",this.uploadFileList);
+
     }
 }
