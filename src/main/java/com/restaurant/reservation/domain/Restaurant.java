@@ -50,6 +50,9 @@ public class Restaurant {
 
     public void updateAverageGrade() {
 
+        /** review 지연로딩
+         *  save , update 시 review 쿼리 1번 추가
+         * */
         double average = reviewList.stream().mapToDouble(Review::getGrade).average().orElse(0.0);
         this.averageGrade =  Math.round(average * 10) / 10.0;
 //        log.info("입력 값 : {} 레스토랑 평균 : {}",average,this.averageGrade);
