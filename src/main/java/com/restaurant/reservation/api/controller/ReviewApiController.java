@@ -89,6 +89,8 @@ public class ReviewApiController {
         return new ResponseEntity<>(new MessageResponse("리뷰 수정했습니다."),HttpStatus.OK);
     }
 
+//    @GetMapping()
+
 
 //    @PostMapping("/api/review/write2")
 //    public ResponseEntity<?> reviewSave(@Validated @RequestBody ReviewSaveForm request, BindingResult bindingResult) throws BindException {

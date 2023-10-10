@@ -17,6 +17,8 @@ public class ReviewSearchDto {
     private Long memberId; // Member
     private String name;  // Member
 
+
+
     @QueryProjection
     public ReviewSearchDto(Long id, String content, int grade, LocalDateTime createdDate, Long memberId, String name) {
         this.id = id;

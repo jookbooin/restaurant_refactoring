@@ -19,10 +19,10 @@ public class UploadFileDto {
 
     private String extension;           //확장자
 
+
     private Long size;                  //파일 사이즈
 
     private String contentType;         //ContentType
-
     private LocalDateTime uploadDate;
 
     @Builder

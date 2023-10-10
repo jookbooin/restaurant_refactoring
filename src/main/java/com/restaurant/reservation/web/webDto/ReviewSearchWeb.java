@@ -20,6 +20,8 @@ public class ReviewSearchWeb {
     private Long memberId; // Member
     private String name;  // Member
 
+
+
     @Builder
     public ReviewSearchWeb(Long id, String content, int grade, LocalDateTime createdDate, Long memberId, String name) {
         this.id = id;

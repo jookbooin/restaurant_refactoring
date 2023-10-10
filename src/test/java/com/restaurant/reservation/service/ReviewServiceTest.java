@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +38,7 @@ class ReviewServiceTest {
     EntityManager em;
 
     @BeforeEach
-    public void ReviewInit(){
+    public void ReviewInit() throws IOException {
 
         ReviewDto reviewDto1 = ReviewDto.builder().content("헤지스헤지스헤지스헤지스헤지스헤지스헤지스헤지스헤지스")
                 .grade(5).restaurantId(1L).memberId(1L).build();
@@ -54,11 +55,13 @@ class ReviewServiceTest {
 
 
     @Test
-    void save_1개() {
+    void save_1개() throws IOException {
 
         em.flush();
         em.clear();
         /** restaurant1.getAverageGrade() == 3.7  <= 11 / 3 = 3.666 */
+
+
 
         ReviewDto reviewDto4 = ReviewDto.builder().content("홀리선홀리선홀리선홀리선홀리선홀리선홀리선홀리선")
                 .grade(5).restaurantId(1L).memberId(1L).build();

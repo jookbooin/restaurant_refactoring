@@ -50,6 +50,8 @@ public class ReviewService {
 
         Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
 
+
+
         return new TwoTypeData<>(reviewSearchPage.getContent(),pagination);
     }
     @Transactional
@@ -67,7 +69,7 @@ public class ReviewService {
         review.storeFiles(uploadFileList);
 
         Review saveReview = reviewRepository.save(review);
-//        uploadFileList.forEach(uploadFileRepository::save);  // cascade
+        uploadFileList.forEach(uploadFileRepository::save);  // cascade
 
         return saveReview.getId();
     }

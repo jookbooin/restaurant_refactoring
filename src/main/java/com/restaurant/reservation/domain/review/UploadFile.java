@@ -25,21 +25,17 @@ public class UploadFile {
     private String storeFileName;       //member가 업로드하는 파일명
     private String uploadDir;           //경로명
     private String extension;           //확장자
-    private Long size;                  //파일 사이즈
-    private String contentType;         //ContentType
     @CreatedDate
     private LocalDateTime uploadDate;      //등록 날짜
 
     @Builder
-    public UploadFile(Long id, Review review, String originalFilename, String storeFileName, String uploadDir, String extension, Long size, String contentType, LocalDateTime uploadDate) {
+    public UploadFile(Long id, Review review, String originalFilename, String storeFileName, String uploadDir, String extension,  LocalDateTime uploadDate) {
         this.id = id;
         this.review = review;
         this.originalFilename = originalFilename;
         this.storeFileName = storeFileName;
         this.uploadDir = uploadDir;
         this.extension = extension;
-        this.size = size;
-        this.contentType = contentType;
         this.uploadDate = uploadDate;
     }
 
@@ -49,8 +45,6 @@ public class UploadFile {
                 .storeFileName(uploadFileDto.getStoreFileName())
                 .uploadDir(uploadFileDto.getUploadDir())
                 .extension(uploadFileDto.getExtension())
-                .size(uploadFileDto.getSize())
-                .contentType(uploadFileDto.getContentType())
                 .build();
     }
 

@@ -36,7 +36,7 @@ public class Review extends TimeEntity {
     private Restaurant restaurant;
 
     /** 비상 1:N 존재 !!!!*/
-    @OneToMany(mappedBy ="review" , cascade = CascadeType.ALL )
+    @OneToMany(mappedBy ="review" )
     private List<UploadFile> uploadFileList = new ArrayList<>();
 
     @Builder
