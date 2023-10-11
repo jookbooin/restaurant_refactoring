@@ -1,5 +1,6 @@
 package com.restaurant.reservation.repository.dto;
 
+import com.restaurant.reservation.domain.review.UploadFile;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,9 +20,7 @@ public class UploadFileDto {
 
     private String extension;           //확장자
 
-
     private Long size;                  //파일 사이즈
-
     private String contentType;         //ContentType
     private LocalDateTime uploadDate;
 
@@ -38,8 +37,10 @@ public class UploadFileDto {
     }
 
 
-
-
-
-
+    public static UploadFileDto dtoFrom(UploadFile uploadFile) {
+        return UploadFileDto.builder()
+                .uploadDir(uploadFile.getUploadDir())
+                .storeFileName(uploadFile.getStoreFileName())
+                .build();
+    }
 }

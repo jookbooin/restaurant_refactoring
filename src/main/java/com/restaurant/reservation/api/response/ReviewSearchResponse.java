@@ -5,6 +5,9 @@ import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,25 +22,23 @@ public class ReviewSearchResponse {
     private Long memberId; // Member
     private String name;  // Member
 
-    @Builder
-    public ReviewSearchResponse(Long id, String content, int grade, LocalDateTime createdDate, Long memberId, String name) {
-        this.id = id;
-        this.content = content;
-        this.grade = grade;
-        this.createdDate = createdDate;
-        this.memberId = memberId;
-        this.name = name;
-    }
+    List<ImageResponse> imageResponseList = new ArrayList<>();
 
-    public static ReviewSearchResponse responseFrom(ReviewSearchDto dto){
-        return ReviewSearchResponse.builder()
-                .id(dto.getId())
-                .content(dto.getContent())
-                .grade(dto.getGrade())
-                .createdDate(dto.getCreatedDate())
-                .memberId(dto.getMemberId())
-                .name(dto.getName())
-                .build();
+    public ReviewSearchResponse(ReviewSearchDto dto) {
+        this.id = dto.getId();
+        this.content = dto.getContent();
+        this.grade = dto.getGrade();
+        this.createdDate = dto.getCreatedDate();
+        this.memberId = dto.getMemberId();
+        this.name = dto.getName();
+
+        if(!dto.getUploadFileDtoList().isEmpty()){
+            List<ImageResponse> imageResponseList = dto.getUploadFileDtoList().stream()
+                    .map(uploadFileDto -> ImageResponse.responseFrom(uploadFileDto))
+                    .collect(Collectors.toList());
+            this.imageResponseList =imageResponseList;
+        }
+
     }
 
 }

@@ -2,6 +2,7 @@ package com.restaurant.reservation.api.controller;
 
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
 import com.restaurant.reservation.api.response.MessageResponse;
+import com.restaurant.reservation.api.response.ReviewSearchResponse;
 import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.repository.ReviewRepository;
@@ -11,7 +12,6 @@ import com.restaurant.reservation.repository.dto.ReviewSearchDto;
 import com.restaurant.reservation.service.ReviewService;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
 import com.restaurant.reservation.web.form.ReviewUpdateForm;
-import com.restaurant.reservation.web.webDto.ReviewSearchWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +43,13 @@ public class ReviewApiController {
 
         ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
 
-        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> dataResponse = reviewService.reviewSearch(rtid, reviewSearch, pageable);
+        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> twoTypeData = reviewService.reviewSearch(rtid, reviewSearch, pageable);
 
-        List<ReviewSearchWeb> content = dataResponse.getData1().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
+
+        List<ReviewSearchResponse> content = twoTypeData.getData1().stream().map(dto ->new ReviewSearchResponse(dto))
                 .collect(Collectors.toList());
-        Pagination<ReviewSearchDto> pagination = dataResponse.getData2();
+
+        Pagination<ReviewSearchDto> pagination = twoTypeData.getData2();
 
 
         return new TwoTypeData<>(content,pagination);

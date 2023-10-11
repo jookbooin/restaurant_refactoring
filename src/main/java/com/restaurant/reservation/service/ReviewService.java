@@ -50,8 +50,6 @@ public class ReviewService {
 
         Pagination<ReviewSearchDto> pagination = new Pagination<>(reviewSearchPage);
 
-
-
         return new TwoTypeData<>(reviewSearchPage.getContent(),pagination);
     }
     @Transactional
