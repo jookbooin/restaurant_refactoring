@@ -1,17 +1,17 @@
 package com.restaurant.reservation.controller;
 
 import com.restaurant.reservation.api.request.search.ReviewSearchRequest;
+import com.restaurant.reservation.api.response.ReviewSearchResponse;
 import com.restaurant.reservation.common.Pagination;
 import com.restaurant.reservation.common.TwoTypeData;
 import com.restaurant.reservation.common.exception.domain.FileException;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
-import com.restaurant.reservation.service.FileHandler;
+import com.restaurant.reservation.service.FileStore;
 import com.restaurant.reservation.service.ReviewService;
 import com.restaurant.reservation.web.SessionID;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
-import com.restaurant.reservation.web.webDto.ReviewSearchWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final FileHandler fileHandler;
+    private final FileStore fileStore;
 
     public final Long restaurantId = 1L;
 
@@ -50,12 +50,14 @@ public class ReviewController {
 
         ReviewSearch reviewSearch = ReviewSearch.searchFrom(condition);
 
-        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> dataResponse = reviewService.reviewSearch(rid, reviewSearch, pageable);
+        TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> twoTypeData = reviewService.reviewSearch(rid, reviewSearch, pageable);
 
-        List<ReviewSearchWeb> reviewList = dataResponse.getData1().stream().map(dto -> ReviewSearchWeb.webFrom(dto))
+
+        List<ReviewSearchResponse> reviewList = twoTypeData.getData1().stream().map(dto ->new ReviewSearchResponse(dto))
                 .collect(Collectors.toList());
+
         log.info("review size : {}",reviewList.size());
-        Pagination<ReviewSearchDto> pagination = dataResponse.getData2();
+        Pagination<ReviewSearchDto> pagination = twoTypeData.getData2();
 
         model.addAttribute("restaurantId",rid);
         model.addAttribute("reviewList",reviewList);
@@ -87,7 +89,7 @@ public class ReviewController {
         /** 파일 형식 only jpg/png */
         List<MultipartFile> multipartFileList =null;
         try {
-            multipartFileList = fileHandler.imageContentType(form.getMultipartFileList());
+            multipartFileList = fileStore.imageContentType(form.getMultipartFileList());
         } catch (FileException e) {
             bindingResult.rejectValue("multipartFileList","MultipartFile.ContentType",e.getMessage());
         }

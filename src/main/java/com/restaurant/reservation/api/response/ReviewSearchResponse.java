@@ -41,4 +41,8 @@ public class ReviewSearchResponse {
 
     }
 
+//    public String getFormattedCreatedDate() {
+//        return createdDate.toLocalDate().toString();
+//    }
+
 }

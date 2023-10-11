@@ -9,11 +9,14 @@ import com.restaurant.reservation.repository.ReviewRepository;
 import com.restaurant.reservation.repository.dto.ReviewDto;
 import com.restaurant.reservation.repository.dto.ReviewSearch;
 import com.restaurant.reservation.repository.dto.ReviewSearchDto;
+import com.restaurant.reservation.service.FileStore;
 import com.restaurant.reservation.service.ReviewService;
 import com.restaurant.reservation.web.form.ReviewSaveForm;
 import com.restaurant.reservation.web.form.ReviewUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +36,7 @@ public class ReviewApiController {
 
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
+    private final FileStore fileStore;
 
     /** 추후에 삭제할 것*/
     private final Long memberId = 1L;
@@ -45,14 +50,21 @@ public class ReviewApiController {
 
         TwoTypeData<List<ReviewSearchDto>, Pagination<ReviewSearchDto>> twoTypeData = reviewService.reviewSearch(rtid, reviewSearch, pageable);
 
-
         List<ReviewSearchResponse> content = twoTypeData.getData1().stream().map(dto ->new ReviewSearchResponse(dto))
                 .collect(Collectors.toList());
 
         Pagination<ReviewSearchDto> pagination = twoTypeData.getData2();
 
-
         return new TwoTypeData<>(content,pagination);
+    }
+
+
+    @GetMapping("/api/{reviewId}/images/{filename}")
+    public Resource downloadImage(@PathVariable Long reviewId,@PathVariable String filename) throws MalformedURLException {
+
+       log.info("/api/{}/images/{}",reviewId,filename);
+
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 
 /**

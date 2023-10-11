@@ -36,7 +36,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
 
     private final UploadFileRepository uploadFileRepository;
-    private final FileHandler fileHandler;
+    private final FileStore fileStore;
 
 
     /**
@@ -63,7 +63,7 @@ public class ReviewService {
         /** multipart -> UploadFile (image) 로 변환
          *  review.fileList 에 저장
          * */
-        List<UploadFile> uploadFileList = fileHandler.storeFiles(reviewDto.getMultipartFileList());
+        List<UploadFile> uploadFileList = fileStore.storeFiles(reviewDto.getMultipartFileList());
         review.storeFiles(uploadFileList);
 
         Review saveReview = reviewRepository.save(review);

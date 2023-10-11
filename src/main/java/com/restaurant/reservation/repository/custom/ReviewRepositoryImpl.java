@@ -72,7 +72,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .map(review -> new ReviewSearchDto(review))
                 .collect(Collectors.toList());
 
-        content.forEach(dto -> log.info("dto : {}",dto));
+//        content.forEach(dto -> log.info("dto : {}",dto));
 
         JPAQuery<Long> countQuery = queryFactory.select(review.count())
                 .from(review)

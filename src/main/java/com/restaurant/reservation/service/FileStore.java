@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Slf4j
 @Component
-public class FileHandler {
+public class FileStore {
 
     @Value("${upload.path}")
     private String uploadDir;

@@ -14,12 +14,10 @@ public class ReviewSearchWeb {
 
     private Long id;
     private String content; // 후기
-
     private int grade;   // 평점
     private LocalDateTime createdDate;
     private Long memberId; // Member
     private String name;  // Member
-
 
 
     @Builder
