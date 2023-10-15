@@ -3,12 +3,11 @@ package com.restaurant.reservation.repository;
 import com.restaurant.reservation.domain.Tables;
 import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.booking.Waiting;
-import com.restaurant.reservation.repository.dto.MemberDto;
-import com.restaurant.reservation.repository.dto.ReservationDto;
 import com.restaurant.reservation.domain.enumType.MemberRole;
 import com.restaurant.reservation.domain.enumType.TimeEnum;
 import com.restaurant.reservation.domain.members.Member;
-import com.restaurant.reservation.repository.entityManagerRepo.ReservationRepo;
+import com.restaurant.reservation.repository.dto.MemberDto;
+import com.restaurant.reservation.repository.dto.ReservationDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 class ReservationRepositoryTest {
 
-    @Autowired
-    ReservationRepo reservationRepo;
+
     @Autowired
     ReservationRepository reservationRepository;
     @Autowired

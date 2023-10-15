@@ -34,7 +34,7 @@ public class MemberUpdateForm {
         this.phoneNumber = phoneNumber;
     }
 
-    public static MemberUpdateForm makeForm(MemberDto memberDto){
+    public static MemberUpdateForm formFrom(MemberDto memberDto){
         return new MemberUpdateForm(memberDto.getId(),
                              memberDto.getEmail(),
                                 memberDto.getPassword(),

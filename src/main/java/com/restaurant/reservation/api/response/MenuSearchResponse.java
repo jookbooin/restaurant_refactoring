@@ -29,7 +29,7 @@ public class MenuSearchResponse {
         return MenuSearchResponse.builder()
                 .searchName(searchName)
                 .searchCode(searchCode)
-                .menuList(menuList.stream().map(CategoryMenuResponse::of).collect(Collectors.toList()))
+                .menuList(menuList.stream().map(CategoryMenuResponse::responseFrom).collect(Collectors.toList()))
                 .build();
     }
 

@@ -43,7 +43,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// db
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly ("com.mysql:mysql-connector-j")
+	//H2 데이터베이스 추가
+	runtimeOnly 'com.h2database:h2'
 
 	//querydsl 추가
 	// 3. querydsl dependencies 추가

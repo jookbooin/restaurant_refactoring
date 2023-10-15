@@ -3,9 +3,7 @@ package com.restaurant.reservation.repository.custom;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.restaurant.reservation.domain.booking.Reservation;
 import com.restaurant.reservation.domain.enumType.BookingStatus;
-import com.restaurant.reservation.repository.custom.ReservatinoRepositoryCustom;
 import com.restaurant.reservation.repository.dto.BookingSearch;
 import com.restaurant.reservation.repository.dto.BookingSearchDto;
 import com.restaurant.reservation.repository.dto.QBookingSearchDto;
@@ -152,10 +150,10 @@ public class ReservationRepositoryImpl implements ReservatinoRepositoryCustom {
     }
 
     // 전체 예약
-    @Override
-    public Page<Reservation> findAllReservation(BookingSearch bookingSearch, Pageable pageable) {
-        return null;
-    }
+//    @Override
+//    public Page<Reservation> findAllReservation(BookingSearch bookingSearch, Pageable pageable) {
+//        return null;
+//    }
 
 
 }

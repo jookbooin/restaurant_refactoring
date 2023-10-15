@@ -1,28 +1,54 @@
+#spring:
+#  profiles:
+#    active: test
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/se2023?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
+#    username: seungheon
+#    password: dltmdgjs4139
+#
+#  messages:
+#    basename: errors
+#
+#  jpa:
+#    database: mysql
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+##        show_sql: true
+#        format_sql: true
+#        default_batch_fetch_size: 100 # 자동 in Query 개수 -> 1:N 컬렉션 다룰때
+#
+#server:
+#  servlet:
+#    session:
+#      tracking-modes: cookie
+#
+
+
 spring:
   profiles:
     active: test
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/se2023?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=true
-    username: seungheon
-    password: dltmdgjs4139
-
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MySQL
+    username: sa
+    password:
+#  sql:
+#    init:
+#      mode: always
   messages:
     basename: errors
 
   jpa:
-    database: mysql
-    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-#        show_sql: true
+        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100 # 자동 in Query 개수 -> 1:N 컬렉션 다룰때
-
-server:
-  servlet:
-    session:
-      tracking-modes: cookie
+    defer-datasource-initialization: true # jpa ddl-auto 먼저 초기화 -> data.sql , script.sql 이후에 초기화하도록 순서 조정
 

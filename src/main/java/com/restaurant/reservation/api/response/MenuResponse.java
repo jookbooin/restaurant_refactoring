@@ -21,7 +21,7 @@ public class MenuResponse {
         this.description = description;
     }
 
-    public static MenuResponse of (CategoryMenu categoryMenu){
+    public static MenuResponse responseFrom(CategoryMenu categoryMenu){
         return MenuResponse.builder()
                 .id(categoryMenu.getMenu().getId())
                 .name(categoryMenu.getMenu().getName())

@@ -29,13 +29,13 @@ public class CategoryResponse {
     }
 
     /** Category  -> CategoryDto*/
-    public static CategoryResponse of(Category category) {
+    public static CategoryResponse responseFrom(Category category) {
         return  CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
                 .parent(category.getParent() == null ? null: category.getParent().getName())
                 .level(category.getLevel())
-                .children(category.getChildren().stream().map(CategoryResponse::of).collect(Collectors.toList()))
+                .children(category.getChildren().stream().map(CategoryResponse::responseFrom).collect(Collectors.toList()))
                 .build();
 
     }

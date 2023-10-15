@@ -1,6 +1,5 @@
 package com.restaurant.reservation.repository.dto;
 
-import com.restaurant.reservation.api.request.form.MenuUpdateRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,22 +30,6 @@ public class CategoryMenuDto {
 
 
 
-
-//    public static CategoryMenuDto of(CategoryMenu categoryMenu){
-//
-//        return null;
-//    }
-
-    public static CategoryMenuDto of (Long id ,MenuUpdateRequest menuUpdateRequest){
-
-        return CategoryMenuDto.builder()
-                .id(id)
-                .categoryName(menuUpdateRequest.getCategoryName())
-                .menuName(menuUpdateRequest.getMenuName())
-                .price(menuUpdateRequest.getMenuPrice())
-                .description(menuUpdateRequest.getDescription())
-                .build();
-    }
 
 
 }

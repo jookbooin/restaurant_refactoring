@@ -1,4 +1,10 @@
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
   profiles:
     active: local
   datasource:
@@ -9,6 +15,8 @@ spring:
 
   messages:
     basename: errors
+
+
 
   jpa:
     database: mysql
@@ -26,3 +34,5 @@ server:
     session:
       tracking-modes: cookie
 
+upload:
+  path: D:/coding/file/restaurant/

@@ -1,5 +1,6 @@
 package com.restaurant.reservation.controller;
 
+import com.restaurant.reservation.api.request.search.MemberSearchRequest;
 import com.restaurant.reservation.domain.members.Member;
 import com.restaurant.reservation.repository.MemberRepository;
 import com.restaurant.reservation.repository.dto.BookingSearch;
@@ -8,8 +9,7 @@ import com.restaurant.reservation.repository.dto.MemberSearch;
 import com.restaurant.reservation.service.BookingWebService;
 import com.restaurant.reservation.service.MemberService;
 import com.restaurant.reservation.web.webDto.BookingSearchWeb;
-import com.restaurant.reservation.web.webDto.MemberSearchWeb;
-import com.restaurant.reservation.web.webDto.MemberWebDto;
+import com.restaurant.reservation.web.webDto.MemberWeb;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,16 +34,16 @@ public class AdminController {
     private final BookingWebService bookingWebService;
 
     @GetMapping("/admin/member/list")
-    public String adminMemberList(Model model, @ModelAttribute("memberSearch") MemberSearchWeb condition, @PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public String adminMemberList(Model model, @ModelAttribute("memberSearch") MemberSearchRequest condition, @PageableDefault(page = 0, size = 5) Pageable pageable) {
 
         log.info("MemberSearchCondition : {}", condition);
         log.info("pageable : {}", pageable);
 
         MemberSearch searchCondition = MemberSearch.createSearchCondition(condition);
         Page<Member> memberPage = memberService.findMemberAll(searchCondition, pageable);
-        Page<MemberWebDto> dtoPage = memberPage.map(o -> MemberWebDto.createDto(o));
+        Page<MemberWeb> dtoPage = memberPage.map(member -> MemberWeb.webFrom(member));
 
-        List<MemberWebDto> dtoList = dtoPage.getContent();
+        List<MemberWeb> dtoList = dtoPage.getContent();
 
         model.addAttribute("dtoPage", dtoPage);
 
